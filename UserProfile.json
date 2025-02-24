@@ -85,108 +85,29 @@
       {
         "Requirement Name": "Science Requirement",
         "Credits Taken": 0,
-        "Classes Chosen":
-        [
-          {
-            "Course Name": "",
-            "Credits": 0
-          },
-          {
-            "Course Name": "",
-            "Credits": 0
-          }
-        ]
+        "Classes Chosen": ["", ""]
       },
       {
         "Requirement Name": "Writing Emphasis Requirement",
-        "Minimum Credits Needed": 3,
-        "Maximum Credits Needed": 3,
-        "Choices":
-        [
-          {
-            "Course Name": "ENG 368",
-            "Credits": 3
-          },
-          {
-            "Course Name": "ENG 371",
-            "Credits": 3
-          }
-        ]
+        "Credits Taken": 0,
+        "Classes Chosen": ""
       },
       {
         "Requirement Name": "Speaking Emphasis requirement",
-        "Minimum Credits Needed": 3,
-        "Maximum Credits Needed": 3,
-        "Choices":
-        [
-          {
-            "Course Name": "SPK 208",
-            "Credits": 3
-          },
-          {
-            "Course Name": "SPK 230",
-            "Credits": 3
-          }
-        ]
+        "Minimum Credits Needed": 0,
+        "Classes Chosen": ""
       },
       {
         "Requirement Name": "Mathematics requirement",
-        "Minimum Credits Needed": 3,
-        "Maximum Credits Needed": 3,
-        "Choices":
-        [
-          {
-            "Course Name": "STA 200",
-            "Credits": 3
-          },
-          {
-            "Course Name": "MAT 162",
-            "Credits": 3
-          }
-        ]
+        "Minimum Credits Needed": 0,
+        "Classes Chosen": ""
       },
       {
         "Requirement Name": "Complex Large-Scale Systems Courses Requirement",
-        "Minimum Credits Needed": 3,
-        "Maximum Credits Needed": 3,
-        "Choices":
-        [
-          {
-            "Course Name": "CSC 416",
-            "Credits": 3
-          },
-          {
-            "Course Name": "CSC 417",
-            "Credits": 3
-          },
-          {
-            "Course Name": "CSC 418",
-            "Credits": 3
-          },
-          {
-            "Course Name": "CSC 466",
-            "Credits": 3
-          },
-          {
-            "Course Name": "CSC 467",
-            "Credits": 3
-          },
-          {
-            "Course Name": "CSC 468",
-            "Credits": 3
-          },
-          {
-            "Course Name": "CSC 476",
-            "Credits": 3
-          },
-          {
-            "Course Name": "CSC 496",
-            "Credits": 3
-          }
-        ]
+        "Minimum Credits Needed": 0,
+        "Classes Chosen": ""
       }
     ],
-    "Minimum 300 Level+ Elective Course Credits Required": 18,
-    "Minimum 400 Level Elective Course Credits Required": 6,
-    "Note": "If CSC 400 is used to fullfill the electives requirement, only 3 credits will be considered"
+    "300 Level+ Elective Course Credits": 0,
+    "400 Level Elective Course Credits": 0
   }
