@@ -37,11 +37,6 @@
       "Requirement Name": "Arts requirement",
       "Minimum Credits Needed": 3,
       "Maximum Credits Needed": 3
-    },
-    {
-      "Requirement Name": "Writing Emphasis requirement",
-      "Minimum Credits Needed": 3,
-      "Maximum Credits Needed": 3
     }
   ],
   "Required Classes":
