@@ -1,0 +1,192 @@
+{
+    "User Name": "",
+    "User ID": "",
+    "Credits taken": 0,
+    "Subject Requirements Status":
+    [
+      {
+        "Requirement Name": "First Year Experience requirement",
+        "Credits taken": 0
+      },
+      {
+        "Requirement Name": "English Composition requirement",
+        "Credits taken": 0
+      },
+      {
+        "Requirement Name": "Interdisciplinary requirement",
+        "Credits taken": 0
+      },
+      {
+        "Requirement Name": "Diverse Communities requirement",
+        "Credits taken": 0
+      },
+      {
+        "Requirement Name": "Behavioral & Social Science requirement",
+        "Credits taken": 0
+      },
+      {
+        "Requirement Name": "Humanities requirement",
+        "Credits taken": 0
+      },
+      {
+        "Requirement Name": "Arts requirement",
+        "Credits taken": 0
+      }
+    ],
+    "Required Classes Status":
+    [
+      {
+        "Class Name": "MAT 121",
+        "Completed": false
+      },
+      {
+        "Class Name": "MAT 151",
+        "Completed": false
+      },
+      {
+        "Class Name": "CSC 141",
+        "Completed": false
+      },
+      {
+        "Class Name": "CSC 142",
+        "Completed": false
+      },
+      {
+        "Class Name": "CSC 220",
+        "Completed": false
+      },
+      {
+        "Class Name": "CSC 231",
+        "Completed": false
+      },
+      {
+        "Class Name": "CSC 240",
+        "Completed": false
+      },
+      {
+        "Class Name": "CSC 241",
+        "Completed": false
+      },
+      {
+        "Class Name": "CSC 301",
+        "Completed": false
+      },
+      {
+        "Class Name": "CSC 345",
+        "Completed": false
+      },
+      {
+        "Class Name": "CSC 402",
+        "Completed": false
+      }
+    ],
+    "Variance of choices":
+    [
+      {
+        "Requirement Name": "Science Requirement",
+        "Credits Taken": 0,
+        "Classes Chosen":
+        [
+          {
+            "Course Name": "",
+            "Credits": 0
+          },
+          {
+            "Course Name": "",
+            "Credits": 0
+          }
+        ]
+      },
+      {
+        "Requirement Name": "Writing Emphasis Requirement",
+        "Minimum Credits Needed": 3,
+        "Maximum Credits Needed": 3,
+        "Choices":
+        [
+          {
+            "Course Name": "ENG 368",
+            "Credits": 3
+          },
+          {
+            "Course Name": "ENG 371",
+            "Credits": 3
+          }
+        ]
+      },
+      {
+        "Requirement Name": "Speaking Emphasis requirement",
+        "Minimum Credits Needed": 3,
+        "Maximum Credits Needed": 3,
+        "Choices":
+        [
+          {
+            "Course Name": "SPK 208",
+            "Credits": 3
+          },
+          {
+            "Course Name": "SPK 230",
+            "Credits": 3
+          }
+        ]
+      },
+      {
+        "Requirement Name": "Mathematics requirement",
+        "Minimum Credits Needed": 3,
+        "Maximum Credits Needed": 3,
+        "Choices":
+        [
+          {
+            "Course Name": "STA 200",
+            "Credits": 3
+          },
+          {
+            "Course Name": "MAT 162",
+            "Credits": 3
+          }
+        ]
+      },
+      {
+        "Requirement Name": "Complex Large-Scale Systems Courses Requirement",
+        "Minimum Credits Needed": 3,
+        "Maximum Credits Needed": 3,
+        "Choices":
+        [
+          {
+            "Course Name": "CSC 416",
+            "Credits": 3
+          },
+          {
+            "Course Name": "CSC 417",
+            "Credits": 3
+          },
+          {
+            "Course Name": "CSC 418",
+            "Credits": 3
+          },
+          {
+            "Course Name": "CSC 466",
+            "Credits": 3
+          },
+          {
+            "Course Name": "CSC 467",
+            "Credits": 3
+          },
+          {
+            "Course Name": "CSC 468",
+            "Credits": 3
+          },
+          {
+            "Course Name": "CSC 476",
+            "Credits": 3
+          },
+          {
+            "Course Name": "CSC 496",
+            "Credits": 3
+          }
+        ]
+      }
+    ],
+    "Minimum 300 Level+ Elective Course Credits Required": 18,
+    "Minimum 400 Level Elective Course Credits Required": 6,
+    "Note": "If CSC 400 is used to fullfill the electives requirement, only 3 credits will be considered"
+  }
