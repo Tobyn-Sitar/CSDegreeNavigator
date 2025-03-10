@@ -80,8 +80,8 @@ const SurveyForm = () => {
     completed: [],
     mathClasses: [],
     calculusOrStats: "",
-    scienceClasses: [], // For storing selected science courses
-    largeScaleClasses: [] // For storing selected large-scale classes
+    scienceClasses: [], 
+    largeScaleClasses: [] 
   });
 
   const handleChange = (e) => {
@@ -99,7 +99,7 @@ const SurveyForm = () => {
         ? [...prevState[name], value]
         : prevState[name].filter(item => item !== value);
 
-      // Ensure that at least two science courses are selected
+   
       if (name === "scienceClasses" && newValues.length < 2) {
         return { ...prevState, [name]: newValues };
       }
@@ -118,7 +118,7 @@ const SurveyForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Mapping the form data to match the server's expected structure
+
     const payload = {
       "First Name": formData.firstName,
       "Last Name": formData.lastName,
@@ -129,7 +129,7 @@ const SurveyForm = () => {
       "Math Classes": formData.mathClasses,
       "Calculus/Stats": formData.calculusOrStats,
       "Science Classes": formData.scienceClasses,
-      "Large Scale Classes": formData.largeScaleClasses // Include the selected large scale classes
+      "Large Scale Classes": formData.largeScaleClasses 
     };
 
     try {
