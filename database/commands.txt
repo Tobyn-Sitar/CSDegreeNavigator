@@ -1,0 +1,98 @@
+db["userdataformatted"].find({"taken.mathematics.MAT161": true})
+
+db["userdataformatted"].find({
+    "$or": [
+      { "taken.mathematics.MAT162": true },
+      { "taken.mathematics.STA200": true }
+    ]
+  })
+  
+
+  db["userdataformatted"].find({
+    "taken.core.CSC141": false,
+    "taken.core.CSC142": false,
+    "taken.core.CSC220": false
+  })
+
+  db["userdataformatted"].find({
+    "taken.core.CSC141": true,
+    "taken.core.CSC142": true,
+    "taken.core.CSC220": true,
+    "taken.core.CSC231": true,
+    "taken.core.CSC240": true,
+    "taken.core.CSC241": true,
+    "taken.core.CSC301": true,
+    "taken.core.CSC345": true,
+    "taken.core.CSC402": true
+  })
+  
+  db["user"].updateMany(
+    {
+      "taken.core.CSC141": true,
+      "taken.core.CSC142": true,
+      "taken.core.CSC220": true,
+      "taken.core.CSC231": true,
+      "taken.core.CSC240": true,
+      "taken.core.CSC241": true,
+      "taken.core.CSC301": true,
+      "taken.core.CSC345": true,
+      "taken.core.CSC402": true
+    },
+    {
+      $set: {
+        "requirements_satisfied.core": true
+      }
+    }
+  )
+  
+
+
+
+
+
+
+
+
+  
+
+  db["userdataformatted"].find({ 
+    $or: [
+      { "field1": false },
+      { "field2": false },
+      { "field3": false }
+    ]
+  })
+  
+  
+
+random command
+
+db["userdataformatted"].updateMany(
+    {
+      "taken.core.CSC141": false,
+      "taken.core.CSC142": false,
+      "taken.core.CSC220": false,
+      "taken.core.CSC231": false,
+      "taken.core.CSC240": false,
+      "taken.core.CSC241": false,
+      "taken.core.CSC301": false,
+      "taken.core.CSC345": false,
+      "taken.core.CSC402": false
+    },
+    {
+      $set: {
+        "taken.core.CSC141": true,
+        "taken.core.CSC142": true,
+        "taken.core.CSC220": true,
+        "taken.core.CSC231": true,
+        "taken.core.CSC240": true,
+        "taken.core.CSC241": true,
+        "taken.core.CSC301": true,
+        "taken.core.CSC345": true,
+        "taken.core.CSC402": true
+      }
+    }
+  )
+  
+  
+

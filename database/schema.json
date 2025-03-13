@@ -1,0 +1,67 @@
+  {
+    "First Name": "Tom",
+    "Last Name": "Cruise",
+    "Email": "test@gmail.com",
+    "Password": "1234",
+    "Graduation": "Jan 2023",
+    "taken": {
+      "fye": {
+        "FYE100": true
+      },
+      "core": {
+        "CSC141": true,
+        "CSC142": true,
+        "CSC220": true,
+        "CSC231": true,
+        "CSC240": true,
+        "CSC241": true,
+        "CSC301": true,
+        "CSC345": true,
+        "CSC402": true
+      },
+      "communication": {
+        "ENG368": false,
+        "ENG371": false,
+        "SPK208": false,
+        "SPK230": false,
+        "SPK199": false
+      },
+      "mathematics": {
+        "MAT121": true,
+        "MAT151": false,
+        "MAT161": true,
+        "MAT162": false,
+        "STA200": true
+      },
+      "science": {
+        "BIO110": false,
+        "CHE103": true,
+        "CRL103": true,
+        "ESS101": false,
+        "PHY130": true,
+        "PHY170": true
+      },
+      "large_scale": {
+        "CSC416": false,
+        "CSC417": false,
+        "CSC418": false,
+        "CSC466": false,
+        "CSC467": false,
+        "CSC468": false,
+        "CSC476": false,
+        "CSC496": false
+      }
+    },
+    "requirements_satisfied": {
+      "core": false,
+      "communication": false,
+      "mathematics": false,
+      "science": false,
+      "large_scale": false
+    },
+    "progress": {
+      "classes_completed": 0,
+      "total_credits": 0
+    },
+    "degree_completion": false
+  }
