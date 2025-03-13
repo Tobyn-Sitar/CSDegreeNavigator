@@ -12,23 +12,13 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { AppSidebar } from "@/components/app-sidebar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Toggle } from "@/components/ui/toggle"; // Import the Toggle component
-import { Moon, Sun } from "lucide-react"; // Import icons for light and dark modes
-import { useTheme } from "next-themes"; // Import the useTheme hook for theme management
+import { useTheme } from "next-themes";
+import { Moon, Sun } from "lucide-react";
 
 // Chart data
 const chartData = [
@@ -44,59 +34,27 @@ const chartData = [
 const chartConfig = {
   desktop: {
     label: "Desktop",
-    color: "#2563eb", // Blue color for desktop
+    color: "#2563eb",
   },
   mobile: {
     label: "Mobile",
-    color: "#60a5fa", // Light blue color for mobile
+    color: "#60a5fa",
   },
 };
 
 export default function Page() {
-  const { setTheme, theme } = useTheme(); // Use the `next-themes` hook to manage themes
+  const { setTheme, theme } = useTheme();
 
   const handleThemeToggle = () => {
-    // Toggle between light and dark theme
     setTheme(theme === "dark" ? "light" : "dark");
   };
-  
 
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Dashboard
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-
-          {/* Add the Theme Toggle Button */}
-          <div className="absolute top-4 right-4">
-            <Toggle
-              aria-label="Toggle theme"
-              onClick={handleThemeToggle} // Handle the theme toggle on click
-            >
-              {theme === "dark" ? (
-                <Sun className="h-5 w-5 text-yellow-500" />
-              ) : (
-                <Moon className="h-5 w-5 text-gray-400" />
-              )}
-            </Toggle>
-          </div>
-        </header>
-
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          {/* Add the updated BarChart component */}
+          {/* BarChart */}
           <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
             <BarChart data={chartData}>
               <CartesianGrid vertical={false} />
@@ -105,7 +63,7 @@ export default function Page() {
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
-                tickFormatter={(value) => value.slice(0, 3)} // Display the first 3 letters of the month
+                tickFormatter={(value) => value.slice(0, 3)}
               />
               <ChartTooltip content={<ChartTooltipContent />} />
               <ChartLegend content={<ChartLegendContent />} />

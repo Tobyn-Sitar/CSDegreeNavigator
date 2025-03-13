@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ui/theme-provider"; // Import the ThemeProvider
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import ClientLayout from "@/components/ui/client-layout"; // 使用 ClientLayout
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,17 +22,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {/* Wrapping children with ThemeProvider */}
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ClientLayout>{children}</ClientLayout>
         </ThemeProvider>
       </body>
     </html>
