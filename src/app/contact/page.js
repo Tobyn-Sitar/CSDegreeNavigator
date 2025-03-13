@@ -33,31 +33,6 @@ export default function Contact() {
                   Home
                 </Link>
               </li>
-              <li>
-                <Link href="/courses" className="text-white hover:underline">
-                  Courses
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard" className="text-white hover:underline">
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-white hover:underline">
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link href="/login" className="text-white hover:underline">
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link href="/signup" className="text-white hover:underline">
-                  Signup
-                </Link>
-              </li>
             </ul>
           </nav>
         </header>

@@ -1,113 +1,116 @@
-"use client";
+"use client"; // Ensure it's rendered client-side
 
-import Head from "next/head";
-import Link from "next/link";
-import Image from "next/image"; 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import * as React from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Toggle } from "@/components/ui/toggle"; // Import the Toggle component
+import { useTheme } from "next-themes"; // Import useTheme for theme switching
+import { Moon, Sun } from "lucide-react"; // Import icons for light and dark modes
 
-export default function Signup() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+export function SignUpForm() {
+  const { setTheme, theme } = useTheme(); // Use the `next-themes` hook to manage themes
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-    console.log("Signup submitted", { email, password });
-    alert("Signed up (dummy functionality)");
-    router.push("/login"); 
+  const handleThemeToggle = () => {
+    // Toggle between light and dark theme
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
-    <>
-      <Head>
-        <title>Signup - WCUPA Degree Visualizer</title>
-        <meta name="description" content="Signup for WCUPA Degree Visualizer" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <div className="min-h-screen flex flex-col">
-        { }
-        <header className="bg-[#6e3061] p-4 flex items-center justify-between">
-          <div className="flex items-center">
-            <Image
-              src="/headerLogo1.png"
-              alt="Logo"
-              width={100}
-              height={100}
-              className="rounded"
-            />
-            <h1 className="ml-2 text-xl font-bold text-white">WCUPA Degree Visualizer</h1>
-          </div>
-
-          <nav>
-            <ul className="flex space-x-4">
-              <li><Link href="/" className="text-white hover:underline">Home</Link></li>
-              <li><Link href="/courses" className="text-white hover:underline">Courses</Link></li>
-              <li><Link href="/dashboard" className="text-white hover:underline">Dashboard</Link></li>
-              <li><Link href="/contact" className="text-white hover:underline">Contact</Link></li>
-              <li><Link href="/login" className="text-white hover:underline">Login</Link></li>
-              <li><Link href="/signup" className="text-white hover:underline">Signup</Link></li>
-            </ul>
-          </nav>
-        </header>
-
-        { }
-        <main className="flex-grow p-8 bg-stone-50 text-black">
-          <section className="max-w-md mx-auto">
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <label>
-                Email:
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="border rounded w-full p-2 mt-1"
-                  required
-                />
-              </label>
-              <label>
-                Password:
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="border rounded w-full p-2 mt-1"
-                  required
-                />
-              </label>
-              <label>
-                Confirm Password:
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="border rounded w-full p-2 mt-1"
-                  required
-                />
-              </label>
-              <button
-                type="submit"
-                className="bg-green-500 text-white rounded p-2 hover:bg-green-600"
-              >
-                Signup
-              </button>
-            </form>
-          </section>
-        </main>
-
-        {}
-        <footer className="bg-[#6e3061] p-4 text-center">
-          <p className="text-white">
-            &copy; {new Date().getFullYear()} WCUPA Degree Visualizer. All rights reserved.
-          </p>
-        </footer>
+    <div
+      className={`flex justify-center items-center min-h-screen relative ${
+        theme === "dark" ? "bg-gray-900" : "bg-gray-100"
+      }`} // Change background based on theme
+    >
+      {/* Toggle Button for Theme */}
+      <div className="absolute top-4 right-4">
+        <Toggle
+          aria-label="Toggle theme"
+          onClick={handleThemeToggle} // Handle the theme toggle on click
+        >
+          {theme === "dark" ? (
+            <Sun className="h-5 w-5 text-yellow-500" />
+          ) : (
+            <Moon className="h-5 w-5 text-gray-400" />
+          )}
+        </Toggle>
       </div>
-    </>
+
+      <Card className="w-[350px]">
+        <CardHeader>
+          <CardTitle>Sign Up</CardTitle>
+          <CardDescription>Create a new account.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form>
+            <div className="grid w-full items-center gap-4">
+              {/* First Name Field */}
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="firstName">First Name</Label>
+                <Input
+                  id="firstName"
+                  type="text"
+                  placeholder="Enter your first name"
+                />
+              </div>
+
+              {/* Last Name Field */}
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input
+                  id="lastName"
+                  type="text"
+                  placeholder="Enter your last name"
+                />
+              </div>
+
+              {/* Email Field */}
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                />
+              </div>
+
+              {/* Password Field */}
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Enter your password"
+                />
+              </div>
+
+              {/* Confirm Password Field */}
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Confirm your password"
+                />
+              </div>
+            </div>
+          </form>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Button variant="outline">Cancel</Button>
+          <Button>Sign Up</Button>
+        </CardFooter>
+      </Card>
+    </div>
   );
 }
+
+export default SignUpForm;
