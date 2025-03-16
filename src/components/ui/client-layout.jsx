@@ -43,7 +43,9 @@ export default function ClientLayout({ children }) {
             </header>
 
             {/* Page content */}
-            <main className="container mx-auto p-6 flex-grow">{children}</main>
+            <div className="flex flex-1">
+                <main className="flex-1 p-6 overflow-auto">{children}</main>
+            </div>
 
             {/* Footer */}
             <footer className="bg-[#6E3061] w-full h-10 flex items-center justify-center text-xs text-white">
