@@ -122,7 +122,7 @@ const SidebarProvider = React.forwardRef((
             }
           }
           className={cn(
-            "group/sidebar-wrapper flex h-[calc(100vh-4rem)] w-full has-[[data-variant=inset]]:bg-sidebar",
+            "group/sidebar-wrapper flex h-[calc(100vh-4rem)] w-full overflow-y-auto has-[[data-variant=inset]]:bg-sidebar",
             className
           )}
           ref={ref}
