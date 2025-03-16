@@ -1,128 +1,128 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 const app = express();
-const port = 8000;
 
+app.use(express.json());
 app.use(cors());
-app.use(express.json()); // To parse JSON bodies
 
-// Define the courses with their respective credits
-const courses = {
-    "CSC141": 3,
-    "CSC142": 3,
-    "CSC220": 3,
-    "CSC231": 3,
-    "CSC240": 3,
-    "CSC241": 3,
-    "CSC301": 3,
-    "CSC345": 3,
-    "CSC402": 3,
-    "MAT121": 3,
-    "MAT151": 3,
-    "MAT161": 4,
-    "MAT162": 4,
-    "STA200": 3,
-    "BIO110": 3,
-    "CHE103": 3,
-    "ESS101": 3,
-    "PHY130": 4,
-    "PHY170": 4,
-    "CSC416": 3,
-    "CSC417": 3,
-    "CSC418": 3,
-    "CSC466": 3,
-    "CSC467": 3,
-    "CSC468": 3,
-    "CSC476": 3,
-    "CSC496": 3
-};
 
-// Handling POST request
-app.post('/', (req, res) => {
-    // Extract the fields based on the new data format
-    const { 
-        "First Name": firstName, 
-        "Last Name": lastName, 
-        "Email": email, 
-        "Password": password, 
-        "Graduation": graduationYear, 
-        "Completed": completed,
-        "Math Classes": mathClasses,
-        "Calculus/Stats": calculusOrStats,
-        "Science Classes": scienceClasses,
-        "Large Scale Classes": largeScaleClasses
-    } = req.body;
-
-    // Calculate total credits
-    let totalCredits = 0;
-    
-    // Calculate credits for the completed core courses
-    completed.forEach(courseId => {
-        if (courses[courseId]) {
-            totalCredits += courses[courseId];
-        }
-    });
-
-    // Calculate credits for the math courses
-    mathClasses.forEach(courseId => {
-        if (courses[courseId]) {
-            totalCredits += courses[courseId];
-        }
-    });
-
-    // Calculate credits for calculus/statistics
-    if (courses[calculusOrStats]) {
-        totalCredits += courses[calculusOrStats];
-    }
-
-    // Calculate credits for the science classes
-    scienceClasses.forEach(courseId => {
-        if (courses[courseId]) {
-            totalCredits += courses[courseId];
-        }
-    });
-
-    // Calculate credits for the large-scale classes
-    largeScaleClasses.forEach(courseId => {
-        if (courses[courseId]) {
-            totalCredits += courses[courseId];
-        }
-    });
-
-    // Log the received data with key-value pairs on separate lines, but arrays on a single line
-    console.log('Received Data: {');
-    console.log(`  "First Name": "${firstName}",`);
-    console.log(`  "Last Name": "${lastName}",`);
-    console.log(`  "Email": "${email}",`);
-    console.log(`  "Password": "${password}",`);
-    console.log(`  "Graduation": "${graduationYear}",`);
-    console.log(`  "Completed": [${completed.map(course => `"${course}"`).join(",")}],`);
-    console.log(`  "Math Classes": [${mathClasses.map(course => `"${course}"`).join(",")}],`);
-    console.log(`  "Calculus/Stats": "${calculusOrStats}",`);
-    console.log(`  "Science Classes": [${scienceClasses.map(course => `"${course}"`).join(",")}],`);
-    console.log(`  "Large Scale Classes": [${largeScaleClasses.map(course => `"${course}"`).join(",")}],`);
-    console.log('}');
-
-    // Respond back with a success message, the received data, and the total credits
-    res.json({
-        message: 'Data received successfully!',
-        totalCredits: totalCredits,
-        receivedData: {
-            "First Name": firstName,
-            "Last Name": lastName,
-            "Email": email,
-            "Password": password,
-            "Graduation": graduationYear,
-            "Completed": completed,
-            "Math Classes": mathClasses,
-            "Calculus/Stats": calculusOrStats,
-            "Science Classes": scienceClasses,
-            "Large Scale Classes": largeScaleClasses
-        }
-    });
+mongoose.connect('mongodb://localhost:27017/', {
+    dbName: 'CSDegreeNavigator',
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => {
+    console.log('Connected to user database');
+})
+.catch(err => {
+    console.log('Error connecting to the database:', err);
 });
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+
+const userSchema = new mongoose.Schema({
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true  
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    graduationYear: {
+        type: String,
+        required: true
+    },
+    taken: {
+        fye: Object,
+        core: Object,
+        communication: Object,
+        mathematics: Object,
+        science: Object,
+        large_scale: Object,
+    },
+    requirements_satisfied: {
+        fye: Boolean,
+        core: Boolean,
+        communication: Boolean,
+        mathematics: Boolean,
+        science: Boolean,
+        large_scale: Boolean,
+    },
+    progress: {
+        classes_completed: Number,
+        total_credits: Number,
+    },
+    degree_completion: Boolean
+});
+
+
+const UserModel = mongoose.model('users', userSchema);
+
+
+app.post("/survey", async (req, resp) => {
+    const {
+        first_name,
+        last_name,
+        email,
+        password,
+        graduation,
+        taken,
+        requirements_satisfied,
+        progress,
+        degree_completion
+    } = req.body;
+
+ 
+    if (!first_name || !last_name || !email || !password || !graduation) {
+        return resp.status(400).send("All required fields must be filled");
+    }
+
+    try {
+      
+        const existingUser = await UserModel.findOne({ email });
+        
+        if (existingUser) {
+            return resp.status(400).send({ message: "Email already exists. Please use a different email." });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+     
+        const newUser = new UserModel({
+            firstName: first_name,
+            lastName: last_name,
+            email,
+            password: hashedPassword, 
+            graduationYear: graduation,
+            taken,  
+            requirements_satisfied,
+            progress,
+            degree_completion
+        });
+
+    
+        const savedUser = await newUser.save();
+
+   
+        resp.status(201).send(savedUser);
+    } catch (error) {
+        console.error("Error saving survey data:", error);
+        resp.status(500).send("Something went wrong while saving data");
+    }
+});
+
+
+app.listen(3001, () => {
+    console.log("App listening at port 3001");
 });
