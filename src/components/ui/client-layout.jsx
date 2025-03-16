@@ -14,7 +14,7 @@ export default function ClientLayout({ children }) {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Navigation bar */}
-            <header className="bg-[#6E3061] text-white p-4 shadow-md fixed top-0 left-0 w-full z-50">
+            <header className="bg-[#6E3061] text-white p-4 shadow-md fixed top-0 left-0 w-full z-[999]">
                 <div className="container mx-auto flex justify-between items-center">
                     {/* Left side logo */}
                     <div className="flex items-center space-x-4">
