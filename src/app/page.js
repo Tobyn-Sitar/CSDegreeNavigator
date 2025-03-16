@@ -13,7 +13,7 @@ export default function Home() {
       </Head>
 
       {/* Main Content */}
-      <main className="flex-grow p-8 bg-stone-50 text-black">
+      <main className="flex-grow p-8 bg-stone-50 text-black mt-16">
         <section className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold mb-4">Welcome!</h2>
           <p className="mb-4">
