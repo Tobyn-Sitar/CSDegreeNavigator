@@ -16,7 +16,7 @@ export default function Courses() {
       <div className="min-h-screen flex flex-col">
 
         {/* Main Content */}
-        <main className="flex-grow p-8 bg-stone-50 text-black">
+        <main className="flex-grow p-8 bg-stone-50 text-black mt-16">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold mb-4">Courses</h2>
             {/* Place your OrgChartTree component here */}

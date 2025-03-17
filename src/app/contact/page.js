@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Image from "next/image";
 
 export default function Contact() {
   return (
@@ -10,7 +11,19 @@ export default function Contact() {
       </Head>
 
       {/* Main Content */}
-      <main className="flex-grow p-8 bg-stone-50 text-black">
+      <main className="flex-grow p-8 bg-stone-50 text-black mt-5">
+        {/* add picture */}
+        <div className="relative w-full h-[500px] mb-8">
+          <Image
+            src="/wcu01.jpg"
+            alt="University Building"
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center 20%"
+            className="rounded-lg"
+          />
+        </div>
+
         <section className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
           <p>

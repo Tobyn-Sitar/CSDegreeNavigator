@@ -14,7 +14,7 @@ export default function ClientLayout({ children }) {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Navigation bar */}
-            <header className="bg-[#6E3061] text-white p-4 shadow-md">
+            <header className="bg-[#6E3061] text-white p-4 shadow-md fixed top-0 left-0 w-full z-[999]">
                 <div className="container mx-auto flex justify-between items-center">
                     {/* Left side logo */}
                     <div className="flex items-center space-x-4">
@@ -43,10 +43,12 @@ export default function ClientLayout({ children }) {
             </header>
 
             {/* Page content */}
-            <main className="container mx-auto p-6 flex-grow">{children}</main>
+            <div className="flex flex-1">
+                <main className="flex-1 p-6 overflow-auto">{children}</main>
+            </div>
 
             {/* Footer */}
-            <footer className="bg-[#6E3061] w-full h-10 flex items-center justify-center text-xs text-white">
+            <footer className="bg-[#6E3061] w-full h-10 flex items-center justify-center text-xs text-white fixed bottom-0 left-0 z-50 shadow-md">
                 <p>&copy; {new Date().getFullYear()} WCUPA Degree Visualizer. All rights reserved.</p>
             </footer>
 
