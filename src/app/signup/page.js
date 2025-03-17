@@ -96,6 +96,79 @@ export function SignUpForm({ onClose }) {
     }
   };
 
+  // Handle changes in the form inputs
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Simple validation: check if passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setMessage("Passwords do not match.");
+      return;
+    }
+
+    // Prepare payload according to your schema
+    // The backend expects keys with spaces ("First Name", etc.)
+    const payload = {
+      "First Name": formData.firstName,
+      "Last Name": formData.lastName,
+      "Email": formData.email,
+      "Password": formData.password,
+      "Graduation": formData.graduation,
+      // You can leave these fields as default or pre-populate empty objects
+      "taken": {
+        fye: {},
+        core: {},
+        communication: {},
+        mathematics: {},
+        science: {},
+        large_scale: {}
+      },
+      "requirements_satisfied": {
+        core: false,
+        communication: false,
+        mathematics: false,
+        science: false,
+        large_scale: false
+      },
+      "progress": { classes_completed: 0, total_credits: 0 },
+      "degree_completion": false
+    };
+
+    try {
+      // Send a POST request to your backend endpoint
+      const res = await fetch("http://localhost:8000/api/insert", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setMessage("Signup successful!");
+        // Optionally, clear the form:
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          graduation: ""
+        });
+      } else {
+        setMessage("Signup failed: " + (data.error || "Unknown error."));
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      setMessage("An error occurred during signup.");
+    }
+  };
+
   return (
     <div className="relative w-full max-w-sm">
       {/* Toggle Theme Button */}
@@ -143,6 +216,12 @@ export function SignUpForm({ onClose }) {
                 <Input id="confirmPassword" type="password" placeholder="Confirm your password" />
               </div>
             </div>
+            <CardFooter className="flex justify-between mt-4">
+              <Button variant="outline" type="button">
+                Cancel
+              </Button>
+              <Button type="submit">Sign Up</Button>
+            </CardFooter>
             <CardFooter className="flex justify-between mt-4">
               <Button variant="outline" type="button">
                 Cancel
