@@ -4,42 +4,104 @@ import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
 export default function TreePage() {
-  const svgRef = useRef(null); // Using ref to append SVG in React way
+  const svgRef = useRef(null); 
 
   useEffect(() => {
     const width = 928;
-    const height = 680;
+    const height = 900;
 
     const color = d3.scaleOrdinal(d3.schemeCategory10);
 
     const data = {
       nodes: [
         { id: "Core", group: 1 },
+        { id: "Communication", group: 1 },
         { id: "Math", group: 1 },
+        { id: "Science", group: 1 },
         { id: "Large Scale", group: 1 },
-        { id: "CSC145", group: 1 },
-        { id: "CSC142", group: 1 },
-        { id: "CSC143", group: 2 },
-        { id: "CSC144", group: 2 },
-        { id: "CSC146", group: 2 },
-        { id: "CSC147", group: 1 },
-        { id: "CSC148", group: 2 },
+        { id: "CSC141", group: 2 },
+        { id: "CSC142", group: 2 },
+        { id: "CSC220", group: 2 },
+        { id: "CSC231", group: 2 },
+        { id: "CSC240", group: 2 },
+        { id: "CSC241", group: 2 },
+        { id: "CSC301", group: 2 },
+        { id: "CSC345", group: 2 },
+        { id: "CSC402", group: 2 },
+        { id: "MAT121", group: 3 },
+        { id: "MAT151", group: 3 },
+        { id: "MAT161", group: 3 },
+        { id: "MAT162", group: 3 },
+        { id: "STA200", group: 3 },
+        { id: "ENG368", group: 4 },
+        { id: "ENG371", group: 4 },
+        { id: "SPK208", group: 4 },
+        { id: "SPK230", group: 4 },
+        { id: "SPK199", group: 4 },
+        { id: "BIO110", group: 5 },
+        { id: "CHE103", group: 5 },
+        { id: "CRL103", group: 5 },
+        { id: "ESS101", group: 5 },
+        { id: "PHY130", group: 5 },
+        { id: "PHY170", group: 5 },
+        { id: "CSC416", group: 6 },
+        { id: "CSC417", group: 6 },
+        { id: "CSC418", group: 6 },
+        { id: "CSC466", group: 6 },
+        { id: "CSC467", group: 6 },
+        { id: "CSC468", group: 6 },
+        { id: "CSC476", group: 6 },
+        { id: "CSC496", group: 6 },
       ],
       links: [
+        { source: "Core", target: "CSC141", value: 1 },
         { source: "Core", target: "CSC142", value: 1 },
-        { source: "Core", target: "CSC143", value: 1 },
-        { source: "CSC145", target: "CSC146", value: 1 },
-        { source: "CSC147", target: "CSC148", value: 1 },
+        { source: "Core", target: "CSC220", value: 1 },
+        { source: "Core", target: "CSC231", value: 1 },
+        { source: "Core", target: "CSC240", value: 1 },
+        { source: "Core", target: "CSC241", value: 1 },
+        { source: "Core", target: "CSC301", value: 1 },
+        { source: "Core", target: "CSC345", value: 1 },
+        { source: "Core", target: "CSC402", value: 1 },
+    
+        { source: "Math", target: "MAT121", value: 1 },
+        { source: "Math", target: "MAT151", value: 1 },
+        { source: "Math", target: "MAT161", value: 1 },
+        { source: "Math", target: "MAT162", value: 1 },
+        { source: "Math", target: "STA200", value: 1 },
+    
+        { source: "Communication", target: "ENG368", value: 1 },
+        { source: "Communication", target: "ENG371", value: 1 },
+        { source: "Communication", target: "SPK208", value: 1 },
+        { source: "Communication", target: "SPK230", value: 1 },
+        { source: "Communication", target: "SPK199", value: 1 },
+    
+        { source: "Science", target: "BIO110", value: 1 },
+        { source: "Science", target: "CHE103", value: 1 },
+        { source: "Science", target: "CRL103", value: 1 },
+        { source: "Science", target: "ESS101", value: 1 },
+        { source: "Science", target: "PHY130", value: 1 },
+        { source: "Science", target: "PHY170", value: 1 },
+    
+        { source: "Large Scale", target: "CSC416", value: 1 },
+        { source: "Large Scale", target: "CSC417", value: 1 },
+        { source: "Large Scale", target: "CSC418", value: 1 },
+        { source: "Large Scale", target: "CSC466", value: 1 },
+        { source: "Large Scale", target: "CSC467", value: 1 },
+        { source: "Large Scale", target: "CSC468", value: 1 },
+        { source: "Large Scale", target: "CSC476", value: 1 },
+        { source: "Large Scale", target: "CSC496", value: 1 },
       ],
     };
+    
 
     const links = data.links.map((d) => ({ ...d }));
     const nodes = data.nodes.map((d) => ({ ...d }));
 
     const simulation = d3
       .forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id((d) => d.id).distance(80)) // Increased link distance
-      .force("charge", d3.forceManyBody().strength(-2000)) // Increased repulsion force
+      .force("link", d3.forceLink(links).id((d) => d.id).distance(100)) // Increased link distance
+      .force("charge", d3.forceManyBody().strength(-600)) // Increased repulsion force
       .force("x", d3.forceX())
       .force("y", d3.forceY());
 
@@ -67,11 +129,13 @@ export default function TreePage() {
       .data(nodes)
       .join("g"); // Join data and group the elements
 
-    // Add circles for nodes
+    // This keeps an array of all the completed courses/requirements. 
+    const greenNodes = ["CSC141", "Core"];
+
     node
       .append("circle")
       .attr("r", 35) // Increase the radius if needed
-      .attr("fill", (d) => color(d.group));
+      .attr("fill", (d) => greenNodes.includes(d.id) ? "green" : "red");
 
     // Add text to nodes
     node
@@ -81,7 +145,7 @@ export default function TreePage() {
       .attr("text-anchor", "middle")
       .text((d) => d.id); // Display the node id as the text
 
-    // Title for hover tooltip
+   
     node.append("title").text((d) => d.id);
 
     node.call(
@@ -119,7 +183,7 @@ export default function TreePage() {
       event.subject.fy = null;
     }
 
-    // Cleanup function to remove the svg on component unmount
+    
     return () => {
       d3.select(svgRef.current).selectAll("*").remove();
     };
@@ -127,7 +191,6 @@ export default function TreePage() {
 
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", flexDirection: "column" }}>
-      <h1 style={{ textAlign: "center" }}>Force-Directed Graph</h1>
       <svg ref={svgRef} />
     </div>
   );
