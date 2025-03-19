@@ -1,4 +1,4 @@
-// server.js
+// server2.js
 
 // Load environment variables from .env.local
 require('dotenv').config();
@@ -89,6 +89,18 @@ const userSchema = new mongoose.Schema({
     default: { classes_completed: 0, total_credits: 0 }
   },
   "degree_completion": { type: Boolean, default: false },
+  // New time restrictions field
+  "timeRestrictions": {
+    type: [
+      {
+        day: String, // "Monday", "Tuesday", etc.
+        startTime: String, // "08:00 AM"
+        endTime: String, // "10:00 AM"
+        description: String // optional field for additional info like 'busy with work'
+      }
+    ],
+    default: []
+  },
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -145,6 +157,45 @@ app.post('/api/insert', async (req, res) => {
   } catch (error) {
     console.error('Insertion error:', error);
     res.status(500).json({ error: 'Failed to insert document' });
+  }
+});
+
+// POST endpoint to add or update time restrictions for a user
+app.post('/api/users/:id/time-restrictions', async (req, res) => {
+  const { id } = req.params;
+  const { timeRestrictions } = req.body;  // Expecting an array of time restriction objects
+  
+  try {
+    const user = await UserData.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    
+    // Update the user's time restrictions
+    user.timeRestrictions = timeRestrictions;
+    await user.save();
+    
+    res.status(200).send({ message: 'Time restrictions updated successfully', user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Error updating time restrictions' });
+  }
+});
+
+// GET endpoint to retrieve time restrictions for a user
+app.get('/api/users/:id/time-restrictions', async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const user = await UserData.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+    
+    res.status(200).send({ timeRestrictions: user.timeRestrictions });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Error fetching time restrictions' });
   }
 });
 
