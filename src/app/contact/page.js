@@ -11,8 +11,8 @@ export default function Contact() {
       </Head>
 
       {/* Main Content */}
-      <main className="flex-grow p-8 bg-stone-50 text-black mt-5">
-        {/* add picture */}
+      <main className="flex-grow p-8 bg-white text-black mt-5">
+        {/* Hero Image */}
         <div className="relative w-full h-[500px] mb-8">
           <Image
             src="/wcu01.jpg"
@@ -24,32 +24,54 @@ export default function Contact() {
           />
         </div>
 
-        <section className="max-w-4xl mx-auto">
+        {/* Contact Section */}
+        <section className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
-          <p>
-            If you have any questions or need further assistance, please reach out to us via email or phone.
+          <p className="text-lg text-gray-700">
+            Have questions or need assistance? Feel free to reach out to one of the members of the team via email!
           </p>
-          <ul className="list-disc ml-6 mt-4">
-            <li>
-              Email:{" "}
-              <a href="mailto:support@example.com" className="text-blue-500 hover:underline">
-                support@example.com
+
+          {/* Team Contact Info */}
+          <div className="mt-6 text-lg">
+            <p className="mb-2">
+              Drew:{" "}
+              <a href="mailto:DS995982@wcupa.edu" className="text-blue-600 hover:underline">
+                DS995982@wcupa.edu
               </a>
-            </li>
-            <li>Phone: (123) 456-7890</li>
-          </ul>
-          <p className="mt-4">
-            Alternatively, a contact form will be available here soon.
-          </p>
+            </p>
+            <p className="mb-2">
+              Justin:{" "}
+              <a href="mailto:JK1035193@wcupa.edu" className="text-blue-600 hover:underline">
+                JK1035193@wcupa.edu
+              </a>
+            </p>
+            <p className="mb-2">
+              Muhammad:{" "}
+              <a href="mailto:MA970103@wcupa.edu" className="text-blue-600 hover:underline">
+                MA970103@wcupa.edu
+              </a>
+            </p>
+            <p className="mb-2">
+              Robert:{" "}
+              <a href="mailto:RS1007120@wcupa.edu" className="text-blue-600 hover:underline">
+                RS1007120@wcupa.edu
+              </a>
+            </p>
+            <p className="mb-2">
+              Tobyn:{" "}
+              <a href="mailto:TS964228@wcupa.edu" className="text-blue-600 hover:underline">
+                TS964228@wcupa.edu
+              </a>
+            </p>
+            <p className="mb-2">
+              Yanxi:{" "}
+              <a href="mailto:YW1021529@wcupa.edu" className="text-blue-600 hover:underline">
+                YW1021529@wcupa.edu
+              </a>
+            </p>
+          </div>
         </section>
       </main>
-
-      {/* Footer */}
-      {/* <footer className="bg-[#6e3061] p-4 text-center">
-        <p className="text-white">
-          &copy; {new Date().getFullYear()} WCUPA Degree Visualizer. All rights reserved.
-        </p>
-      </footer> */}
     </>
   );
 }
