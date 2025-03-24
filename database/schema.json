@@ -1,4 +1,4 @@
-  {
+{
     "First Name": "Tom",
     "Last Name": "Cruise",
     "Email": "test@gmail.com",
@@ -63,5 +63,19 @@
       "classes_completed": 0,
       "total_credits": 0
     },
-    "degree_completion": false
+    "degree_completion": false,
+    "timeRestrictions": [
+      {
+        "day": "Monday",
+        "startTime": "08:00 AM",
+        "endTime": "10:00 AM",
+        "description": "Busy with work"
+      },
+      {
+        "day": "Wednesday",
+        "startTime": "01:00 PM",
+        "endTime": "03:00 PM",
+        "description": "Attending a seminar"
+      }
+    ]
   }
