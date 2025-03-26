@@ -52,18 +52,10 @@
         "CSC496": false
       }
     },
-    "requirements_satisfied": {
-      "core": false,
-      "communication": false,
-      "mathematics": false,
-      "science": false,
-      "large_scale": false
-    },
-    "progress": {
+    "miscellaneous": {
       "classes_completed": 0,
       "total_credits": 0
     },
-    "degree_completion": false,
     "timeRestrictions": [
       {
         "day": "Monday",
