@@ -1,16 +1,17 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
+import tippy from "tippy.js"; // Import Tippy.js
+import "tippy.js/dist/tippy.css"; // Import Tippy.js CSS
 
 export default function TreePage() {
-  const svgRef = useRef(null); 
+  const svgRef = useRef(null);
+  const [greenNodes, setGreenNodes] = useState([]); // State to track green nodes
 
   useEffect(() => {
     const width = 928;
     const height = 900;
-
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
 
     const data = {
       nodes: [
@@ -63,26 +64,22 @@ export default function TreePage() {
         { source: "Core", target: "CSC301", value: 1 },
         { source: "Core", target: "CSC345", value: 1 },
         { source: "Core", target: "CSC402", value: 1 },
-    
         { source: "Math", target: "MAT121", value: 1 },
         { source: "Math", target: "MAT151", value: 1 },
         { source: "Math", target: "MAT161", value: 1 },
         { source: "Math", target: "MAT162", value: 1 },
         { source: "Math", target: "STA200", value: 1 },
-    
         { source: "Communication", target: "ENG368", value: 1 },
         { source: "Communication", target: "ENG371", value: 1 },
         { source: "Communication", target: "SPK208", value: 1 },
         { source: "Communication", target: "SPK230", value: 1 },
         { source: "Communication", target: "SPK199", value: 1 },
-    
         { source: "Science", target: "BIO110", value: 1 },
         { source: "Science", target: "CHE103", value: 1 },
         { source: "Science", target: "CRL103", value: 1 },
         { source: "Science", target: "ESS101", value: 1 },
         { source: "Science", target: "PHY130", value: 1 },
         { source: "Science", target: "PHY170", value: 1 },
-    
         { source: "Large Scale", target: "CSC416", value: 1 },
         { source: "Large Scale", target: "CSC417", value: 1 },
         { source: "Large Scale", target: "CSC418", value: 1 },
@@ -93,7 +90,6 @@ export default function TreePage() {
         { source: "Large Scale", target: "CSC496", value: 1 },
       ],
     };
-    
 
     const links = data.links.map((d) => ({ ...d }));
     const nodes = data.nodes.map((d) => ({ ...d }));
@@ -129,13 +125,24 @@ export default function TreePage() {
       .data(nodes)
       .join("g"); // Join data and group the elements
 
-    // This keeps an array of all the completed courses/requirements. 
-    const greenNodes = ["CSC141", "Core"];
-
     node
       .append("circle")
       .attr("r", 35) // Increase the radius if needed
-      .attr("fill", (d) => greenNodes.includes(d.id) ? "green" : "red");
+      .attr("fill", "red") // Set initial color to red for all nodes
+      .on("click", function (event, d) {
+        // Toggle color on click
+        const currentColor = d3.select(this).attr("fill");
+        const newColor = currentColor === "red" ? "green" : "red";
+        d3.select(this).attr("fill", newColor);
+
+        // Update the list of green nodes
+        setGreenNodes((prevGreenNodes) => {
+          const updatedGreenNodes = newColor === "green"
+            ? [...prevGreenNodes, d.id]
+            : prevGreenNodes.filter((id) => id !== d.id);
+          return updatedGreenNodes;
+        });
+      });
 
     // Add text to nodes
     node
@@ -145,8 +152,14 @@ export default function TreePage() {
       .attr("text-anchor", "middle")
       .text((d) => d.id); // Display the node id as the text
 
-    // Title for hover tooltip
-    node.append("title").text((d) => d.id);
+    // Apply tooltips with Tippy.js
+    node.each(function (d) {
+      tippy(this, {
+        content: d.id, // Tooltip content
+        arrow: true, // Show arrow in tooltip
+        placement: 'top', // Position of the tooltip
+      });
+    });
 
     node.call(
       d3
@@ -183,15 +196,58 @@ export default function TreePage() {
       event.subject.fy = null;
     }
 
-    
     return () => {
       d3.select(svgRef.current).selectAll("*").remove();
     };
   }, []);
 
+  const handleSubmit = async () => {
+    // Define a mapping for center node names to their desired lowercase forms
+    const centerNodeMapping = {
+        Core: "core",
+        Math: "math",
+        Communication: "communication",
+        Science: "science",
+        "Large Scale": "large_scale"
+    };
+
+    // Map over all green nodes and convert center nodes to lowercase while keeping others uppercase
+    const formattedGreenNodes = greenNodes.map((node) => {
+        // If it's a center node, map to lowercase; otherwise, keep it uppercase
+        return centerNodeMapping[node] || node.toUpperCase(); 
+    });
+
+    console.log("Formatted Green Nodes:", formattedGreenNodes);  // Log the formatted array
+
+    // Send the selected courses to the backend
+    try {
+        const response = await fetch('/api/sendTree', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ greenNodes: formattedGreenNodes })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message || "Courses successfully updated!");
+        } else {
+            alert(result.error || "Failed to update courses");
+        }
+    } catch (error) {
+        console.error("Error sending data:", error);
+        alert("Error sending data");
+    }
+};
+
+
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", flexDirection: "column" }}>
       <svg ref={svgRef} />
+      <button onClick={handleSubmit} style={{ marginTop: "20px" }}>
+        Submit Courses
+      </button>
     </div>
   );
 }

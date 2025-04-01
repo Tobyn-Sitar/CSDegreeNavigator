@@ -20,7 +20,7 @@ export async function GET(req) {
 
     // Fetch courses based on the courseNumber
     const courses = await Course.find({ courseNumber: courseNumber })
-      .select('courseNumber courseTitle actualEnrollment startOn endOn instructors.instructorFirstName');
+      .select('courseNumber courseTitle actualEnrollment startOn endOn instructors.instructorFirstName instructors.instructorLastName'); // Added instructorLastName
 
     // Log the result of the query
     console.log("Courses found:", courses);

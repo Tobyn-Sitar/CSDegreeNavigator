@@ -42,21 +42,21 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: IconDashboard,
     },
     {
-      title: "Lifecycle",
-      url: "#",
+      title: "Courses",
+      url: "/dashboard/courses",
       icon: IconListDetails,
     },
     {
-      title: "Analytics",
-      url: "#",
+      title: "Progress",
+      url: "/dashboard/progress",
       icon: IconChartBar,
     },
     {
-      title: "Projects",
+      title: "Updates",
       url: "#",
       icon: IconFolder,
     },
@@ -133,17 +133,17 @@ const data = {
   ],
   documents: [
     {
-      name: "Data Library",
+      name: "Edit",
       url: "#",
       icon: IconDatabase,
     },
     {
-      name: "Reports",
+      name: "Course Generator",
       url: "#",
       icon: IconReport,
     },
     {
-      name: "Word Assistant",
+      name: "Optimize",
       url: "#",
       icon: IconFileWord,
     },
