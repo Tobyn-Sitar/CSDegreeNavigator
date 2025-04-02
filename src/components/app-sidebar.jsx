@@ -62,6 +62,11 @@ const data = {
           url: "/dashboard/tree",
         },
         {
+          title: "Schedule Generator",
+          url: "/dashboard/schedule",
+        },
+        
+        {
           title: "Courses Needed",
           url: "/dashboard/courses",
         },
