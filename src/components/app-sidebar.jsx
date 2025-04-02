@@ -63,7 +63,7 @@ const data = {
         },
         {
           title: "Schedule Generator",
-          url: "/dashboard/schedule",
+          url: "/dashboard/schedulegenerator",
         },
         
         {
