@@ -14,14 +14,15 @@ const CoursesPage = () => {
   const handleSearch = async () => {
     if (!inputValue) {
       setError("Please enter a course number to search.");
-      return; // Don't fetch if input is empty
+      setCourses([]); // Clear previous results
+      return;
     }
 
-    setLoading(true); // Show loading state
-    setError(null); // Clear previous errors
+    setLoading(true);
+    setError(null);
+    setCourses([]); // Clear previous results before the fetch
 
     try {
-      // Make request with the course number
       const res = await fetch(`/api/courses?courseNumber=${inputValue}`);
       if (!res.ok) {
         throw new Error(`Failed to fetch courses: ${res.statusText}`);
@@ -32,12 +33,12 @@ const CoursesPage = () => {
       if (data.length === 0) {
         setError("No courses found for the given course number.");
       } else {
-        setCourses(data); // Set courses data to state
+        setCourses(data);
       }
     } catch (err) {
-      setError(`Error: ${err.message}`); // Set error message
+      setError(`Error: ${err.message}`);
     } finally {
-      setLoading(false); // Hide loading state
+      setLoading(false);
     }
   };
 
@@ -116,8 +117,13 @@ const CoursesPage = () => {
             </tr>
           </thead>
           <tbody>
-            {courses.map((course) => (
-              <tr key={course.courseNumber} style={{ borderBottom: "1px solid #ddd" }}>
+            {courses.map((course, index) => (
+              <tr
+                key={`${
+                  course.crn || course._id || index
+                }-${course.courseNumber}-${course.startOn}-${course.endOn}`}
+                style={{ borderBottom: "1px solid #ddd" }}
+              >
                 <td style={{ padding: "10px", textAlign: "center", border: "1px solid #ddd" }}>
                   {course.courseNumber}
                 </td>
@@ -135,8 +141,11 @@ const CoursesPage = () => {
                 </td>
                 <td style={{ padding: "10px", border: "1px solid #ddd" }}>
                   <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
-                    {course.instructors.map((instructor, index) => (
-                      <li key={index} style={{ marginBottom: "5px" }}>
+                    {(course.instructors || []).map((instructor, idx) => (
+                      <li
+                        key={`${instructor.instructorFirstName || "Unknown"}-${instructor.instructorLastName || "Unknown"}-${idx}`}
+                        style={{ marginBottom: "5px" }}
+                      >
                         {instructor.instructorFirstName} {instructor.instructorLastName}
                       </li>
                     ))}
