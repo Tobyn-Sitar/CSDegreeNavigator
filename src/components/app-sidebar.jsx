@@ -139,12 +139,12 @@ const data = {
     },
     {
       name: "Course Generator",
-      url: "#",
+      url: "/dashboard/generator",
       icon: IconReport,
     },
     {
-      name: "Optimize",
-      url: "#",
+      name: "Schedule",
+      url: "/dashboard/schedule",
       icon: IconFileWord,
     },
   ],

@@ -116,7 +116,7 @@ export function LoginForm() {
               )}
             </div>
 
-            <CardFooter className="flex justify-between">
+            <CardFooter className="flex justify-between mt-4">
               <Button variant="outline" type="button">Cancel</Button>
               <Button type="submit">Login</Button>
             </CardFooter>

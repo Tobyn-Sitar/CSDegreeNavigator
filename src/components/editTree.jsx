@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import * as d3 from "d3";
 import tippy from "tippy.js"; // Import Tippy.js
 import "tippy.js/dist/tippy.css"; // Import Tippy.js CSS
@@ -8,6 +9,8 @@ import "tippy.js/dist/tippy.css"; // Import Tippy.js CSS
 export default function TreePage() {
   const svgRef = useRef(null);
   const [greenNodes, setGreenNodes] = useState([]); // State to track green nodes
+
+  const router = useRouter();
 
   useEffect(() => {
     const width = 928;
@@ -245,7 +248,7 @@ export default function TreePage() {
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", flexDirection: "column" }}>
       <svg ref={svgRef} />
-      <button onClick={handleSubmit} style={{ marginTop: "20px" }}>
+      <button onClick={() => { handleSubmit(); setTimeout(() => router.push("/dashboard"), 2000); }} style={{ marginTop: "20px" }}>
         Submit Courses
       </button>
     </div>
