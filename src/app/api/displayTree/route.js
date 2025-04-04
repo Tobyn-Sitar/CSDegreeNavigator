@@ -287,7 +287,7 @@ export async function GET(request) {
         const categories = ["fye", "core", "communication", "mathematics", "science", "large_scale"];
 
         categories.forEach(category => {
-            if (user.taken[category]) {
+            if (user.taken && user.taken[category]) {
                 Object.keys(user.taken[category]).forEach(course => {
                     // If the course is marked as false, add it to the incomplete array
                     if (user.taken[category][course] === false) {
