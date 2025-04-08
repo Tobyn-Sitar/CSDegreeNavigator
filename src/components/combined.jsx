@@ -8,17 +8,42 @@ const Combined = () => {
 
   // Data for courses and their prerequisites
   const coursesData = [
-    { id: 1, name: "Course 1", prerequisites: [] },
-    { id: 2, name: "Course 2", prerequisites: [] },
-    { id: 3, name: "Course 3", prerequisites: [] },
-    { id: 4, name: "Course 4", prerequisites: [] },
-    { id: 5, name: "Course 5", prerequisites: [] },
-    { id: 6, name: "Course 6", prerequisites: [] },
-    { id: 7, name: "Course 7", prerequisites: [] },
-    { id: 8, name: "Course 8", prerequisites: [] },
-    { id: 9, name: "Course 9", prerequisites: [] },
-    { id: 10, name: "Course 10", prerequisites: [4, 5, 8] },
-  ];
+  { "id": "MAT151", "name": "MAT151 - Discrete Mathematics", "prerequisites": [] },
+  { "id": "MAT161", "name": "MAT161 - Calculus I", "prerequisites": [] },
+  { "id": "CSC141", "name": "CSC141 - Computer Science I (Python)", "prerequisites": [] },
+  { "id": "CSC142", "name": "CSC142 - Computer Science II (Java)", "prerequisites": ["CSC141"] },
+  { "id": "CSC220", "name": "CSC220 - Foundations of Computer Science", "prerequisites": ["CSC240","MAT151","MAT161"] },
+  { "id": "CSC231", "name": "CSC231 - Computer Systems", "prerequisites": ["CSC142","MAT151"] },
+  { "id": "CSC240", "name": "CSC240 - Computer Science III", "prerequisites": ["CSC142"] },
+  { "id": "CSC241", "name": "CSC241 - Data Structures and Algorithms", "prerequisites": ["CSC240","MAT151","MAT161"] },
+  { "id": "CSC301", "name": "CSC301 - Computer Security & Ethics", "prerequisites": [] },
+  { "id": "CSC302", "name": "CSC302 - Computer Security", "prerequisites": ["CSC301","CSC335"] },
+  { "id": "CSC317", "name": "CSC317 - Introduction to Digital Image Process", "prerequisites": ["CSC240"] },
+  { "id": "CSC321", "name": "CSC321 - Database Management Systems", "prerequisites": ["CSC241"] },
+  { "id": "CSC331", "name": "CSC331 - Operating Systems", "prerequisites": ["CSC231","CSC241","CSC220"] },
+  { "id": "CSC335", "name": "CSC335 - Data Communications and Networking I", "prerequisites": ["CSC241"] },
+  { "id": "CSC345", "name": "CSC345 - Programming Language Concepts and Paradigms", "prerequisites": ["CSC220","CSC241"] },
+  { "id": "CSC381", "name": "CSC381 - Data Science", "prerequisites": ["CSC240","CSC241"] },
+  { "id": "CSC400", "name": "CSC400 - Internship", "prerequisites": ["CSC241"] },
+  { "id": "CSC402", "name": "CSC402 - Software Engineering Capstone", "prerequisites": ["CSC241"] },
+  { "id": "CSC404", "name": "CSC404 - Software Testing", "prerequisites": ["CSC402"] },
+  { "id": "CSC416", "name": "CSC416 - Design and Construction of Compilers", "prerequisites": ["CSC220","CSC231"] },
+  { "id": "CSC417", "name": "CSC417 - User Interfaces", "prerequisites": ["CSC241"] },
+  { "id": "CSC418", "name": "CSC418 - Modern Web Applications using Server-Side Technologies", "prerequisites": ["CSC240"] },
+  { "id": "CSC466", "name": "CSC466 - Distributed and Parallel Computing", "prerequisites": ["CSC241","CSC231"] },
+  { "id": "CSC467", "name": "CSC467 - Big Data Engineering", "prerequisites": ["CSC241"] },
+  { "id": "CSC468", "name": "CSC468 - Introduction to Cloud Computing", "prerequisites": ["CSC331"] },
+  { "id": "CSC471", "name": "CSC471 - Modern Malware Analysis", "prerequisites": ["CSC302","CSC231"] },
+  { "id": "CSC472", "name": "CSC472 - Software Security", "prerequisites": ["CSC302","CSC231"] },
+  { "id": "CSC476", "name": "CSC476 - Game Development", "prerequisites": ["CSC241"] },
+  { "id": "CSC478", "name": "CSC478 - Cloud Engineering", "prerequisites": ["CSC468"] },
+  { "id": "CSC490", "name": "CSC490 - Independent Project in Computer Science", "prerequisites": [] },
+  { "id": "CSC495", "name": "CSC495 - Topics in Computer Science", "prerequisites": ["CSC231","CSC241","CSC240","CSC220"] },
+  { "id": "CSC496", "name": "CSC496 - Topics in Complex Large-Scale Systems", "prerequisites": ["CSC231","CSC241","CSC240","CSC220"] },
+  { "id": "CSC499", "name": "CSC499 - Independent Study in Computer Science", "prerequisites": [] }
+];
+
+  
 
   // Process courses data to create nodes and links
   const processCourses = () => {
@@ -336,31 +361,90 @@ const Combined = () => {
       <div ref={svgRef}>
         <svg></svg>
       </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Course Name</th>
-            <th>Select</th>
-          </tr>
-        </thead>
-        <tbody>
-          {coursesData.map((course) => (
-            <tr key={course.id}>
-              <td>{course.name}</td>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={selectedCourses.includes(course.id)}
-                  onChange={() => handleCheckboxChange(course.id)}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+  
+      <div style={{ display: "flex" }}>
+        {/* Left Column */}
+        <div style={{ flex: 1, paddingRight: "10px" }}>
+          <table>
+            <thead>
+              <tr>
+                <th>Course Name</th>
+                <th style={{ paddingLeft: "10px" }}>Select</th>
+              </tr>
+            </thead>
+            <tbody>
+              {coursesData.slice(0, Math.ceil(coursesData.length / 3)).map((course) => (
+                <tr key={course.id}>
+                  <td>{course.name}</td>
+                  <td style={{ paddingLeft: "10px" }}>
+                    <input
+                      type="checkbox"
+                      checked={selectedCourses.includes(course.id)}
+                      onChange={() => handleCheckboxChange(course.id)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+  
+        {/* Middle Column */}
+        <div style={{ flex: 1, paddingRight: "10px", paddingLeft: "10px" }}>
+          <table>
+            <thead>
+              <tr>
+                <th>Course Name</th>
+                <th style={{ paddingLeft: "10px" }}>Select</th>
+              </tr>
+            </thead>
+            <tbody>
+              {coursesData.slice(Math.ceil(coursesData.length / 3), Math.ceil(2 * coursesData.length / 3)).map((course) => (
+                <tr key={course.id}>
+                  <td>{course.name}</td>
+                  <td style={{ paddingLeft: "10px" }}>
+                    <input
+                      type="checkbox"
+                      checked={selectedCourses.includes(course.id)}
+                      onChange={() => handleCheckboxChange(course.id)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+  
+        {/* Right Column */}
+        <div style={{ flex: 1, paddingLeft: "10px" }}>
+          <table>
+            <thead>
+              <tr>
+                <th>Course Name</th>
+                <th style={{ paddingLeft: "10px" }}>Select</th>
+              </tr>
+            </thead>
+            <tbody>
+              {coursesData.slice(Math.ceil(2 * coursesData.length / 3)).map((course) => (
+                <tr key={course.id}>
+                  <td>{course.name}</td>
+                  <td style={{ paddingLeft: "10px" }}>
+                    <input
+                      type="checkbox"
+                      checked={selectedCourses.includes(course.id)}
+                      onChange={() => handleCheckboxChange(course.id)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
+  
+  
 };
 
 export default Combined;
