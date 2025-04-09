@@ -6,6 +6,7 @@ const Combined = () => {
   const svgRef = useRef(null);
   const [selectedCourses, setSelectedCourses] = useState([1, 2]);
 
+  // Data for courses and their prerequisites
   const coursesData = [
     { "id": "MAT151", "name": "MAT151 - Discrete Mathematics", "prerequisites": [], "defaultSemester": 2 },
     { "id": "MAT161", "name": "MAT161 - Calculus I", "prerequisites": [], "defaultSemester": 3 },
@@ -45,11 +46,16 @@ const Combined = () => {
   // Process courses data to create nodes and links
   const processCourses = () => {
     const courseMap = new Map(coursesData.map((course) => [course.id, course]));
-    const semesters = {};
+    const courseSemester = {};
 
-    // Assign courses to their default semester
+    // Set initial semesters based on defaultSemester in data
     coursesData.forEach((course) => {
-      const semester = course.defaultSemester || 1;  // Default to semester 1 if not defined
+      courseSemester[course.id] = course.defaultSemester;
+    });
+
+    const semesters = {};
+    coursesData.forEach((course) => {
+      const semester = courseSemester[course.id];
       if (!semesters[semester]) semesters[semester] = [];
       semesters[semester].push(course);
     });
@@ -57,7 +63,9 @@ const Combined = () => {
     const nodes = coursesData.map((course) => ({
       id: course.id,
       name: course.name,
-      semester: course.defaultSemester || 1,  // Using the default semester for placement
+      semester: courseSemester[course.id],
+      x: (courseSemester[course.id] - 1) * 200 + 150, // Set initial x position
+      y: 100 + Math.random() * 200, // Randomize initial y position to simulate free movement
     }));
 
     const nodeById = new Map(nodes.map((n) => [n.id, n]));
@@ -69,33 +77,27 @@ const Combined = () => {
       }))
     );
 
-    return { nodes, links, semesters };
+    return { nodes, links };
   };
 
-  const { nodes, links, semesters } = processCourses();
+  const { nodes, links } = processCourses();
 
   // Function to render the SVG and courses
-  const renderCourses = () => {
+  const renderCourses = (data) => {
     const svg = d3.select(svgRef.current).select("svg");
     const semesterWidth = 200;
     const tileHeight = 100;
     const nodeWidth = 100;
     const nodeHeight = 50;
 
-    // Filter nodes to include only selected courses
-    const selectedNodes = nodes.filter((node) => selectedCourses.includes(node.id));
-
-    const semestersFiltered = {};
-
-    // Reassign selected courses to the correct semesters
-    selectedNodes.forEach((node) => {
-      const semester = node.semester;
-      if (!semestersFiltered[semester]) semestersFiltered[semester] = [];
-      semestersFiltered[semester].push(node);
+    const semesters = {};
+    data.nodes.forEach((node) => {
+      if (!semesters[node.semester]) semesters[node.semester] = [];
+      semesters[node.semester].push(node);
     });
 
-    const numSemesters = Object.keys(semestersFiltered).length;
-    const maxCourses = d3.max(Object.values(semestersFiltered), (d) => d.length);
+    const numSemesters = Object.keys(semesters).length;
+    const maxCourses = d3.max(Object.values(semesters), (d) => d.length);
 
     const svgWidth = numSemesters * semesterWidth + 200;
     const svgHeight = maxCourses * tileHeight + 150;
@@ -105,16 +107,16 @@ const Combined = () => {
     // Clear the previous content before drawing new elements
     svg.selectAll("*").remove();
 
-    // Update node positions based on their default semester
-    Object.keys(semestersFiltered).forEach((semesterNum) => {
-      semestersFiltered[semesterNum].forEach((node, idx) => {
+    // Update node positions based on defaultSemester
+    Object.keys(semesters).forEach((semesterNum) => {
+      semesters[semesterNum].forEach((node, idx) => {
         node.x = (semesterNum - 1) * semesterWidth + semesterWidth / 2 + 100;
         node.y = idx * tileHeight + tileHeight / 2 + 80;
       });
     });
 
-    // Update the background columns for semesters
-    Object.keys(semestersFiltered).forEach((semesterNum) => {
+    // Update background columns for semesters
+    Object.keys(semesters).forEach((semesterNum) => {
       const columnX = (semesterNum - 1) * semesterWidth + 100;
       const columnHeight = maxCourses * tileHeight + 50;
 
@@ -139,7 +141,7 @@ const Combined = () => {
         .attr("y", 30)
         .attr("text-anchor", "middle")
         .attr("font-weight", "bold")
-        .attr("fill", "#555")
+        .attr("fill", "#FFF")
         .text(`Semester ${semesterNum}`);
     });
 
@@ -151,7 +153,7 @@ const Combined = () => {
 
     const linkGroup = svg
       .selectAll("path")
-      .data(links, (d) => `${d.source.id}-${d.target.id}`);
+      .data(data.links, (d) => `${d.source.id}-${d.target.id}`);
 
     linkGroup
       .enter()
@@ -174,7 +176,7 @@ const Combined = () => {
     // Update nodes (courses)
     const nodeGroup = svg
       .selectAll("rect.course")
-      .data(selectedNodes, (d) => d.id);
+      .data(data.nodes, (d) => d.id);
 
     nodeGroup
       .enter()
@@ -190,32 +192,64 @@ const Combined = () => {
       .attr("ry", 8)
       .attr("stroke", "#333")
       .attr("cursor", "pointer")
-      .on("click", (event, d) => highlightPrerequisites(d, { nodes, links }));
+      .call(
+        d3
+          .drag()
+          .on("drag", function (event, d) {
+            d.x = event.x;
+            d.y = event.y;
+            d3.select(this).attr("x", d.x - nodeWidth / 2).attr("y", d.y - nodeHeight / 2);
+
+            // Check if the course is near a new semester
+            const nearestSemester = Math.floor((d.x - 100) / 200) + 1; // Find the nearest semester
+            d.semester = Math.max(1, Math.min(nearestSemester, 8)); // Limit semesters to 1-8
+            renderCourses({
+              nodes: data.nodes,
+              links: data.links,
+            });
+          })
+          .on("end", function (event, d) {
+            const nearestSemester = Math.floor((d.x - 100) / 200) + 1; // Find the nearest semester
+            d.semester = Math.max(1, Math.min(nearestSemester, 8)); // Limit semesters to 1-8
+            renderCourses({
+              nodes: data.nodes,
+              links: data.links,
+            });
+          })
+      );
 
     nodeGroup.exit().remove(); // Remove old nodes if any
 
     // Update node labels (course names)
     const nodeTextGroup = svg
       .selectAll("text.course")
-      .data(selectedNodes, (d) => d.id);
+      .data(data.nodes, (d) => d.id);
 
     nodeTextGroup
       .enter()
       .append("text")
       .merge(nodeTextGroup)
-      .attr("class", (d) => `course-${d.id}`)
+      .attr("class", (d) => `course course-${d.id}`)
       .attr("x", (d) => d.x)
-      .attr("y", (d) => d.y)
+      .attr("y", (d) => d.y + 5)
       .attr("text-anchor", "middle")
-      .attr("dy", 5)
-      .attr("fill", "white")
-      .text((d) => d.id);
+      .attr("fill", "#fff")
+      .text((d) => d.id)
+      .attr("pointer-events", "none");
 
     nodeTextGroup.exit().remove(); // Remove old text if any
   };
 
+  // Update the view when selected courses change
   useEffect(() => {
-    renderCourses();
+    renderCourses({
+      nodes: nodes.filter((node) => selectedCourses.includes(node.id)),
+      links: links.filter(
+        (link) =>
+          selectedCourses.includes(link.source.id) &&
+          selectedCourses.includes(link.target.id)
+      ),
+    });
   }, [selectedCourses]);
 
   const handleCheckboxChange = (courseId) => {
@@ -228,91 +262,44 @@ const Combined = () => {
     });
   };
 
+  const handleSelectAll = () => {
+    if (selectedCourses.length === coursesData.length) {
+      setSelectedCourses([]);
+    } else {
+      setSelectedCourses(coursesData.map(course => course.id));
+    }
+  };
+
   return (
     <div>
       <div ref={svgRef}>
         <svg></svg>
       </div>
 
-      <div style={{ display: "flex" }}>
-        {/* Left Column */}
-        <div style={{ flex: 1, paddingRight: "10px" }}>
-          <table>
-            <thead>
-              <tr>
-                <th>Course Name</th>
-                <th style={{ paddingLeft: "10px" }}>Select</th>
-              </tr>
-            </thead>
-            <tbody>
-              {coursesData.slice(0, Math.ceil(coursesData.length / 3)).map((course) => (
-                <tr key={course.id}>
-                  <td>{course.name}</td>
-                  <td style={{ paddingLeft: "10px" }}>
-                    <input
-                      type="checkbox"
-                      checked={selectedCourses.includes(course.id)}
-                      onChange={() => handleCheckboxChange(course.id)}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <button onClick={handleSelectAll}>Select All / Deselect All</button>
 
-        {/* Middle Column */}
-        <div style={{ flex: 1, paddingRight: "10px", paddingLeft: "10px" }}>
-          <table>
-            <thead>
-              <tr>
-                <th>Course Name</th>
-                <th style={{ paddingLeft: "10px" }}>Select</th>
-              </tr>
-            </thead>
-            <tbody>
-              {coursesData.slice(Math.ceil(coursesData.length / 3), Math.ceil(2 * coursesData.length / 3)).map((course) => (
-                <tr key={course.id}>
-                  <td>{course.name}</td>
-                  <td style={{ paddingLeft: "10px" }}>
-                    <input
-                      type="checkbox"
-                      checked={selectedCourses.includes(course.id)}
-                      onChange={() => handleCheckboxChange(course.id)}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Right Column */}
-        <div style={{ flex: 1, paddingLeft: "10px" }}>
-          <table>
-            <thead>
-              <tr>
-                <th>Course Name</th>
-                <th style={{ paddingLeft: "10px" }}>Select</th>
-              </tr>
-            </thead>
-            <tbody>
-              {coursesData.slice(Math.ceil(2 * coursesData.length / 3)).map((course) => (
-                <tr key={course.id}>
-                  <td>{course.name}</td>
-                  <td style={{ paddingLeft: "10px" }}>
-                    <input
-                      type="checkbox"
-                      checked={selectedCourses.includes(course.id)}
-                      onChange={() => handleCheckboxChange(course.id)}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Course Name</th>
+            <th>Select</th>
+          </tr>
+        </thead>
+        <tbody>
+          {coursesData.map((course) => (
+            <tr key={course.id}>
+              <td>{course.name}</td>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={selectedCourses.includes(course.id)}
+                  onChange={() => handleCheckboxChange(course.id)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
