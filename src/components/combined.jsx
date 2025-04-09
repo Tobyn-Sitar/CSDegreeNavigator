@@ -205,19 +205,72 @@ const Combined = () => {
             d3.select(`text.course-${d.id}`)
               .attr("x", d.x) // Align text to course body
               .attr("y", d.y + 5); // Slight offset for better readability
+      
+            // Update the links connected to this course
+            d3.selectAll(`path.link-${d.id}`)
+              .attr("d", function (link) {
+                // Update the link path with the new position of the dragged node
+                if (link.source.id === d.id) {
+                  return linkGenerator({
+                    source: { x: d.x + nodeWidth / 2, y: d.y },
+                    target: { x: link.target.x - nodeWidth / 2, y: link.target.y },
+                  });
+                } else if (link.target.id === d.id) {
+                  return linkGenerator({
+                    source: { x: link.source.x + nodeWidth / 2, y: link.source.y },
+                    target: { x: d.x - nodeWidth / 2, y: d.y },
+                  });
+                }
+                return linkGenerator({ source: link.source, target: link.target });
+              });
           })
           .on("end", function (event, d) {
-            // When dragging ends, find the nearest semester and update the course's semester
+            // Find the nearest semester after dragging
             const nearestSemester = Math.floor((d.x - 100) / 200) + 1; // Find the nearest semester
             d.semester = Math.max(1, Math.min(nearestSemester, 8)); // Limit semesters to 1-8
       
-            // Trigger the render update to reflect the new course position
+            // Check if the course has prerequisites
+            const course = coursesData.find((course) => course.id === d.id);
+            const prerequisites = course.prerequisites;
+      
+            let courseMoved = false;
+      
+            prerequisites.forEach((prereqId) => {
+              const prerequisiteCourse = coursesData.find((course) => course.id === prereqId);
+      
+              // Check if the course is in the same semester or one semester before its prerequisite
+              if (d.semester <= prerequisiteCourse.defaultSemester) {
+                // Move course one semester to the right of its prerequisite
+                d.semester = prerequisiteCourse.defaultSemester + 1;
+                courseMoved = true;
+      
+                // Display a message telling the user they can't take the course before the prerequisite
+                const messageDiv = document.createElement("div");
+                messageDiv.style.position = "absolute";
+                messageDiv.style.top = "20px";
+                messageDiv.style.left = "50%";
+                messageDiv.style.transform = "translateX(-50%)";
+                messageDiv.style.backgroundColor = "#ffeb3b";
+                messageDiv.style.padding = "10px";
+                messageDiv.style.borderRadius = "5px";
+                messageDiv.innerHTML = `You cannot take ${course.id} before ${prerequisiteCourse.id}. It has been moved to the next semester.`;
+                document.body.appendChild(messageDiv);
+      
+                // Remove the message after 3 seconds
+                setTimeout(() => {
+                  messageDiv.remove();
+                }, 3000);
+              }
+            });
+      
+            // Trigger the render update to reflect the new course position after checking
             renderCourses({
               nodes: nodes,
               links: links,
             });
           })
       );
+      
       
       
 
