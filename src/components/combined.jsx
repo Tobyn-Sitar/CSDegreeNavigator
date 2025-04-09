@@ -8,8 +8,8 @@ const Combined = () => {
 
   // Data for courses and their prerequisites
   const coursesData = [
-    { "id": "MAT151", "name": "MAT151 - Discrete Mathematics", "prerequisites": [], "defaultSemester": 2 },
-    { "id": "MAT161", "name": "MAT161 - Calculus I", "prerequisites": [], "defaultSemester": 3 },
+    { "id": "MAT151", "name": "MAT151 - Discrete Mathematics", "prerequisites": [], "defaultSemester": 1 },
+    { "id": "MAT161", "name": "MAT161 - Calculus I", "prerequisites": [], "defaultSemester": 2 },
     { "id": "CSC141", "name": "CSC141 - Computer Science I (Python)", "prerequisites": [], "defaultSemester": 1 },
     { "id": "CSC142", "name": "CSC142 - Computer Science II (Java)", "prerequisites": ["CSC141"], "defaultSemester": 2 },
     { "id": "CSC220", "name": "CSC220 - Foundations of Computer Science", "prerequisites": ["CSC240", "MAT151", "MAT161"], "defaultSemester": 4 },
@@ -20,8 +20,8 @@ const Combined = () => {
     { "id": "CSC302", "name": "CSC302 - Computer Security", "prerequisites": ["CSC301", "CSC335"], "defaultSemester": 6 },
     { "id": "CSC317", "name": "CSC317 - Introduction to Digital Image Process", "prerequisites": ["CSC240"], "defaultSemester": 4 },
     { "id": "CSC321", "name": "CSC321 - Database Management Systems", "prerequisites": ["CSC241"], "defaultSemester": 5 },
-    { "id": "CSC331", "name": "CSC331 - Operating Systems", "prerequisites": ["CSC231", "CSC241", "CSC220"], "defaultSemester": 7 },
-    { "id": "CSC335", "name": "CSC335 - Data Communications and Networking I", "prerequisites": ["CSC241"], "defaultSemester": 6 },
+    { "id": "CSC331", "name": "CSC331 - Operating Systems", "prerequisites": ["CSC231", "CSC241", "CSC220"], "defaultSemester": 6 },
+    { "id": "CSC335", "name": "CSC335 - Data Communications and Networking I", "prerequisites": ["CSC241"], "defaultSemester": 5 },
     { "id": "CSC345", "name": "CSC345 - Programming Language Concepts and Paradigms", "prerequisites": ["CSC220", "CSC241"], "defaultSemester": 5 },
     { "id": "CSC381", "name": "CSC381 - Data Science", "prerequisites": ["CSC240", "CSC241"], "defaultSemester": 7 },
     { "id": "CSC400", "name": "CSC400 - Internship", "prerequisites": ["CSC241"], "defaultSemester": 8 },
@@ -32,7 +32,7 @@ const Combined = () => {
     { "id": "CSC418", "name": "CSC418 - Modern Web Applications using Server-Side Technologies", "prerequisites": ["CSC240"], "defaultSemester": 8 },
     { "id": "CSC466", "name": "CSC466 - Distributed and Parallel Computing", "prerequisites": ["CSC241", "CSC231"], "defaultSemester": 8 },
     { "id": "CSC467", "name": "CSC467 - Big Data Engineering", "prerequisites": ["CSC241"], "defaultSemester": 8 },
-    { "id": "CSC468", "name": "CSC468 - Introduction to Cloud Computing", "prerequisites": ["CSC331"], "defaultSemester": 8 },
+    { "id": "CSC468", "name": "CSC468 - Introduction to Cloud Computing", "prerequisites": ["CSC331"], "defaultSemester": 7 },
     { "id": "CSC471", "name": "CSC471 - Modern Malware Analysis", "prerequisites": ["CSC302", "CSC231"], "defaultSemester": 8 },
     { "id": "CSC472", "name": "CSC472 - Software Security", "prerequisites": ["CSC302", "CSC231"], "defaultSemester": 8 },
     { "id": "CSC476", "name": "CSC476 - Game Development", "prerequisites": ["CSC241"], "defaultSemester": 8 },
@@ -41,7 +41,8 @@ const Combined = () => {
     { "id": "CSC495", "name": "CSC495 - Topics in Computer Science", "prerequisites": ["CSC231", "CSC241", "CSC240", "CSC220"], "defaultSemester": 8 },
     { "id": "CSC496", "name": "CSC496 - Topics in Complex Large-Scale Systems", "prerequisites": ["CSC231", "CSC241", "CSC240", "CSC220"], "defaultSemester": 8 },
     { "id": "CSC499", "name": "CSC499 - Independent Study in Computer Science", "prerequisites": [], "defaultSemester": 8 }
-  ];
+];
+
 
   // Process courses data to create nodes and links
   const processCourses = () => {
