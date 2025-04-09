@@ -225,56 +225,52 @@ const Combined = () => {
               });
           })
           .on("end", function (event, d) {
-            // Find the nearest semester after dragging
-            const nearestSemester = Math.floor((d.x - 100) / 200) + 1; // Find the nearest semester
-            d.semester = Math.max(1, Math.min(nearestSemester, 8)); // Limit semesters to 1-8
-        
-            // Check if the course has prerequisites
+            const nearestSemester = Math.floor((d.x - 100) / 200) + 1;
+            d.semester = Math.max(1, Math.min(nearestSemester, 8));
+          
             const course = coursesData.find((course) => course.id === d.id);
             const prerequisites = course.prerequisites;
-        
+          
             let courseMoved = false;
-        
+          
             prerequisites.forEach((prereqId) => {
               const prerequisiteCourse = coursesData.find((course) => course.id === prereqId);
-        
-              // Check if the course is in the same semester or one semester before its prerequisite
+          
               if (d.semester <= prerequisiteCourse.defaultSemester) {
-                // Move course one semester to the right of its prerequisite
                 d.semester = prerequisiteCourse.defaultSemester + 1;
                 courseMoved = true;
-        
-                // Get the course node's background color (fill color)
+          
                 const courseColor = d3.select(this).attr("fill");
-      
-                // Lighten the color for the pop-up (make it more white)
                 const lighterColor = d3.color(courseColor).brighter(0.7).toString();
-      
-                // Display a message telling the user they can't take the course before the prerequisite
+          
                 const messageDiv = document.createElement("div");
                 messageDiv.style.position = "absolute";
                 messageDiv.style.top = "20px";
                 messageDiv.style.left = "50%";
                 messageDiv.style.transform = "translateX(-50%)";
-                messageDiv.style.backgroundColor = lighterColor; // Use the lighter color
+                messageDiv.style.backgroundColor = lighterColor;
                 messageDiv.style.padding = "10px";
                 messageDiv.style.borderRadius = "5px";
                 messageDiv.innerHTML = `You cannot take ${course.id} before ${prerequisiteCourse.id}. It has been moved to the next semester.`;
                 document.body.appendChild(messageDiv);
-        
-                // Remove the message after 3 seconds
+          
                 setTimeout(() => {
                   messageDiv.remove();
                 }, 3000);
               }
             });
-        
-            // Trigger the render update to reflect the new course position after checking
+          
+            // ✅ Only re-render selected courses
             renderCourses({
-              nodes: nodes,
-              links: links,
+              nodes: nodes.filter((node) => selectedCourses.includes(node.id)),
+              links: links.filter(
+                (link) =>
+                  selectedCourses.includes(link.source.id) &&
+                  selectedCourses.includes(link.target.id)
+              ),
             });
           })
+          
       );
       
       
