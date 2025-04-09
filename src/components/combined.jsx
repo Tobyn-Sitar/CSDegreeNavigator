@@ -41,8 +41,7 @@ const Combined = () => {
     { "id": "CSC495", "name": "CSC495 - Topics in Computer Science", "prerequisites": ["CSC231", "CSC241", "CSC240", "CSC220"], "defaultSemester": 8 },
     { "id": "CSC496", "name": "CSC496 - Topics in Complex Large-Scale Systems", "prerequisites": ["CSC231", "CSC241", "CSC240", "CSC220"], "defaultSemester": 8 },
     { "id": "CSC499", "name": "CSC499 - Independent Study in Computer Science", "prerequisites": [], "defaultSemester": 8 }
-];
-
+  ];
 
   // Process courses data to create nodes and links
   const processCourses = () => {
@@ -279,28 +278,44 @@ const Combined = () => {
 
       <button onClick={handleSelectAll}>Select All / Deselect All</button>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Course Name</th>
-            <th>Select</th>
-          </tr>
-        </thead>
-        <tbody>
-          {coursesData.map((course) => (
-            <tr key={course.id}>
-              <td>{course.name}</td>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={selectedCourses.includes(course.id)}
-                  onChange={() => handleCheckboxChange(course.id)}
-                />
-              </td>
-            </tr>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ flex: 1 }}>
+          {coursesData.slice(0, Math.ceil(coursesData.length / 3)).map((course) => (
+            <div key={course.id}>
+              <input
+                type="checkbox"
+                checked={selectedCourses.includes(course.id)}
+                onChange={() => handleCheckboxChange(course.id)}
+              />
+              {course.name}
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+        <div style={{ flex: 1 }}>
+          {coursesData.slice(Math.ceil(coursesData.length / 3), Math.ceil(coursesData.length * 2 / 3)).map((course) => (
+            <div key={course.id}>
+              <input
+                type="checkbox"
+                checked={selectedCourses.includes(course.id)}
+                onChange={() => handleCheckboxChange(course.id)}
+              />
+              {course.name}
+            </div>
+          ))}
+        </div>
+        <div style={{ flex: 1 }}>
+          {coursesData.slice(Math.ceil(coursesData.length * 2 / 3)).map((course) => (
+            <div key={course.id}>
+              <input
+                type="checkbox"
+                checked={selectedCourses.includes(course.id)}
+                onChange={() => handleCheckboxChange(course.id)}
+              />
+              {course.name}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
