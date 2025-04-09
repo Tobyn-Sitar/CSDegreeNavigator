@@ -38,18 +38,17 @@ export default function HomeForm({ children }) {
             <Link href="/feedback" className="hover:text-secondary transition">
               Feedback
             </Link>
-            
+
           </nav>
 
           {/* Right side Login / Sign Up buttons */}
           <div className="flex items-center space-x-4">
             {/* Login Button */}
-            <Button className="bg-yellow-500" onClick={() => router.push("/login")}>
+            <Button className="bg-yellow-500 text-[#6E3061] font-semibold" onClick={() => router.push("/login")}>
               Login
             </Button>
-
             {/* Sign Up Button */}
-            <Button onClick={() => router.push("/signup")}>
+            <Button className="bg-yellow-500 text-[#6E3061] font-semibold" onClick={() => router.push("/signup")}>
               Sign Up
             </Button>
 
@@ -69,18 +68,22 @@ export default function HomeForm({ children }) {
           </div>
         </div>
       </header>
-
-      <div className="flex flex-1 justify-center items-center">
-        <main className="p-6 max-w-xl w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg">
-          {/* Static text inside the box */}
-          <h2 className="text-2xl font-bold mb-4 text-center text-black dark:text-white">
-            Welcome to CSDegreeNavigator!
-          </h2>
-          <p className="text-center text-black dark:text-white leading-relaxed mb-4">
-            Navigate through our tools to assist you in viewing your progress and generating the best schedule for you!
+      <section
+        className="relative h-[600px] w-full bg-cover bg-center"
+        style={{ backgroundImage: "url('/wcu02.jpg')" }}
+      >
+        <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 text-center z-10 bg-white/60 px-8 py-6 rounded-xl shadow-lg backdrop-blur-sm">
+          <h1 className="text-2xl md:text-3xl font-bold mb-4 text-[#6E3061]">
+            Welcome to <span className="text-[#6E3061]">CSDegreeNavigator!</span>
+          </h1>
+          <p className="text-base md:text-lg text-gray-800 leading-relaxed">
+            This tool helps WCU CS students visualize their degree progress, plan semesters,
+            and stay on track for graduation.
           </p>
-        </main>
-      </div>
+        </div>
+
+      </section>
+
 
       {/* Footer */}
       <footer className="bg-[#6E3061] w-full h-10 flex items-center justify-center text-xs text-white fixed bottom-0 left-0 z-50 shadow-md dark:bg-[#6E3061]">

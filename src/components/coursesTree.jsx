@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import { useRouter } from "next/navigation";
 import { Moon, Sun } from "lucide-react"; // Import the icons
@@ -43,12 +43,12 @@ export default function TreePage() {
           {/* Right side Login / Sign Up buttons */}
           <div className="flex items-center space-x-4">
             {/* Login Button */}
-            <Button className="bg-yellow-500" onClick={() => router.push("/login")}>
+            <Button className="bg-yellow-500 text-[#6E3061] font-semibold" onClick={() => router.push("/login")}>
               Login
             </Button>
 
             {/* Sign Up Button */}
-            <Button onClick={() => router.push("/signup")}>
+            <Button className="bg-yellow-500 text-[#6E3061] font-semibold" onClick={() => router.push("/signup")}>
               Sign Up
             </Button>
 
