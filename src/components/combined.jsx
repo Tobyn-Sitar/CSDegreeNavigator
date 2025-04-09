@@ -196,27 +196,30 @@ const Combined = () => {
         d3
           .drag()
           .on("drag", function (event, d) {
+            // Update course position
             d.x = event.x;
             d.y = event.y;
             d3.select(this).attr("x", d.x - nodeWidth / 2).attr("y", d.y - nodeHeight / 2);
-
-            // Check if the course is near a new semester
-            const nearestSemester = Math.floor((d.x - 100) / 200) + 1; // Find the nearest semester
-            d.semester = Math.max(1, Math.min(nearestSemester, 8)); // Limit semesters to 1-8
-            renderCourses({
-              nodes: data.nodes,
-              links: data.links,
-            });
+      
+            // Update the text position as well
+            d3.select(`text.course-${d.id}`)
+              .attr("x", d.x) // Align text to course body
+              .attr("y", d.y + 5); // Slight offset for better readability
           })
           .on("end", function (event, d) {
+            // When dragging ends, find the nearest semester and update the course's semester
             const nearestSemester = Math.floor((d.x - 100) / 200) + 1; // Find the nearest semester
             d.semester = Math.max(1, Math.min(nearestSemester, 8)); // Limit semesters to 1-8
+      
+            // Trigger the render update to reflect the new course position
             renderCourses({
-              nodes: data.nodes,
-              links: data.links,
+              nodes: nodes,
+              links: links,
             });
           })
       );
+      
+      
 
     nodeGroup.exit().remove(); // Remove old nodes if any
 
