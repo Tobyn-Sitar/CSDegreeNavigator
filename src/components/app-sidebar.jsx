@@ -51,6 +51,11 @@ const data = {
       icon: IconListDetails,
     },
     {
+      title: "MVC-CourseTest",
+      url: "/dashboard/MVC-CourseTest",
+      icon: IconListDetails,
+    },
+    {
       title: "Progress",
       url: "/dashboard/progress",
       icon: IconChartBar,
