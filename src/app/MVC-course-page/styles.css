@@ -8,9 +8,11 @@ body {
 .semester-container {
   display: flex;
   gap: 16px;
-  overflow-x: auto;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
+
 
 .semester-column {
   min-width: 150px;

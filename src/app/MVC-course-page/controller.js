@@ -25,10 +25,9 @@ fetch('/courses.json')
             csc400: enriched.filter(c => c.type === 'csc400'),
         };
 
-        v.renderCourseGroups(grouped, course => {
-            m.markCourseSelected(course.id);
-            v.addCourseToSemester(course);
-        });
-
+        v.renderCourseGroups(grouped);
         v.enableDragAndDrop();
+
     });
+
+    

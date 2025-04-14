@@ -1,25 +1,17 @@
+export default class Model {
+  constructor(courses) {
+    this.courses = courses;
+  }
 
-export default class model {
-    constructor(courseData) {
-        this.courses = courseData;
-        this.selectedCourses = [];
-    }
+  getGroupedCourses() {
+    return {
+      csc: this.courses.filter(c => c.id.startsWith("CSC") && !c.id.startsWith("CSC4")),
+      mat: this.courses.filter(c => c.id.startsWith("MAT")),
+      csc400: this.courses.filter(c => c.id.startsWith("CSC4")),
+    };
+  }
 
-    getCoursesByType(type) {
-        return this.courses.filter(course => course.type === type);
-    }
-
-    getCourseById(id) {
-        return this.courses.find(course => course.id === id);
-    }
-
-    markCourseSelected(courseId) {
-        if (!this.selectedCourses.includes(courseId)) {
-            this.selectedCourses.push(courseId);
-        }
-    }
-
-    getSelectedCourses() {
-        return this.selectedCourses.map(id => this.getCourseById(id));
-    }
+  getCourseById(id) {
+    return this.courses.find(course => course.id === id);
+  }
 }
