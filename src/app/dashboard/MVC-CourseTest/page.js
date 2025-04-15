@@ -10,7 +10,15 @@ export default function Page() {
 
   return (
     <div className="planner-wrapper">
-      <h1>Course Planner</h1>
+      {/* Full-width Top Toolbar */}
+      <header className="top-toolbar">
+        <div className="toolbar-left">CS Degree Planner</div>
+        <div className="toolbar-right">
+          <a href="/dashboard" className="home-icon" title="Back to Dashboard">🏠</a>
+        </div>
+      </header>
+  
+      {/* Main Planner */}
       <div id="semester-container" className="semester-container"></div>
       <svg id="line-layer" className="line-layer"></svg>
       <div id="source-container" className="source-area"></div>
@@ -18,4 +26,5 @@ export default function Page() {
       <svg id="line-layer" className="line-layer"></svg>
     </div>
   );
+  
 }

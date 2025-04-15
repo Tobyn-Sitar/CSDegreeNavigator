@@ -1,16 +1,59 @@
 body {
   background-color: white;
   color: black;
+  margin: 0;
+  font-family: sans-serif;
 }
 
+/* Top Toolbar */
+.top-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: #111;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+}
+
+.toolbar-left {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.toolbar-right .home-icon {
+  font-size: 1.6rem;
+  text-decoration: none;
+  color: white;
+  transition: background 0.2s ease;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.toolbar-right .home-icon:hover {
+  background-color: #333;
+}
+
+
+/* Main Wrapper */
 .planner-wrapper {
   padding: 20px;
-  font-family: sans-serif;
+  padding-top: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 100%;
+  box-sizing: border-box;
+  
 }
 
+/* Semester Columns */
 .semester-container {
   display: flex;
   justify-content: center;
@@ -36,60 +79,16 @@ body {
   margin-bottom: 8px;
 }
 
+/* Course Area */
 .source-area {
   display: flex;
   justify-content: center;
-  gap: 20px; /* Adjust spacing between columns */
+  gap: 20px;
   border: 2px solid #0074D9;
   padding: 16px;
   margin-top: 16px;
   flex-wrap: wrap;
-}
-
-.source-column {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  grid-auto-rows: auto;
-  gap: 10px;
-  padding: 10px;
-  border-radius: 6px;
-  border: 2px solid #00bcd4;
-  min-width: 180px;
-  max-width: 350px;
-}
-
-.course-box {
-  background-color: #0074D9;
-  color: white;
-  padding: 6px;
-  border-radius: 6px;
-  text-align: center;
-  cursor: grab;
-  z-index: 1;
-  position: relative;
-  width: 100%; /* ensures full width inside grid cell */
-}
-
-.line-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-
-
-.check-btn {
-  margin-bottom: 20px;
-  padding: 8px 16px;
-  background-color: #00bcd4;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  background-color: #f9f9f9;
 }
 
 .source-wrapper {
@@ -105,6 +104,43 @@ body {
   font-weight: bold;
 }
 
+.source-column {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-auto-rows: auto;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 2px solid #00bcd4;
+  min-width: 180px;
+  max-width: 350px;
+}
+
+/* Courses */
+.course-box {
+  background-color: #0074D9;
+  color: white;
+  padding: 6px;
+  border-radius: 6px;
+  text-align: center;
+  cursor: grab;
+  z-index: 1;
+  position: relative;
+  width: 100%;
+}
+
+/* Compatibility Button */
+.check-btn {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: #00bcd4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Prerequisite Warning Popup */
 .prereq-popup {
   position: fixed;
   top: 20px;
@@ -117,4 +153,15 @@ body {
   font-weight: bold;
   box-shadow: 0 2px 6px rgba(0,0,0,0.3);
   z-index: 9999;
+}
+
+/* SVG Lines */
+.line-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
 }
