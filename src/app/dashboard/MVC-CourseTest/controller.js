@@ -49,8 +49,5 @@ fetch('/courses.json')
       v.addCourseToSemester(course, semesterNum);
     });
 
-    // THIS MAKE THE BUTTON WORK
-    document.getElementById("check-compatibility-btn").addEventListener("click", () => {
-      v.drawD3Lines(placed); 
-    });
+   
   });

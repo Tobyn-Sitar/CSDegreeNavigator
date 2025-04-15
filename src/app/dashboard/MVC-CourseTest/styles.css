@@ -129,17 +129,6 @@ body {
   width: 100%;
 }
 
-/* Compatibility Button */
-.check-btn {
-  margin-top: 20px;
-  padding: 8px 16px;
-  background-color: #00bcd4;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
 /* Prerequisite Warning Popup */
 .prereq-popup {
   position: fixed;

@@ -22,7 +22,6 @@ export default function Page() {
       <div id="semester-container" className="semester-container"></div>
       <svg id="line-layer" className="line-layer"></svg>
       <div id="source-container" className="source-area"></div>
-      <button id="check-compatibility-btn" className="check-btn">Check Compatibility</button>
       <svg id="line-layer" className="line-layer"></svg>
     </div>
   );
