@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import "./styles.css";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 export default function Page() {
   useEffect(() => {
@@ -19,7 +20,10 @@ export default function Page() {
       </header>
   
       {/* Main Planner */}
-      <div id="semester-container" className="semester-container"></div>
+      <ScrollArea className="w-full max-w-full whitespace-nowrap rounded-md border overflow-x-auto">
+          <div id="semester-container" className="semester-container"></div>
+          <ScrollBar orientation="horizontal" />
+      </ScrollArea>
       <svg id="line-layer" className="line-layer"></svg>
       <div id="source-container" className="source-area"></div>
       <svg id="line-layer" className="line-layer"></svg>

@@ -6,7 +6,7 @@ export default class View {
     this.sourceContainer = document.getElementById("source-container");
   }
 
-  renderSemesters(num = 7) {
+  renderSemesters(num = 15) {
     for (let i = 1; i <= num; i++) {
       const col = document.createElement("div");
       col.className = "semester-column";
@@ -15,6 +15,36 @@ export default class View {
       col.innerHTML = `<h3>Semester ${i}</h3>`;
       this.semestersContainer.appendChild(col);
     }
+  }
+  
+  checkCoursesInSemesters()  {
+
+    const semesterColumns = document.querySelectorAll(".semester-column");
+
+    for (const col of semesterColumns) {
+      if (col.querySelector(".course-box")) {
+        console.log("true");
+        return true;
+      }
+    }
+    return false;
+  }
+
+  highlightPrereqs(courseId, placedCourses) {
+
+    document.querySelectorAll(".course-box").forEach(el => {
+      el.style.backgroundColor = "";
+    });
+
+    const course = placedCourses.find(c => c.id === courseId);
+    if (!course) return;
+  
+    course.prerequisites.forEach(prereqId => {
+      const prereqEl = document.querySelector(`[data-course-id='${prereqId}']`);
+      if (prereqEl) {
+        prereqEl.style.backgroundColor = "orange";
+      }
+    });
   }
 
   renderCourseSources(groupedCourses) {
@@ -64,6 +94,11 @@ export default class View {
           e.dataTransfer.setData("text/plain", course.id);
         });
 
+        div.addEventListener("click", () => {
+          const allCourses = Object.values(groupedCourses).flat();
+          this.highlightPrereqs(course.id, allCourses);
+        });
+
         column.appendChild(div);
       });
 
@@ -101,6 +136,12 @@ export default class View {
     div.setAttribute("draggable", true);
     div.addEventListener("dragstart", e => {
       e.dataTransfer.setData("text/plain", course.id);
+    });
+
+    div.addEventListener("click", () => {
+      if (this.placedCourses) {
+        this.highlightPrereqs(course.id, this.placedCourses);
+      }
     });
 
     div.addEventListener("dblclick", () => {
