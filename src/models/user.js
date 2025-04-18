@@ -1,3 +1,5 @@
+// models/users.js
+
 import mongoose, { Schema, models } from "mongoose";
 
 const userSchema = new Schema(
@@ -5,8 +7,27 @@ const userSchema = new Schema(
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    taken: { type: Object, default: {} }, // Survey-collected completed courses
-    timeRestrictions: { type: Array, default: [] }, // [{ day: "Monday", startTime: "1:00 PM", endTime: "3:00 PM" }]
+    // Modified "taken" to use array of structured entries
+    taken: {
+      type: [
+        {
+          term: String,
+          id: String,
+          selected: [String]
+        }
+      ],
+      default: []
+    },
+    timeRestrictions: {
+      type: [
+        {
+          day: String,
+          startTime: String,
+          endTime: String
+        }
+      ],
+      default: []
+    }
   },
   { timestamps: true }
 );
