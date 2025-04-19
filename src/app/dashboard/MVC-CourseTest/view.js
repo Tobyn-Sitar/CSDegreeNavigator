@@ -6,7 +6,9 @@ export default class View {
     this.sourceContainer = document.getElementById("source-container");
   }
 
-  renderSemesters(num = 15) {
+  renderSemesters(num, placedCourses = []) {
+    this.semestersContainer.innerHTML = "";
+    
     for (let i = 1; i <= num; i++) {
       const col = document.createElement("div");
       col.className = "semester-column";
@@ -15,20 +17,19 @@ export default class View {
       col.innerHTML = `<h3>Semester ${i}</h3>`;
       this.semestersContainer.appendChild(col);
     }
+  
+   
+    placedCourses.forEach(course => {
+      if (course.semester <= num) {
+        this.addCourseToSemester(course, course.semester);
+      }
+    });
   }
   
-  checkCoursesInSemesters()  {
 
-    const semesterColumns = document.querySelectorAll(".semester-column");
+  
+  
 
-    for (const col of semesterColumns) {
-      if (col.querySelector(".course-box")) {
-        console.log("true");
-        return true;
-      }
-    }
-    return false;
-  }
 
   highlightPrereqs(courseId, placedCourses) {
 
