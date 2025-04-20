@@ -1,5 +1,3 @@
-// models/users.js
-
 import mongoose, { Schema, models } from "mongoose";
 
 const userSchema = new Schema(
@@ -7,7 +5,7 @@ const userSchema = new Schema(
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    // Modified "taken" to use array of structured entries
+    yearStarted: { type: Number, required: true }, 
     taken: {
       type: [
         {

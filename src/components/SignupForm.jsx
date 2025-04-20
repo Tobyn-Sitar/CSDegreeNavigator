@@ -1,6 +1,5 @@
 "use client"; 
 import * as React from "react";
-import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -14,16 +13,17 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Toggle } from "@/components/ui/toggle"; // Import the Toggle component
-import { useTheme } from "next-themes"; // Import useTheme for theme switching
-import { Moon, Sun } from "lucide-react"; // Import icons for light and dark modes
-import { signIn } from "next-auth/react"; // Import NextAuth signIn method
+import { Toggle } from "@/components/ui/toggle"; 
+import { useTheme } from "next-themes"; 
+import { Moon, Sun } from "lucide-react";
+import { signIn } from "next-auth/react"; 
 
 export function SignUpForm() {
   const { setTheme, theme } = useTheme(); 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [yearStarted, setYearStarted] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
 
@@ -34,7 +34,7 @@ export function SignUpForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !yearStarted) {
       setError("All fields are necessary.");
       return;
     }
@@ -55,7 +55,7 @@ export function SignUpForm() {
         return;
       }
 
-      // API route to create a new user (you can replace this with your own logic)
+      
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: {
@@ -65,11 +65,12 @@ export function SignUpForm() {
           name,
           email,
           password,
+          yearStarted,  
         }),
       });
 
       if (res.ok) {
-        // Sign the user in after successful registration
+    
         const result = await signIn("credentials", {
           redirect: false,
           email,
@@ -94,13 +95,13 @@ export function SignUpForm() {
     <div
       className={`flex justify-center items-center min-h-screen relative ${
         theme === "dark" ? "bg-gray-900" : "bg-gray-100"
-      }`} // Change background based on theme
+      }`} 
     >
       {/* Toggle Button for Theme */}
       <div className="absolute top-4 right-4">
         <Toggle
           aria-label="Toggle theme"
-          onClick={handleThemeToggle} // Handle the theme toggle on click
+          onClick={handleThemeToggle} 
         >
           {theme === "dark" ? (
             <Sun className="h-5 w-5 text-yellow-500" />
@@ -153,6 +154,19 @@ export function SignUpForm() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
+
+              {/* Year Started Input Field */}
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="yearStarted">Year Started</Label>
+                <Input
+                  id="yearStarted"
+                  type="number"
+                  placeholder="Enter your year started"
+                  value={yearStarted}
+                  onChange={(e) => setYearStarted(e.target.value)} // Set the value of yearStarted
+                  />
+              </div>
+
 
               {/* Error Message */}
               {error && (

@@ -17,6 +17,26 @@ fetch('/courses.json')
     const placed = [];
     let numOfSemesters = 0;
 
+    document.getElementById("add-fall-btn").addEventListener("click", () => {
+      v.addSemesterBySeason("Fall");
+      reEnableDropZones();
+    });
+    
+    document.getElementById("add-winter-btn").addEventListener("click", () => {
+      v.addSemesterBySeason("Winter");
+      reEnableDropZones();
+    });
+
+    document.getElementById("add-spring-btn").addEventListener("click", () => {
+      v.addSemesterBySeason("Spring");
+      reEnableDropZones();
+    });
+    
+    document.getElementById("add-summer-btn").addEventListener("click", () => {
+      v.addSemesterBySeason("Summer");
+      reEnableDropZones();
+    });
+
 
     function reEnableDropZones() {
       v.enableDropZones((courseId, semesterNum) => {

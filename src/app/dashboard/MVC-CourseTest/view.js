@@ -1,9 +1,47 @@
 import * as d3 from "d3";
+ 
 
+ 
 export default class View {
   constructor() {
     this.semestersContainer = document.getElementById("semester-container");
     this.sourceContainer = document.getElementById("source-container");
+    
+    this.semesterOptions = [
+      'Fall 2019', 'Winter 2019', 'Spring 2020', 'Summer 2020',
+      'Fall 2020', 'Winter 2020', 'Spring 2021', 'Summer 2021',
+      'Fall 2021', 'Winter 2021', 'Spring 2022', 'Summer 2022',
+      'Fall 2022', 'Winter 2022', 'Spring 2023', 'Summer 2023',
+      'Fall 2023', 'Winter 2023', 'Spring 2024', 'Summer 2024',
+      'Fall 2024', 'Winter 2024', 'Spring 2025', 'Summer 2025',
+      'Fall 2025', 'Winter 2025', 'Spring 2026', 'Summer 2026'
+    ];
+
+    this.yearStarted = "Fall 2021";
+    this.currentIndex = this.semesterOptions.indexOf(this.yearStarted);
+    this.addedSemesters = []; // to track which semesters are rendered
+  }
+
+  addSemesterBySeason(season) {
+    for (let i = this.currentIndex + 1; i < this.semesterOptions.length; i++) {
+      if (this.semesterOptions[i].startsWith(season)) {
+        const semesterLabel = this.semesterOptions[i];
+
+        // Prevent duplicate semesters
+        if (this.addedSemesters.includes(semesterLabel)) return;
+
+        const col = document.createElement("div");
+        col.className = "semester-column";
+        col.id = `semester-${this.addedSemesters.length + 1}`;
+        col.dataset.semester = this.addedSemesters.length + 1;
+        col.innerHTML = `<h3>${semesterLabel}</h3>`;
+
+        this.semestersContainer.appendChild(col);
+        this.addedSemesters.push(semesterLabel);
+        this.currentIndex = i;
+        break;
+      }
+    }
   }
 
   renderSemesters(num, placedCourses = []) {
@@ -26,10 +64,6 @@ export default class View {
     });
   }
   
-
-  
-  
-
 
   highlightPrereqs(courseId, placedCourses) {
 

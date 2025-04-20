@@ -24,6 +24,12 @@ export default function Page() {
           <div id="semester-container" className="semester-container"></div>
           <ScrollBar orientation="horizontal" />
       </ScrollArea>
+      <div id="semester-options">
+          <button id="add-fall-btn">Add Fall Semester</button>
+          <button id="add-winter-btn">Add Winter Semester</button>
+          <button id="add-spring-btn">Add Spring Semester</button>
+          <button id="add-summer-btn">Add Summer Semester</button>
+      </div>
       <svg id="line-layer" className="line-layer"></svg>
       <div id="source-container" className="source-area"></div>
       <div id="semester-controls">
