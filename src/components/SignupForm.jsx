@@ -160,10 +160,10 @@ export function SignUpForm() {
                 <Label htmlFor="yearStarted">Year Started</Label>
                 <Input
                   id="yearStarted"
-                  type="number"
-                  placeholder="Enter your year started"
+                  type="text"
+                  placeholder='e.g., "Fall 2021"'
                   value={yearStarted}
-                  onChange={(e) => setYearStarted(e.target.value)} // Set the value of yearStarted
+                  onChange={(e) => setYearStarted(e.target.value)} 
                   />
               </div>
 

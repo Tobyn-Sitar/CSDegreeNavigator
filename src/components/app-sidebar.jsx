@@ -46,13 +46,8 @@ const data = {
       icon: IconDashboard,
     },
     {
-      title: "Courses",
-      url: "/dashboard/courses",
-      icon: IconListDetails,
-    },
-    {
-      title: "MVC-CourseTest",
-      url: "/dashboard/MVC-CourseTest",
+      title: "Course Planner",
+      url: "/dashboard/planner",
       icon: IconListDetails,
     },
     {

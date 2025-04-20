@@ -1,7 +1,5 @@
 import * as d3 from "d3";
  
-
- 
 export default class View {
   constructor() {
     this.semestersContainer = document.getElementById("semester-container");
@@ -19,10 +17,31 @@ export default class View {
 
     this.yearStarted = "Fall 2021";
     this.currentIndex = this.semesterOptions.indexOf(this.yearStarted);
-    this.addedSemesters = []; // to track which semesters are rendered
+    this.addedSemesters = []; 
+
+    this.getYearStarted();
   }
 
-  addSemesterBySeason(season) {
+  async getYearStarted() {
+    try {
+      const res = await fetch("/api/getYearStarted");
+      if (!res.ok) throw new Error("Failed to fetch yearStarted");
+
+      const data = await res.json();
+      console.log("Fetched yearStarted from API:", data);
+
+      if (data.yearStarted && this.semesterOptions.includes(data.yearStarted)) {
+        this.yearStarted = data.yearStarted;
+        this.currentIndex = this.semesterOptions.indexOf(this.yearStarted);
+      } else {
+        console.warn("Invalid or missing yearStarted in response.");
+      }
+    } catch (error) {
+      console.error("Error fetching yearStarted:", error);
+    }
+  }
+
+  addSemesterBySeason(season, placedCourses = []) {
     for (let i = this.currentIndex + 1; i < this.semesterOptions.length; i++) {
       if (this.semesterOptions[i].startsWith(season)) {
         const semesterLabel = this.semesterOptions[i];
@@ -43,6 +62,8 @@ export default class View {
       }
     }
   }
+
+  
 
   renderSemesters(num, placedCourses = []) {
     this.semestersContainer.innerHTML = "";
