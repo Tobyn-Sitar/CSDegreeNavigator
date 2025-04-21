@@ -42,26 +42,54 @@ fetch('/courses.json')
       v.enableDropZones((courseId, semesterNum) => {
         const course = m.getCourseById(courseId);
         if (!course) return;
-
-        const prereqViolated = course.prerequisites.some(pr => {
-          const prereq = placed.find(c => c.id === pr);
-          return !prereq || prereq.semester >= semesterNum;
-        });
-
-        if (prereqViolated) {
+      
+        // Get the current semester of the course, if it has been placed
+        const currentSemester = placed.find(c => c.id === courseId)?.semester;
+      
+        // **Allow moving to the original semester (if course was already moved back)**
+        if (currentSemester === semesterNum) {
+          placed.push({ ...course, semester: semesterNum });
+          v.addCourseToSemester(course, semesterNum);
+          return;
+        }
+      
+        // **Prevent placing a course in the same semester or a later semester if it's already in a later one**
+        if (currentSemester && currentSemester <= semesterNum) {
           const msg = document.createElement("div");
           msg.className = "prereq-popup";
-          msg.textContent = `❌ ${course.id} cannot be taken before its prerequisite(s).`;
-
+          msg.textContent = `❌ ${course.id} cannot be moved past the courses it serves as a prerequisite for.`;
+      
           document.body.appendChild(msg);
           setTimeout(() => msg.remove(), 3000);
           return;
         }
-
+      
+        // Check if prerequisites are violated
+        const prereqViolated = course.prerequisites.some(pr => {
+          const prereq = placed.find(c => c.id === pr);
+          return !prereq || prereq.semester >= semesterNum;
+        });
+      
+        if (prereqViolated) {
+          // Gather all prerequisites that should not be overlapped with the current course
+          const conflictingPrereqs = course.prerequisites.map(prId => {
+            const prereq = placed.find(c => c.id === prId);
+            return prereq ? prereq.id : null;
+          }).filter(id => id !== null); // Filter out null values (in case a prereq is not yet placed)
+    
+          const msg = document.createElement("div");
+          msg.className = "prereq-popup";
+          msg.textContent = `❌ ${course.id} cannot be taken before its prerequisite(s): ${conflictingPrereqs.join(', ')}.`;
+    
+          document.body.appendChild(msg);
+          setTimeout(() => msg.remove(), 3000);
+          return;
+        }
+      
         placed.push({ ...course, semester: semesterNum });
         v.addCourseToSemester(course, semesterNum);
       });
-    }
+    }          
 
     document.getElementById("remove-semester-btn").addEventListener("click", () => {
       const lastSemester = v.addedSemesters[v.addedSemesters.length - 1];
