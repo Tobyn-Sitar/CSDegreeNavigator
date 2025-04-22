@@ -4,7 +4,8 @@ export default class View {
   constructor() {
     this.semestersContainer = document.getElementById("semester-container");
     this.sourceContainer = document.getElementById("source-container");
-    
+
+    // List of semesters we can use
     this.semesterOptions = [
       'Fall 2019', 'Winter 2019', 'Spring 2020', 'Summer 2020',
       'Fall 2020', 'Winter 2020', 'Spring 2021', 'Summer 2021',
@@ -17,7 +18,7 @@ export default class View {
 
     this.yearStarted = "Fall 2021";
     this.currentIndex = this.semesterOptions.indexOf(this.yearStarted);
-    this.addedSemesters = []; 
+    this.addedSemesters = [];
 
     this.getYearStarted();
   }
@@ -25,28 +26,21 @@ export default class View {
   async getYearStarted() {
     try {
       const res = await fetch("/api/getYearStarted");
-      if (!res.ok) throw new Error("Failed to fetch yearStarted");
-
       const data = await res.json();
-      console.log("Fetched yearStarted from API:", data);
-
       if (data.yearStarted && this.semesterOptions.includes(data.yearStarted)) {
         this.yearStarted = data.yearStarted;
         this.currentIndex = this.semesterOptions.indexOf(this.yearStarted);
-      } else {
-        console.warn("Invalid or missing yearStarted in response.");
       }
-    } catch (error) {
-      console.error("Error fetching yearStarted:", error);
+    } catch (err) {
+      console.error("Error getting year started:", err);
     }
   }
 
+  // Add the next semester for the selected season
   addSemesterBySeason(season, placedCourses = []) {
     for (let i = this.currentIndex + 1; i < this.semesterOptions.length; i++) {
       if (this.semesterOptions[i].startsWith(season)) {
         const semesterLabel = this.semesterOptions[i];
-
-        // Prevent duplicate semesters
         if (this.addedSemesters.includes(semesterLabel)) return;
 
         const col = document.createElement("div");
@@ -54,8 +48,8 @@ export default class View {
         col.id = `semester-${this.addedSemesters.length + 1}`;
         col.dataset.semester = this.addedSemesters.length + 1;
         col.innerHTML = `<h3>${semesterLabel}</h3>`;
-
         this.semestersContainer.appendChild(col);
+
         this.addedSemesters.push(semesterLabel);
         this.currentIndex = i;
         break;
@@ -63,9 +57,9 @@ export default class View {
     }
   }
 
+  // Re-render all semester boxes and refill them with saved stuff
   renderSemesters(num, placedCourses = []) {
     this.semestersContainer.innerHTML = "";
-    
     for (let i = 1; i <= num; i++) {
       const col = document.createElement("div");
       col.className = "semester-column";
@@ -74,7 +68,7 @@ export default class View {
       col.innerHTML = `<h3>Semester ${i}</h3>`;
       this.semestersContainer.appendChild(col);
     }
-  
+
     placedCourses.forEach(course => {
       if (course.semester <= num) {
         this.addCourseToSemester(course, course.semester);
@@ -82,6 +76,7 @@ export default class View {
     });
   }
 
+  // Highlight any prereqs for a clicked course
   highlightPrereqs(courseId, placedCourses) {
     document.querySelectorAll(".course-box").forEach(el => {
       el.style.backgroundColor = "";
@@ -91,13 +86,12 @@ export default class View {
     if (!course) return;
 
     course.prerequisites.forEach(prereqId => {
-      const prereqEl = document.querySelector(`[data-course-id='${prereqId}']`);
-      if (prereqEl) {
-        prereqEl.style.backgroundColor = "orange";
-      }
+      const el = document.querySelector(`[data-course-id="${prereqId}"]`);
+      if (el) el.style.backgroundColor = "orange";
     });
   }
 
+  // Show all the courses in their groups (CSC, MAT, etc.)
   renderCourseSources(groupedCourses) {
     this.sourceContainer.innerHTML = "";
 
@@ -113,27 +107,6 @@ export default class View {
       column.className = "source-column";
       column.dataset.type = group;
 
-      column.addEventListener("dragover", e => e.preventDefault());
-      column.addEventListener("drop", e => {
-        e.preventDefault();
-        const courseId = e.dataTransfer.getData("text/plain");
-        const droppedEl = document.querySelector(`[data-course-id="${courseId}"]`);
-        if (droppedEl) {
-          const alreadyThere = column.querySelector(`[data-course-id="${courseId}"]`);
-          if (!alreadyThere) {
-            const children = Array.from(column.querySelectorAll(".course-box"));
-            const insertBefore = children.find(child => child.dataset.courseId > courseId);
-            if (insertBefore) {
-              column.insertBefore(droppedEl, insertBefore);
-            } else {
-              column.appendChild(droppedEl);
-            }
-          } else {
-            droppedEl.remove();
-          }
-        }
-      });
-
       list.forEach(course => {
         const div = document.createElement("div");
         div.className = "course-box";
@@ -141,10 +114,12 @@ export default class View {
         div.setAttribute("draggable", true);
         div.dataset.courseId = course.id;
 
+        // Allow dragging
         div.addEventListener("dragstart", e => {
           e.dataTransfer.setData("text/plain", course.id);
         });
 
+        // Click to highlight prereqs
         div.addEventListener("click", () => {
           const allCourses = Object.values(groupedCourses).flat();
           this.highlightPrereqs(course.id, allCourses);
@@ -158,8 +133,8 @@ export default class View {
       this.sourceContainer.appendChild(wrapper);
     }
   }
-  
 
+  // Make semester columns accept dragged course tiles
   enableDropZones(onDrop) {
     const cols = document.querySelectorAll(".semester-column");
     cols.forEach(col => {
@@ -172,83 +147,42 @@ export default class View {
     });
   }
 
-
-
+  // Place a course in a semester column
   addCourseToSemester(course, semesterNum) {
     const col = document.getElementById(`semester-${semesterNum}`);
-    const existing = col.querySelector(`[data-course-id='${course.id}']`);
-    if (existing) return;
+    if (!col) return;
 
-    const currentEl = document.querySelector(`[data-course-id='${course.id}']`);
-    if (currentEl) currentEl.remove();
+    // Avoid duplicates
+    const exists = col.querySelector(`[data-course-id='${course.id}']`);
+    if (exists) return;
 
     const div = document.createElement("div");
     div.className = "course-box";
     div.textContent = course.id;
     div.dataset.courseId = course.id;
 
+    // Set it to draggable
     div.setAttribute("draggable", true);
     div.addEventListener("dragstart", e => {
       e.dataTransfer.setData("text/plain", course.id);
     });
 
+    // Click to highlight prereqs
     div.addEventListener("click", () => {
       if (this.placedCourses) {
         this.highlightPrereqs(course.id, this.placedCourses);
       }
     });
 
+    // Double click to remove from semester
     div.addEventListener("dblclick", () => {
-      const currentParent = div.parentElement;
-      const isInSource = currentParent?.classList.contains("source-column");
-      if (isInSource) return;
-
-      const sourceCol = this.sourceContainer.querySelector(`.source-column[data-type='${course.type}']`);
-      if (sourceCol) {
-        const alreadyThere = sourceCol.querySelector(`[data-course-id='${course.id}']`);
-        if (!alreadyThere) {
-          const children = Array.from(sourceCol.querySelectorAll(".course-box"));
-          const insertBefore = children.find(child => child.dataset.courseId > course.id);
-          if (insertBefore) {
-            sourceCol.insertBefore(div, insertBefore);
-          } else {
-            sourceCol.appendChild(div);
-          }
-        } else {
-          div.remove();
-        }
-      }
+      div.remove();
     });
 
     col.appendChild(div);
   }
 
-  drawLines(placedCourses) {
-    const existingLines = document.querySelectorAll(".connector-line");
-    existingLines.forEach(line => line.remove());
-
-    placedCourses.forEach(course => {
-      const targetBox = document.querySelector(`[data-course-id='${course.id}']`)?.getBoundingClientRect();
-      if (!targetBox) return;
-
-      course.prerequisites.forEach(prereqId => {
-        const prereq = placedCourses.find(c => c.id === prereqId);
-        const prereqBox = document.querySelector(`[data-course-id='${prereqId}']`)?.getBoundingClientRect();
-        if (!prereq || !prereqBox) return;
-
-        const line = document.createElement("div");
-        line.className = "connector-line";
-        line.style.position = "absolute";
-        line.style.background = "red";
-        line.style.width = "2px";
-        line.style.height = `${Math.abs(targetBox.top - prereqBox.bottom)}px`;
-        line.style.left = `${prereqBox.left + prereqBox.width / 2}px`;
-        line.style.top = `${Math.min(prereqBox.bottom, targetBox.top)}px`;
-        document.body.appendChild(line);
-      });
-    });
-  }
-
+  // Use D3 to draw lines between prereqs and the course that needs them
   drawD3Lines(placedCourses) {
     const svg = d3.select("#line-layer");
     svg.selectAll("*").remove();
@@ -262,55 +196,18 @@ export default class View {
     };
 
     placedCourses.forEach(course => {
-      const targetEl = document.querySelector(`[data-course-id='${course.id}']`);
+      const targetEl = document.querySelector(`[data-course-id="${course.id}"]`);
       if (!targetEl) return;
 
       const target = getCenter(targetEl);
 
       course.prerequisites.forEach(prId => {
         const prereq = placedCourses.find(c => c.id === prId);
-        if (!prereq) return;
-
-        const prereqEl = document.querySelector(`[data-course-id='${prId}']`);
-        if (!prereqEl) return;
-
-        const source = getCenter(prereqEl);
-
-        svg.append("line")
-          .attr("x1", source.x)
-          .attr("y1", source.y)
-          .attr("x2", target.x)
-          .attr("y2", target.y)
-          .attr("stroke", "#d00")
-          .attr("stroke-width", 2);
-      });
-    });
-  }
-  drawD3Lines(placedCourses) {
-    const svg = d3.select("#line-layer");
-    svg.selectAll("*").remove(); // Clear previous lines
-  
-    const getCenter = (el) => {
-      const rect = el.getBoundingClientRect();
-      return {
-        x: rect.left + rect.width / 2 + window.scrollX,
-        y: rect.top + rect.height / 2 + window.scrollY
-      };
-    };
-  
-    placedCourses.forEach(course => {
-      const targetEl = document.querySelector(`[data-course-id='${course.id}']`);
-      if (!targetEl) return;
-  
-      const target = getCenter(targetEl);
-  
-      course.prerequisites.forEach(prereqId => {
-        const prereq = placedCourses.find(c => c.id === prereqId);
-        const prereqEl = document.querySelector(`[data-course-id='${prereqId}']`);
+        const prereqEl = document.querySelector(`[data-course-id="${prId}"]`);
         if (!prereq || !prereqEl) return;
-  
+
         const source = getCenter(prereqEl);
-  
+
         svg.append("line")
           .attr("x1", source.x)
           .attr("y1", source.y)
@@ -321,5 +218,4 @@ export default class View {
       });
     });
   }
-  
 }
