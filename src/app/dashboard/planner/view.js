@@ -18,6 +18,8 @@ export default class View {
     this.yearStarted = "Fall 2021";
     this.currentIndex = this.semesterOptions.indexOf(this.yearStarted);
     this.addedSemesters = []; 
+    this.currentlyHighlightedCourseId = null;
+
 
     this.getYearStarted();
   }
@@ -82,21 +84,48 @@ export default class View {
     });
   }
 
-  highlightPrereqs(courseId, placedCourses) {
-    document.querySelectorAll(".course-box").forEach(el => {
-      el.style.backgroundColor = "";
-    });
-
+  highlightPrereqs(courseId, placedCourses, depth = 0, visited = new Set()) {
+    if (depth === 0) {
+      // Toggle off if same course clicked again
+      if (this.currentlyHighlightedCourseId === courseId) {
+        this.currentlyHighlightedCourseId = null;
+        document.querySelectorAll(".course-box").forEach(el => {
+          el.style.backgroundColor = "";
+        });
+        return;
+      } else {
+        this.currentlyHighlightedCourseId = courseId;
+        document.querySelectorAll(".course-box").forEach(el => {
+          el.style.backgroundColor = "";
+        });
+      }
+    }
+  
+    if (visited.has(courseId)) return;
+    visited.add(courseId);
+  
     const course = placedCourses.find(c => c.id === courseId);
     if (!course) return;
-
+  
+    const courseEl = document.querySelector(`[data-course-id='${course.id}']`);
+    if (courseEl) {
+      let opacity;
+      if (depth === 0) opacity = 1;
+      else if (depth === 1) opacity = 0.6;
+      else if (depth === 2) opacity = 0.3;
+      else opacity = 0.15;
+  
+      courseEl.style.backgroundColor = `rgba(128, 0, 128, ${opacity})`;
+    }
+  
     course.prerequisites.forEach(prereqId => {
-      const prereqEl = document.querySelector(`[data-course-id='${prereqId}']`);
-      if (prereqEl) {
-        prereqEl.style.backgroundColor = "orange";
-      }
+      this.highlightPrereqs(prereqId, placedCourses, depth + 1, visited);
     });
   }
+  
+  
+  
+  
 
   renderCourseSources(groupedCourses) {
     this.sourceContainer.innerHTML = "";
