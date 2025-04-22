@@ -5,7 +5,7 @@ export default class View {
     this.semestersContainer = document.getElementById("semester-container");
     this.sourceContainer = document.getElementById("source-container");
 
-    // List of semesters we can use
+    // All semesters available
     this.semesterOptions = [
       'Fall 2019', 'Winter 2019', 'Spring 2020', 'Summer 2020',
       'Fall 2020', 'Winter 2020', 'Spring 2021', 'Summer 2021',
@@ -23,6 +23,7 @@ export default class View {
     this.getYearStarted();
   }
 
+  // Get user’s starting year
   async getYearStarted() {
     try {
       const res = await fetch("/api/getYearStarted");
@@ -36,7 +37,7 @@ export default class View {
     }
   }
 
-  // Add the next semester for the selected season
+  // Add semester column based on season
   addSemesterBySeason(season, placedCourses = []) {
     for (let i = this.currentIndex + 1; i < this.semesterOptions.length; i++) {
       if (this.semesterOptions[i].startsWith(season)) {
@@ -57,7 +58,7 @@ export default class View {
     }
   }
 
-  // Re-render all semester boxes and refill them with saved stuff
+  // Redraw all semester columns and refill any saved courses
   renderSemesters(num, placedCourses = []) {
     this.semestersContainer.innerHTML = "";
     for (let i = 1; i <= num; i++) {
@@ -76,7 +77,7 @@ export default class View {
     });
   }
 
-  // Highlight any prereqs for a clicked course
+  // Show orange highlight on prereqs
   highlightPrereqs(courseId, placedCourses) {
     document.querySelectorAll(".course-box").forEach(el => {
       el.style.backgroundColor = "";
@@ -91,7 +92,7 @@ export default class View {
     });
   }
 
-  // Show all the courses in their groups (CSC, MAT, etc.)
+  // Show draggable course tiles by type (CSC, MAT, etc.)
   renderCourseSources(groupedCourses) {
     this.sourceContainer.innerHTML = "";
 
@@ -114,12 +115,10 @@ export default class View {
         div.setAttribute("draggable", true);
         div.dataset.courseId = course.id;
 
-        // Allow dragging
         div.addEventListener("dragstart", e => {
           e.dataTransfer.setData("text/plain", course.id);
         });
 
-        // Click to highlight prereqs
         div.addEventListener("click", () => {
           const allCourses = Object.values(groupedCourses).flat();
           this.highlightPrereqs(course.id, allCourses);
@@ -134,7 +133,7 @@ export default class View {
     }
   }
 
-  // Make semester columns accept dragged course tiles
+  // Let semesters accept dragged course boxes
   enableDropZones(onDrop) {
     const cols = document.querySelectorAll(".semester-column");
     cols.forEach(col => {
@@ -147,34 +146,40 @@ export default class View {
     });
   }
 
-  // Place a course in a semester column
+  // Put a course into a semester (limit to 6 max)
   addCourseToSemester(course, semesterNum) {
     const col = document.getElementById(`semester-${semesterNum}`);
     if (!col) return;
 
-    // Avoid duplicates
-    const exists = col.querySelector(`[data-course-id='${course.id}']`);
-    if (exists) return;
+    // Stop if already added
+    if (col.querySelector(`[data-course-id="${course.id}"]`)) return;
+
+    // Stop if semester is full
+    if (col.querySelectorAll(".course-box").length >= 6) {
+      const msg = document.createElement("div");
+      msg.className = "prereq-popup";
+      msg.textContent = `Semester ${semesterNum} already has 6 courses`;
+      document.body.appendChild(msg);
+      setTimeout(() => msg.remove(), 2500);
+      return;
+    }
 
     const div = document.createElement("div");
     div.className = "course-box";
     div.textContent = course.id;
     div.dataset.courseId = course.id;
-
-    // Set it to draggable
     div.setAttribute("draggable", true);
+
     div.addEventListener("dragstart", e => {
       e.dataTransfer.setData("text/plain", course.id);
     });
 
-    // Click to highlight prereqs
     div.addEventListener("click", () => {
       if (this.placedCourses) {
         this.highlightPrereqs(course.id, this.placedCourses);
       }
     });
 
-    // Double click to remove from semester
     div.addEventListener("dblclick", () => {
       div.remove();
     });
@@ -182,7 +187,7 @@ export default class View {
     col.appendChild(div);
   }
 
-  // Use D3 to draw lines between prereqs and the course that needs them
+  // D3 lines between prereqs and course
   drawD3Lines(placedCourses) {
     const svg = d3.select("#line-layer");
     svg.selectAll("*").remove();
