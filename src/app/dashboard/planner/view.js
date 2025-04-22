@@ -1,5 +1,5 @@
 import * as d3 from "d3";
- 
+
 export default class View {
   constructor() {
     this.semestersContainer = document.getElementById("semester-container");
@@ -63,8 +63,6 @@ export default class View {
     }
   }
 
-  
-
   renderSemesters(num, placedCourses = []) {
     this.semestersContainer.innerHTML = "";
     
@@ -77,24 +75,21 @@ export default class View {
       this.semestersContainer.appendChild(col);
     }
   
-   
     placedCourses.forEach(course => {
       if (course.semester <= num) {
         this.addCourseToSemester(course, course.semester);
       }
     });
   }
-  
 
   highlightPrereqs(courseId, placedCourses) {
-
     document.querySelectorAll(".course-box").forEach(el => {
       el.style.backgroundColor = "";
     });
 
     const course = placedCourses.find(c => c.id === courseId);
     if (!course) return;
-  
+
     course.prerequisites.forEach(prereqId => {
       const prereqEl = document.querySelector(`[data-course-id='${prereqId}']`);
       if (prereqEl) {
@@ -163,6 +158,7 @@ export default class View {
       this.sourceContainer.appendChild(wrapper);
     }
   }
+  
 
   enableDropZones(onDrop) {
     const cols = document.querySelectorAll(".semester-column");
@@ -175,6 +171,8 @@ export default class View {
       });
     });
   }
+
+
 
   addCourseToSemester(course, semesterNum) {
     const col = document.getElementById(`semester-${semesterNum}`);
