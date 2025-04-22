@@ -36,17 +36,17 @@ fetch('/courses.json')
         const course = m.getCourseById(courseId);
         if (!course) return;
       
-        // Get the current semester of the course, if it has been placed
+       
         const currentSemester = placed.find(c => c.id === courseId)?.semester;
       
-        // **Allow moving to the original semester (if course was already moved back)**
+       
         if (currentSemester === semesterNum) {
           placed.push({ ...course, semester: semesterNum });
           v.addCourseToSemester(course, semesterNum);
           return;
         }
       
-        // **Prevent placing a course in the same semester or a later semester if it's already in a later one**
+        
         if (currentSemester && currentSemester <= semesterNum) {
           const msg = document.createElement("div");
           msg.className = "prereq-popup";
@@ -57,18 +57,18 @@ fetch('/courses.json')
           return;
         }
       
-        // Check if prerequisites are violated
+       
         const prereqViolated = course.prerequisites.some(pr => {
           const prereq = placed.find(c => c.id === pr);
           return !prereq || prereq.semester >= semesterNum;
         });
       
         if (prereqViolated) {
-          // Gather all prerequisites that should not be overlapped with the current course
+     
           const conflictingPrereqs = course.prerequisites.map(prId => {
             const prereq = placed.find(c => c.id === prId);
             return prereq ? prereq.id : null;
-          }).filter(id => id !== null); // Filter out null values (in case a prereq is not yet placed)
+          }).filter(id => id !== null);
     
           const msg = document.createElement("div");
           msg.className = "prereq-popup";

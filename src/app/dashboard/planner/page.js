@@ -10,7 +10,7 @@ export default function Page() {
 
     const checkboxes = document.querySelectorAll('#semester-options input[type="checkbox"]');
 
-// Enforce only one checkbox at a time
+
 checkboxes.forEach((checkbox) => {
   checkbox.addEventListener("change", () => {
     if (checkbox.checked) {

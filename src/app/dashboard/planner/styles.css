@@ -22,6 +22,12 @@ body {
   z-index: 9999;
 }
 
+.grayed-out {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+
 .toolbar-left {
   font-size: 1.2rem;
   font-weight: bold;
@@ -112,9 +118,9 @@ body {
 /* Horizontal layout for the checkboxes */
 .semester-checkboxes {
   display: flex;
-  justify-content: center; /* Center checkboxes horizontally */
-  gap: 2rem; /* Space between each checkbox */
-  margin-bottom: 20px; /* Space between checkboxes and the button */
+  justify-content: center; 
+  gap: 2rem; 
+  margin-bottom: 20px; 
 }
 
 /* Styling for the checkboxes */
@@ -212,19 +218,17 @@ body {
   width: 100%;
 }
 
-
-/* Year Started Dropdown */
 .year-started {
-  margin-top: 20px; /* Space between the buttons and the dropdown */
+  margin-top: 20px; 
   display: flex;
-  align-items: center; /* Vertically center the label and dropdown */
-  gap: 10px; /* Space between label and dropdown */
+  align-items: center; 
+  gap: 10px; 
 }
 
 .year-started label {
   font-size: 14px;
   font-weight: bold;
-  text-align: left; /* Ensure the label is aligned to the left */
+  text-align: left; 
 }
 
 #year-started {
@@ -233,7 +237,7 @@ body {
   border: 1px solid #ccc;
   border-radius: 6px;
   cursor: pointer;
-  width: 200px; /* Control width of the dropdown */
+  width: 200px; 
 }
 
 #year-started:focus {
