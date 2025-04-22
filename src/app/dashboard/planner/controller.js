@@ -17,7 +17,6 @@ fetch('/courses.json')
     const placed = [];
     let numOfSemesters = 0;
 
-
     document.getElementById("add-semester-btn").addEventListener("click", () => {
       const checkboxes = document.querySelectorAll('#semester-options input[name="semester"]:checked');
     
@@ -28,7 +27,10 @@ fetch('/courses.json')
     
       reEnableDropZones();
     });
-    
+
+
+
+
     function reEnableDropZones() {
       v.enableDropZones((courseId, semesterNum) => {
         const course = m.getCourseById(courseId);
@@ -81,9 +83,6 @@ fetch('/courses.json')
         v.addCourseToSemester(course, semesterNum);
       });
     }          
-
-    
-    
 
     document.getElementById("remove-semester-btn").addEventListener("click", () => {
       const lastSemester = v.addedSemesters[v.addedSemesters.length - 1];
