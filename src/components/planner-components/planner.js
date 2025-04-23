@@ -36,7 +36,8 @@ checkboxes.forEach((checkbox) => {
       </header>
 
       {/* Main Planner */}
-      <ScrollArea className="w-full max-w-full whitespace-nowrap rounded-md border overflow-x-auto">
+      <ScrollArea className="w-[1000px] whitespace-nowrap rounded-md border overflow-x-auto">
+
         <div id="semester-container" className="semester-container"></div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
