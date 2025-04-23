@@ -5,16 +5,25 @@ fetch('/courses.json')
   .then(res => res.json())
   .then(data => {
     const enriched = data.map(c => {
-      let type = 'other';
-      if (c.id.startsWith('CSC4')) type = 'csc400';
-      else if (c.id.startsWith('CSC')) type = 'csc';
-      else if (c.id.startsWith('MAT')) type = 'mat';
-      return { ...c, type, defaultSemester: 1 };
+      let type = 'other'; // Default type is 'other'
+      
+      // Set type based on the course requirement
+      if (c.requirement === 'core') type = 'csc'; // Core courses
+      else if (c.requirement === 'math') type = 'mat'; // Math courses
+      else if (c.requirement === 'elective') type = 'csc400'; // Elective courses
+      else if (c.requirement === 'science') type = 'science'; // Science courses
+      else if (c.requirement === 'communication') type = 'communication'; // Communication courses
+      else if (c.requirement === 'FYE') type = 'fye'; // FYE (First Year Experience) courses
+      
+      // Return the enriched course object with updated type and defaultSemester
+      return { ...c, type, defaultSemester: c.defaultSemester ?? 1 };
     });
+    
 
     const m = new model(enriched);
     const v = new view('semester-container', 'checkbox-area');
     const placed = [];
+    v.placedCourses = placed;
     let numOfSemesters = 0;
 
     document.getElementById("add-semester-btn").addEventListener("click", () => {
@@ -137,10 +146,14 @@ fetch('/courses.json')
     });
 
     const grouped = {
-      csc: enriched.filter(c => c.type === 'csc'),
-      mat: enriched.filter(c => c.type === 'mat'),
-      csc400: enriched.filter(c => c.type === 'csc400'),
+      csc: enriched.filter(c => c.type === 'csc'), // Core courses
+      mat: enriched.filter(c => c.type === 'mat'), // Math courses
+      csc400: enriched.filter(c => c.type === 'csc400'), // Elective courses
+      science: enriched.filter(c => c.type === 'science'), // Science courses
+      communication: enriched.filter(c => c.type === 'communication'), // Communication courses
+      fye: enriched.filter(c => c.type === 'fye'), // First Year Experience (FYE) courses
     };
+    
 
     v.renderCourseSources(grouped);
     reEnableDropZones();

@@ -70,10 +70,16 @@ checkboxes.forEach((checkbox) => {
   </div>
 </div>
 
+<div className="relative">
+  <svg id="line-layer" className="line-layer absolute top-0 left-0 w-full h-full pointer-events-none"></svg>
+  
+  <ScrollArea className="rounded-md border overflow-y-auto">
+    <div id="source-container" className="w-260 source-area px-4 py-2 whitespace-nowrap"></div>
+    <ScrollBar orientation="horizontal" />
+  </ScrollArea>
+</div>
 
 
-      <svg id="line-layer" className="line-layer"></svg>
-      <div id="source-container" className="source-area"></div>
     </div>
   );
 }
