@@ -39,47 +39,57 @@ fetch('/courses.json')
       v.enableDropZones((courseId, semesterNum) => {
         const course = m.getCourseById(courseId);
         if (!course) return;
-
-        const currentSemester = placed.find(c => c.id === courseId)?.semester;
-
-        if (currentSemester === semesterNum) {
-          placed.push({ ...course, semester: semesterNum });
-          v.addCourseToSemester(course, semesterNum);
-          return;
-        }
-
-        if (currentSemester && currentSemester <= semesterNum) {
+    
+        const currentPlacement = placed.find(c => c.id === courseId);
+        const currentSemester = currentPlacement?.semester;
+    
+        // Find dependent courses (i.e., where this course is a prereq)
+        const dependents = placed.filter(c => c.prerequisites.includes(courseId));
+        const earliestDependentSemester = dependents.length > 0
+          ? Math.min(...dependents.map(c => c.semester))
+          : Infinity;
+    
+        // 🚫 Cannot move course past any course that depends on it
+        if (semesterNum >= earliestDependentSemester) {
           const msg = document.createElement("div");
           msg.className = "prereq-popup";
-          msg.textContent = `❌ ${course.id} cannot be moved past the courses it serves as a prerequisite for.`;
+          msg.textContent = `❌ ${course.id} cannot be placed after course(s) that require it as a prerequisite.`;
           document.body.appendChild(msg);
           setTimeout(() => msg.remove(), 3000);
           return;
         }
-
-        const prereqViolated = course.prerequisites.some(pr => {
-          const prereq = placed.find(c => c.id === pr);
+    
+        // ✅ For placing a new course, check that all prerequisites are met
+        const prereqViolated = course.prerequisites.some(prId => {
+          const prereq = placed.find(c => c.id === prId);
           return !prereq || prereq.semester >= semesterNum;
         });
-
+    
         if (prereqViolated) {
-          const conflictingPrereqs = course.prerequisites.map(prId => {
+          const missing = course.prerequisites.filter(prId => {
             const prereq = placed.find(c => c.id === prId);
-            return prereq ? prereq.id : null;
-          }).filter(id => id !== null);
-
+            return !prereq || prereq.semester >= semesterNum;
+          });
+    
           const msg = document.createElement("div");
           msg.className = "prereq-popup";
-          msg.textContent = `❌ ${course.id} cannot be taken before its prerequisite(s): ${conflictingPrereqs.join(', ')}.`;
+          msg.textContent = `❌ ${course.id} cannot be placed before its prerequisite(s): ${missing.join(", ")}`;
           document.body.appendChild(msg);
           setTimeout(() => msg.remove(), 3000);
           return;
         }
-
-        placed.push({ ...course, semester: semesterNum });
+    
+        // Update placement
+        if (currentPlacement) {
+          currentPlacement.semester = semesterNum;
+        } else {
+          placed.push({ ...course, semester: semesterNum });
+        }
+    
         v.addCourseToSemester(course, semesterNum);
       });
     }
+    
 
     document.getElementById("remove-semester-btn").addEventListener("click", () => {
       const lastSemester = v.addedSemesters[v.addedSemesters.length - 1];
