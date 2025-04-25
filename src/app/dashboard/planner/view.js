@@ -44,7 +44,7 @@ export default class View {
   }
 
   addSemesterBySeason(season, placedCourses = []) {
-    for (let i = this.currentIndex + 1; i < this.semesterOptions.length; i++) {
+    for (let i = this.currentIndex; i < this.semesterOptions.length; i++) {
       if (this.semesterOptions[i].startsWith(season)) {
         const semesterLabel = this.semesterOptions[i];
 

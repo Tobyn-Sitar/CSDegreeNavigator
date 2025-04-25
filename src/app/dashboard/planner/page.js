@@ -57,7 +57,7 @@ checkboxes.forEach((checkbox) => {
 
   {/* Year Started Dropdown */}
   <div className="year-started">
-    <label htmlFor="year-started">Year Started:</label>
+    <label htmlFor="year-started">Year Selected:</label>
     <select id="year-started" name="yearStarted">
       <option value="2019">2019</option>
       <option value="2020">2020</option>
