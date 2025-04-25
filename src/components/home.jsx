@@ -1,6 +1,6 @@
 "use client"; // Ensure this is a client component
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Link from "next/link"; // Used for navigation
@@ -12,6 +12,12 @@ export default function HomeForm({ children }) {
 
   // Theme toggle function
   const { setTheme, theme } = useTheme();
+
+  // Prevent hydration mismatch on SSR
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900">
@@ -29,13 +35,15 @@ export default function HomeForm({ children }) {
             <Link href="/" className="hover:text-secondary transition">
               Home
             </Link>
+            <Link href="/coursesTree" className="hover:text-secondary transition">
+              Courses
+            </Link>
             <Link href="/contact" className="hover:text-secondary transition">
               Contact
             </Link>
             <Link href="/feedback" className="hover:text-secondary transition">
               Feedback
             </Link>
-
           </nav>
 
           {/* Right side Login / Sign Up buttons */}
@@ -50,21 +58,24 @@ export default function HomeForm({ children }) {
             </Button>
 
             {/* Theme Toggle Button */}
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            >
-              {theme === "dark" ? (
-                <Sun className="h-[1.2rem] w-[1.2rem]" />
-              ) : (
-                <Moon className="h-[1.2rem] w-[1.2rem]" />
-              )}
-              <span className="sr-only">Toggle theme</span>
-            </Button>
+            {mounted && (
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              >
+                {theme === "dark" ? (
+                  <Sun className="h-[1.2rem] w-[1.2rem]" />
+                ) : (
+                  <Moon className="h-[1.2rem] w-[1.2rem]" />
+                )}
+                <span className="sr-only">Toggle theme</span>
+              </Button>
+            )}
           </div>
         </div>
       </header>
+
       <section
         className="relative h-[600px] w-full bg-cover bg-center"
         style={{ backgroundImage: "url('/wcu02.jpg')" }}
@@ -78,9 +89,7 @@ export default function HomeForm({ children }) {
             and stay on track for graduation.
           </p>
         </div>
-
       </section>
-
 
       {/* Footer */}
       <footer className="bg-[#6E3061] w-full h-10 flex items-center justify-center text-xs text-white fixed bottom-0 left-0 z-50 shadow-md dark:bg-[#6E3061]">
