@@ -2,25 +2,22 @@
 
 import { useEffect } from "react";
 import "./styles.css";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function Page() {
   useEffect(() => {
     import("./controller.js");
 
     const checkboxes = document.querySelectorAll('#semester-options input[type="checkbox"]');
-
-
-checkboxes.forEach((checkbox) => {
-  checkbox.addEventListener("change", () => {
-    if (checkbox.checked) {
-      checkboxes.forEach((other) => {
-        if (other !== checkbox) other.checked = false;
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+          checkboxes.forEach((other) => {
+            if (other !== checkbox) other.checked = false;
+          });
+        }
       });
-    }
-  });
-});
-
+    });
   }, []);
 
   return (
@@ -42,35 +39,35 @@ checkboxes.forEach((checkbox) => {
       </ScrollArea>
 
       {/* Semester Options */}
-<div id="semester-options" className="semester-options-box">
-  <div className="semester-checkboxes">
-    <label><input type="checkbox" name="semester" value="Fall" /> Fall</label>
-    <label><input type="checkbox" name="semester" value="Winter" /> Winter</label>
-    <label><input type="checkbox" name="semester" value="Spring" /> Spring</label>
-    <label><input type="checkbox" name="semester" value="Summer" /> Summer</label>
-  </div>
+      <div id="semester-options" className="semester-options-box">
+        <div className="semester-checkboxes">
+          <label><input type="checkbox" name="semester" value="Fall" /> Fall</label>
+          <label><input type="checkbox" name="semester" value="Winter" /> Winter</label>
+          <label><input type="checkbox" name="semester" value="Spring" /> Spring</label>
+          <label><input type="checkbox" name="semester" value="Summer" /> Summer</label>
+        </div>
 
-  <div className="semester-buttons">
-    <button id="add-semester-btn">Add Semester</button>
-    <button id="remove-semester-btn" className="remove-semester-btn">Remove Last Semester</button>
-  </div>
+        <div className="semester-selectors">
+          <label>Year:
+            <select id="select-year">
+              {Array.from({ length: 10 }, (_, i) => 2018 + i).map(year => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
+          </label>
+        </div>
 
-  {/* Year Started Dropdown */}
-  <div className="year-started">
-    <label htmlFor="year-started">Year Started:</label>
-    <select id="year-started" name="yearStarted">
-      <option value="2019">2019</option>
-      <option value="2020">2020</option>
-      <option value="2021">2021</option>
-      <option value="2022">2022</option>
-      <option value="2023">2023</option>
-      <option value="2024">2024</option>
-      <option value="2025">2025</option>
-    </select>
-  </div>
-</div>
+        <div className="semester-buttons">
+          <button id="add-semester-btn">Add Semester</button>
+          <button id="remove-semester-btn" className="remove-semester-btn">Remove Semester</button>
+        </div>
 
-
+        <div className="semester-buttons">
+          <button id="remove-last-semester-btn" className="remove-last-semester-btn">
+            Remove Last Added Semester
+          </button>
+        </div>
+      </div>
 
       <svg id="line-layer" className="line-layer"></svg>
       <div id="source-container" className="source-area"></div>

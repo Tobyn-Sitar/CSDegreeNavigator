@@ -21,27 +21,27 @@ export default class View {
     this.currentlyHighlightedCourseId = null;
 
 
-    this.getYearStarted();
+   // this.getYearStarted();
   }
 
-  async getYearStarted() {
-    try {
-      const res = await fetch("/api/getYearStarted");
-      if (!res.ok) throw new Error("Failed to fetch yearStarted");
+ // async getYearStarted() {
+  //  try {
+  //    const res = await fetch("/api/getYearStarted");
+  //    if (!res.ok) throw new Error("Failed to fetch yearStarted");
 
-      const data = await res.json();
-      console.log("Fetched yearStarted from API:", data);
-
-      if (data.yearStarted && this.semesterOptions.includes(data.yearStarted)) {
-        this.yearStarted = data.yearStarted;
-        this.currentIndex = this.semesterOptions.indexOf(this.yearStarted);
-      } else {
-        console.warn("Invalid or missing yearStarted in response.");
-      }
-    } catch (error) {
-      console.error("Error fetching yearStarted:", error);
-    }
-  }
+//const data = await res.json();
+  //    console.log("Fetched yearStarted from API:", data);
+//
+  //    if (data.yearStarted && this.semesterOptions.includes(data.yearStarted)) {
+  //      this.yearStarted = data.yearStarted;
+   //     this.currentIndex = this.semesterOptions.indexOf(this.yearStarted);
+   //   } else {
+   //     console.warn("Invalid or missing yearStarted in response.");
+   //   }
+  //  } catch (error) {
+   //   console.error("Error fetching yearStarted:", error);
+//}
+  //}
 
   addSemesterBySeason(season, placedCourses = []) {
     for (let i = this.currentIndex + 1; i < this.semesterOptions.length; i++) {
@@ -64,6 +64,19 @@ export default class View {
       }
     }
   }
+  addSemesterByLabel(semesterLabel, placedCourses = []) {
+    if (this.addedSemesters.includes(semesterLabel)) return;
+  
+    const col = document.createElement("div");
+    col.className = "semester-column";
+    col.id = `semester-${this.addedSemesters.length + 1}`;
+    col.dataset.semester = this.addedSemesters.length + 1;
+    col.innerHTML = `<h3>${semesterLabel}</h3>`;
+  
+    this.semestersContainer.appendChild(col);
+    this.addedSemesters.push(semesterLabel);
+  }
+  
 
   renderSemesters(num, placedCourses = []) {
     this.semestersContainer.innerHTML = "";
