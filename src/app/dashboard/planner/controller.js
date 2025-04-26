@@ -16,30 +16,14 @@ async function fetchCourses() {
     else if (course.id.startsWith('CSC')) type = 'csc';
     else if (course.id.startsWith('MAT')) type = 'mat';
 
-    // Filter all offerings for this course
     const matches = courseData.filter(cd => cd.courseNumber === course.id.slice(3));
-
-    // If no matches at all
-    if (matches.length === 0) {
-      return {
-        ...course,
-        type,
-        defaultSemester: 1,
-        tooltipInfo: {
-          title: course.id,
-          offerings: []
-        }
-      };
+    if (!matches.length) {
+      return { ...course, type, defaultSemester: 1 };
     }
 
-    // map offerings
     const offerings = matches.map(match => {
-      const instructorNames = match.instructors?.length
-        ? match.instructors.map(i => `${i.instructorFirstName} ${i.instructorLastName}`).join(", ")
-        : "TBD";
-    
       const firstMeeting = match.meetingTimes?.[0] ?? {};
-    
+
       const days = [
         firstMeeting.meetingMondayIndicator ? "M" : "",
         firstMeeting.meetingTuesdayIndicator ? "T" : "",
@@ -49,7 +33,7 @@ async function fetchCourses() {
         firstMeeting.meetingSaturdayIndicator ? "S" : "",
         firstMeeting.meetingSundayIndicator ? "U" : ""
       ].join("");
-    
+
       function formatTime(military) {
         if (!military) return "TBD";
         const hours = Math.floor(parseInt(military) / 100);
@@ -58,27 +42,17 @@ async function fetchCourses() {
         const displayHours = hours % 12 === 0 ? 12 : hours % 12;
         return `${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
       }
-    
+
       return {
         term: match.termCode === "202510" ? "Spring 2025" :
               match.termCode === "202530" ? "Fall 2025" :
               "Unknown",
-        instructors: instructorNames,
+        instructors: match.instructors?.map(i => `${i.instructorFirstName} ${i.instructorLastName}`).join(", ") ?? "TBD",
         campus: match.campus ?? "TBD",
         meetingDays: days || "TBD",
         meetingStartTime: formatTime(firstMeeting.meetingBeginTime),
         meetingEndTime: formatTime(firstMeeting.meetingEndTime)
       };
-    });  
-    
-
-    // Remove duplicate offerings (optional improvement)
-    const seen = new Set();
-    const uniqueOfferings = offerings.filter(offering => {
-      const key = `${offering.term}-${offering.instructors}-${offering.startOn}-${offering.endOn}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
     });
 
     return {
@@ -86,8 +60,8 @@ async function fetchCourses() {
       type,
       defaultSemester: 1,
       tooltipInfo: {
-        title: matches[0]?.courseTitle ?? course.id,
-        offerings: uniqueOfferings
+        title: matches[0].courseTitle,
+        offerings
       }
     };
   });
@@ -113,13 +87,16 @@ fetchCourses()
       return year + seasonOffsets[term] * 0.1;
     }
 
+    // ✅ Add Semester
     document.getElementById("add-semester-btn").addEventListener("click", () => {
       const year = document.getElementById("select-year").value;
       const checked = document.querySelector('#semester-options input[name="semester"]:checked');
+
       if (!checked) {
         alert("Please select a semester (Fall, Winter, Spring, Summer).");
         return;
       }
+
       const season = checked.value;
       const semesterLabel = `${season} ${year}`;
 
@@ -131,65 +108,91 @@ fetchCourses()
       v.addedSemesters.push(semesterLabel);
       v.addedSemesters.sort((a, b) => semesterSortKey(a) - semesterSortKey(b));
 
-      v.semestersContainer.innerHTML = "";
-      v.addedSemesters.forEach((label, idx) => {
-        const col = document.createElement("div");
-        col.className = "semester-column";
-        col.id = `semester-${idx + 1}`;
-        col.dataset.semester = idx + 1;
-        col.innerHTML = `<h3>${label}</h3>`;
+      const col = document.createElement("div");
+      col.className = "semester-column";
+      col.innerHTML = `<h3>${semesterLabel}</h3>`;
+      col.dataset.semester = v.addedSemesters.length;
+      col.id = `semester-${v.addedSemesters.length}`;
+
+      // Insert sorted
+      let inserted = false;
+      const allCols = Array.from(v.semestersContainer.querySelectorAll('.semester-column'));
+      for (let existing of allCols) {
+        const label = existing.querySelector('h3')?.textContent;
+        if (semesterSortKey(semesterLabel) < semesterSortKey(label)) {
+          v.semestersContainer.insertBefore(col, existing);
+          inserted = true;
+          break;
+        }
+      }
+      if (!inserted) {
         v.semestersContainer.appendChild(col);
-      });
+      }
 
       reEnableDropZones();
     });
 
+    // ✅ Remove Semester
     document.getElementById("remove-semester-btn").addEventListener("click", () => {
       const year = document.getElementById("select-year").value;
       const checked = document.querySelector('#semester-options input[name="semester"]:checked');
+
       if (!checked) {
         alert("Please select a semester to remove.");
         return;
       }
+
       const season = checked.value;
       const semesterLabel = `${season} ${year}`;
+
       const indexToRemove = v.addedSemesters.indexOf(semesterLabel);
       if (indexToRemove === -1) {
         alert("Semester not found.");
         return;
       }
 
-      const col = document.getElementById(`semester-${indexToRemove + 1}`);
-      if (col) col.remove();
+      const columns = [...v.semestersContainer.querySelectorAll(".semester-column")];
+      for (const col of columns) {
+        const h3 = col.querySelector("h3");
+        if (h3 && h3.textContent === semesterLabel) {
+          col.remove();
+          break;
+        }
+      }
+
       v.addedSemesters.splice(indexToRemove, 1);
 
-      const columns = v.semestersContainer.querySelectorAll(".semester-column");
-      columns.forEach((col, idx) => {
+      // Fix semester IDs after removal
+      const updatedCols = [...v.semestersContainer.querySelectorAll(".semester-column")];
+      updatedCols.forEach((col, idx) => {
         col.id = `semester-${idx + 1}`;
         col.dataset.semester = idx + 1;
-        const header = col.querySelector("h3");
-        if (header) header.textContent = v.addedSemesters[idx];
       });
 
       reEnableDropZones();
     });
 
+    // ✅ Remove Last Semester
     document.getElementById("remove-last-semester-btn").addEventListener("click", () => {
-      const lastSemester = v.addedSemesters.pop();
-      if (!lastSemester) {
+      if (v.addedSemesters.length === 0) {
         alert("No semesters to remove.");
         return;
       }
-      const indexToRemove = v.addedSemesters.length;
-      const col = document.getElementById(`semester-${indexToRemove + 1}`);
-      if (col) col.remove();
 
-      const columns = v.semestersContainer.querySelectorAll(".semester-column");
-      columns.forEach((col, idx) => {
+      const lastSemester = v.addedSemesters.pop();
+      const columns = [...v.semestersContainer.querySelectorAll(".semester-column")];
+      for (const col of columns) {
+        const h3 = col.querySelector("h3");
+        if (h3 && h3.textContent === lastSemester) {
+          col.remove();
+          break;
+        }
+      }
+
+      const updatedCols = [...v.semestersContainer.querySelectorAll(".semester-column")];
+      updatedCols.forEach((col, idx) => {
         col.id = `semester-${idx + 1}`;
         col.dataset.semester = idx + 1;
-        const header = col.querySelector("h3");
-        if (header) header.textContent = v.addedSemesters[idx];
       });
 
       reEnableDropZones();
@@ -200,27 +203,12 @@ fetchCourses()
         const course = m.getCourseById(courseId);
         if (!course) return;
 
-        const currentSemester = placed.find(c => c.id === courseId)?.semester;
-        if (currentSemester === semesterNum) {
-          placed.push({ ...course, semester: semesterNum });
-          v.addCourseToSemester(course, semesterNum);
-          return;
-        }
-
-        if (currentSemester && currentSemester <= semesterNum) {
-          alert(`❌ ${course.id} cannot be moved past prerequisite courses.`);
-          return;
-        }
-
-        const prereqViolated = course.prerequisites.some(prereqId => {
-          const prereq = placed.find(c => c.id === prereqId);
-          if (prereq) return prereq.semester >= semesterNum;
-          return false;
-        });
-
-        if (prereqViolated) {
-          alert(`❌ ${course.id} cannot be taken before its prerequisites.`);
-          return;
+        const existing = document.querySelector(`[data-course-id="${courseId}"]`);
+        if (existing) {
+          const parent = existing.closest(".semester-column");
+          if (parent) {
+            existing.remove();
+          }
         }
 
         placed.push({ ...course, semester: semesterNum });
@@ -237,6 +225,7 @@ fetchCourses()
     v.renderCourseSources(grouped);
     reEnableDropZones();
 
+    // ✅ Save
     document.getElementById("save-btn").addEventListener("click", async () => {
       try {
         const semesters = [];
@@ -246,7 +235,7 @@ fetchCourses()
           if (!col) return;
 
           const selected = Array.from(col.querySelectorAll(".course-box")).map(box =>
-            box.textContent.replace("✳️", "").trim()
+            box.textContent.trim()
           );
 
           if (selected.length > 0) {
@@ -282,6 +271,7 @@ fetchCourses()
       }
     });
 
+    // ✅ Load
     document.getElementById("load-btn").addEventListener("click", async () => {
       try {
         const res = await fetch("/api/getCourses");
@@ -317,10 +307,8 @@ fetchCourses()
         });
 
         reEnableDropZones();
-
       } catch (err) {
-        console.error("Load failed:", err);
-        alert("Failed to load saved courses.");
+        console.error("❌ Load failed:", err);
       }
     });
 
