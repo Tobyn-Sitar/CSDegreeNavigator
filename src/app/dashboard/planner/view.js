@@ -144,13 +144,18 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
     const col = document.getElementById(`semester-${semesterNum}`);
     if (!col) return;
   
-    // Remove the course from anywhere it exists
+    // Find existing instance
     const existingCourseBox = document.querySelector(`[data-course-id='${course.id}']`);
+  
     if (existingCourseBox) {
-      existingCourseBox.remove();
+      const parent = existingCourseBox.closest(".semester-column");
+      // Only remove if it's already placed inside a semester column
+      if (parent) {
+        existingCourseBox.remove();
+      }
     }
   
-    // Check if semester has space
+    // Check if semester already has 6 courses
     const courseCount = col.querySelectorAll(".course-box").length;
     if (courseCount >= 6) {
       const msg = document.createElement("div");
@@ -161,10 +166,11 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
       return;
     }
   
-    // Now add course to the new semester
+    // Add course to the new semester
     const courseBox = this.renderCourseBox(course);
     col.appendChild(courseBox);
   }
+  
   
 
   enableDropZones(onDrop) {
