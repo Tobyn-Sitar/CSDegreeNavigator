@@ -4,19 +4,7 @@ export default class View {
   constructor() {
     this.semestersContainer = document.getElementById("semester-container");
     this.sourceContainer = document.getElementById("source-container");
-    
-    this.semesterOptions = [
-      'Fall 2019', 'Winter 2019', 'Spring 2020', 'Summer 2020',
-      'Fall 2020', 'Winter 2020', 'Spring 2021', 'Summer 2021',
-      'Fall 2021', 'Winter 2021', 'Spring 2022', 'Summer 2022',
-      'Fall 2022', 'Winter 2022', 'Spring 2023', 'Summer 2023',
-      'Fall 2023', 'Winter 2023', 'Spring 2024', 'Summer 2024',
-      'Fall 2024', 'Winter 2024', 'Spring 2025', 'Summer 2025',
-      'Fall 2025', 'Winter 2025', 'Spring 2026', 'Summer 2026'
-    ];
 
-    this.yearStarted = "Fall 2021";
-    this.currentIndex = this.semesterOptions.indexOf(this.yearStarted);
     this.addedSemesters = []; 
     this.currentlyHighlightedCourseId = null;
   }
@@ -47,54 +35,22 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
     return div;
   }
 
-  addSemesterBySeason(season, placedCourses = []) {
-    for (let i = this.currentIndex + 1; i < this.semesterOptions.length; i++) {
-      if (this.semesterOptions[i].startsWith(season)) {
-        const semesterLabel = this.semesterOptions[i];
-        if (this.addedSemesters.includes(semesterLabel)) return;
-
-        const col = document.createElement("div");
-        col.className = "semester-column";
-        col.id = `semester-${this.addedSemesters.length + 1}`;
-        col.dataset.semester = this.addedSemesters.length + 1;
-        col.innerHTML = `<h3>${semesterLabel}</h3>`;
-
-        this.semestersContainer.appendChild(col);
-        this.addedSemesters.push(semesterLabel);
-        this.currentIndex = i;
-        break;
-      }
-    }
-  }
-
-  addSemesterByLabel(semesterLabel, placedCourses = []) {
-    if (this.addedSemesters.includes(semesterLabel)) return;
-
-    const col = document.createElement("div");
-    col.className = "semester-column";
-    col.id = `semester-${this.addedSemesters.length + 1}`;
-    col.dataset.semester = this.addedSemesters.length + 1;
-    col.innerHTML = `<h3>${semesterLabel}</h3>`;
-
-    this.semestersContainer.appendChild(col);
-    this.addedSemesters.push(semesterLabel);
-  }
-
-  renderSemesters(num, placedCourses = []) {
+  renderSemesters(semesterLabels = [], placedCourses = []) {
     this.semestersContainer.innerHTML = "";
 
-    for (let i = 1; i <= num; i++) {
+    semesterLabels.forEach((semesterLabel) => {
       const col = document.createElement("div");
       col.className = "semester-column";
-      col.id = `semester-${i}`;
-      col.dataset.semester = i;
-      col.innerHTML = `<h3>Semester ${i}</h3>`;
+      col.dataset.label = semesterLabel;
+      col.innerHTML = `<h3>${semesterLabel}</h3>`;
       this.semestersContainer.appendChild(col);
-    }
+    });
 
     placedCourses.forEach(course => {
-      if (course.semester <= num) {
-        this.addCourseToSemester(course, course.semester);
+      const semesterCol = [...this.semestersContainer.querySelectorAll('.semester-column')]
+        .find(col => col.querySelector("h3")?.textContent === course.semesterLabel);
+      if (semesterCol) {
+        this.addCourseToSemester(course, semesterCol);
       }
     });
   }
@@ -140,38 +96,15 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
     }
   }
 
-  addCourseToSemester(course, semesterNum) {
-    const col = document.getElementById(`semester-${semesterNum}`);
-    if (!col) return;
-  
-    // Find existing instance
-    const existingCourseBox = document.querySelector(`[data-course-id='${course.id}']`);
-  
-    if (existingCourseBox) {
-      const parent = existingCourseBox.closest(".semester-column");
-      // Only remove if it's already placed inside a semester column
-      if (parent) {
-        existingCourseBox.remove();
-      }
-    }
-  
-    // Check if semester already has 6 courses
-    const courseCount = col.querySelectorAll(".course-box").length;
-    if (courseCount >= 6) {
-      const msg = document.createElement("div");
-      msg.className = "prereq-popup";
-      msg.textContent = `Semester ${semesterNum} already has 6 courses`;
-      document.body.appendChild(msg);
-      setTimeout(() => msg.remove(), 2500);
-      return;
-    }
-  
-    // Add course to the new semester
+  addCourseToSemester(course, semesterCol) {
+    if (!semesterCol) return;
+
+    const existing = semesterCol.querySelector(`[data-course-id='${course.id}']`);
+    if (existing) return;
+
     const courseBox = this.renderCourseBox(course);
-    col.appendChild(courseBox);
+    semesterCol.appendChild(courseBox);
   }
-  
-  
 
   enableDropZones(onDrop) {
     const cols = document.querySelectorAll(".semester-column");
@@ -179,8 +112,11 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
       col.addEventListener("dragover", e => e.preventDefault());
       col.addEventListener("drop", e => {
         e.preventDefault();
+        const semesterLabel = col.querySelector("h3")?.textContent;
         const courseId = e.dataTransfer.getData("text/plain");
-        onDrop(courseId, parseInt(col.dataset.semester));
+        if (semesterLabel) {
+          onDrop(courseId, semesterLabel);
+        }
       });
     });
   }
