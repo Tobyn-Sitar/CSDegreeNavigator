@@ -6,6 +6,7 @@ export default class View {
     this.sourceContainer = document.getElementById("source-container");
     
     this.semesterOptions = [
+      'Fall 2018', 'Winter 2018', 'Spring 2019', 'Summer 2019',
       'Fall 2019', 'Winter 2019', 'Spring 2020', 'Summer 2020',
       'Fall 2020', 'Winter 2020', 'Spring 2021', 'Summer 2021',
       'Fall 2021', 'Winter 2021', 'Spring 2022', 'Summer 2022',
@@ -15,55 +16,55 @@ export default class View {
       'Fall 2025', 'Winter 2025', 'Spring 2026', 'Summer 2026'
     ];
 
-    this.yearStarted = "Fall 2021";
-    this.currentIndex = this.semesterOptions.indexOf(this.yearStarted);
+    //this.yearStarted = "Fall 2021";
+    //this.currentIndex = this.semesterOptions.indexOf(this.yearStarted);
     this.addedSemesters = []; 
     this.currentlyHighlightedCourseId = null;
 
 
-    this.getYearStarted();
+    //this.getYearStarted();
   }
 
-  async getYearStarted() {
-    try {
-      const res = await fetch("/api/getYearStarted");
-      if (!res.ok) throw new Error("Failed to fetch yearStarted");
-
-      const data = await res.json();
-      console.log("Fetched yearStarted from API:", data);
-
-      if (data.yearStarted && this.semesterOptions.includes(data.yearStarted)) {
-        this.yearStarted = data.yearStarted;
-        this.currentIndex = this.semesterOptions.indexOf(this.yearStarted);
-      } else {
-        console.warn("Invalid or missing yearStarted in response.");
-      }
-    } catch (error) {
-      console.error("Error fetching yearStarted:", error);
-    }
+  insertSemesterAt(label, position) {
+    const col = document.createElement("div");
+    col.className = "semester-column";
+    col.id = `semester-${position + 1}`;
+    col.dataset.semester = position + 1;
+    col.innerHTML = `<h3>${label}</h3>`;
+  
+    // Insert before correct column
+    const referenceCol = this.semestersContainer.children[position];
+    this.semestersContainer.insertBefore(col, referenceCol);
+    this.addedSemesters.splice(position, 0, label);
+  
+    // Reindex columns
+    this.reindexSemesters();
+  }
+  
+  addSemesterAtEnd(label) {
+    const col = document.createElement("div");
+    col.className = "semester-column";
+    col.id = `semester-${this.addedSemesters.length + 1}`;
+    col.dataset.semester = this.addedSemesters.length + 1;
+    col.innerHTML = `<h3>${label}</h3>`;
+  
+    this.semestersContainer.appendChild(col);
+    this.addedSemesters.push(label);
+  
+    this.reindexSemesters();
+  }
+  
+  reindexSemesters() {
+    const columns = this.semestersContainer.querySelectorAll(".semester-column");
+    columns.forEach((col, idx) => {
+      col.id = `semester-${idx + 1}`;
+      col.dataset.semester = idx + 1;
+      const header = col.querySelector("h3");
+      if (header) header.textContent = this.addedSemesters[idx];
+    });
   }
 
-  addSemesterBySeason(season, placedCourses = []) {
-    for (let i = this.currentIndex + 1; i < this.semesterOptions.length; i++) {
-      if (this.semesterOptions[i].startsWith(season)) {
-        const semesterLabel = this.semesterOptions[i];
-
-        // Prevent duplicate semesters
-        if (this.addedSemesters.includes(semesterLabel)) return;
-
-        const col = document.createElement("div");
-        col.className = "semester-column";
-        col.id = `semester-${this.addedSemesters.length + 1}`;
-        col.dataset.semester = this.addedSemesters.length + 1;
-        col.innerHTML = `<h3>${semesterLabel}</h3>`;
-
-        this.semestersContainer.appendChild(col);
-        this.addedSemesters.push(semesterLabel);
-        this.currentIndex = i;
-        break;
-      }
-    }
-  }
+  
 
   renderSemesters(num, placedCourses = []) {
     this.semestersContainer.innerHTML = "";
