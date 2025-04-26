@@ -27,11 +27,43 @@ fetch('/courses.json')
     let numOfSemesters = 0;
 
     document.getElementById("add-semester-btn").addEventListener("click", () => {
-      const checkboxes = document.querySelectorAll('#semester-options input[name="semester"]:checked');
-      checkboxes.forEach((checkbox) => {
-        const season = checkbox.value;
-        v.addSemesterBySeason(season);
-      });
+      const selectedSeason = document.querySelector('#semester-options input[name="semester"]:checked')?.value;
+      const selectedYear = document.getElementById("year-started")?.value;
+    
+      if (!selectedSeason || !selectedYear) {
+        alert("Please select both a semester and a year.");
+        return;
+      }
+    
+      const fullSemester = `${selectedSeason} ${selectedYear}`;
+    
+      if (!v.semesterOptions.includes(fullSemester)) {
+        alert("Invalid semester selection.");
+        return;
+      }
+    
+      if (v.addedSemesters.includes(fullSemester)) {
+        alert(`${fullSemester} is already added.`);
+        return;
+      }
+    
+      // Find correct insert position to maintain order
+      const insertIndex = v.semesterOptions.indexOf(fullSemester);
+      let added = false;
+    
+      for (let i = 0; i < v.addedSemesters.length; i++) {
+        const currentIndex = v.semesterOptions.indexOf(v.addedSemesters[i]);
+        if (insertIndex < currentIndex) {
+          v.insertSemesterAt(fullSemester, i);
+          added = true;
+          break;
+        }
+      }
+    
+      if (!added) {
+        v.addSemesterAtEnd(fullSemester);
+      }
+    
       reEnableDropZones();
     });
 
@@ -39,64 +71,82 @@ fetch('/courses.json')
       v.enableDropZones((courseId, semesterNum) => {
         const course = m.getCourseById(courseId);
         if (!course) return;
-
-        const currentSemester = placed.find(c => c.id === courseId)?.semester;
-
-        if (currentSemester === semesterNum) {
-          placed.push({ ...course, semester: semesterNum });
-          v.addCourseToSemester(course, semesterNum);
-          return;
-        }
-
-        if (currentSemester && currentSemester <= semesterNum) {
+    
+        const currentPlacement = placed.find(c => c.id === courseId);
+        const currentSemester = currentPlacement?.semester;
+    
+        // Find dependent courses (i.e., where this course is a prereq)
+        const dependents = placed.filter(c => c.prerequisites.includes(courseId));
+        const earliestDependentSemester = dependents.length > 0
+          ? Math.min(...dependents.map(c => c.semester))
+          : Infinity;
+    
+        // 🚫 Cannot move course past any course that depends on it
+        if (semesterNum >= earliestDependentSemester) {
           const msg = document.createElement("div");
           msg.className = "prereq-popup";
-          msg.textContent = `❌ ${course.id} cannot be moved past the courses it serves as a prerequisite for.`;
+          msg.textContent = `❌ ${course.id} cannot be placed after course(s) that require it as a prerequisite.`;
           document.body.appendChild(msg);
           setTimeout(() => msg.remove(), 3000);
           return;
         }
-
-        const prereqViolated = course.prerequisites.some(pr => {
-          const prereq = placed.find(c => c.id === pr);
+    
+        // ✅ For placing a new course, check that all prerequisites are met
+        const prereqViolated = course.prerequisites.some(prId => {
+          const prereq = placed.find(c => c.id === prId);
           return !prereq || prereq.semester >= semesterNum;
         });
-
+    
         if (prereqViolated) {
-          const conflictingPrereqs = course.prerequisites.map(prId => {
+          const missing = course.prerequisites.filter(prId => {
             const prereq = placed.find(c => c.id === prId);
-            return prereq ? prereq.id : null;
-          }).filter(id => id !== null);
-
+            return !prereq || prereq.semester >= semesterNum;
+          });
+    
           const msg = document.createElement("div");
           msg.className = "prereq-popup";
-          msg.textContent = `❌ ${course.id} cannot be taken before its prerequisite(s): ${conflictingPrereqs.join(', ')}.`;
+          msg.textContent = `❌ ${course.id} cannot be placed before its prerequisite(s): ${missing.join(", ")}`;
           document.body.appendChild(msg);
           setTimeout(() => msg.remove(), 3000);
           return;
         }
-
-        placed.push({ ...course, semester: semesterNum });
+    
+        // Update placement
+        if (currentPlacement) {
+          currentPlacement.semester = semesterNum;
+        } else {
+          placed.push({ ...course, semester: semesterNum });
+        }
+    
         v.addCourseToSemester(course, semesterNum);
       });
     }
+    
 
     document.getElementById("remove-semester-btn").addEventListener("click", () => {
-      const lastSemester = v.addedSemesters[v.addedSemesters.length - 1];
-      if (!lastSemester) {
-        alert("No semesters to remove.");
+      const selectedSeason = document.querySelector('#semester-options input[name="semester"]:checked')?.value;
+      const selectedYear = document.getElementById("year-started")?.value;
+    
+      if (!selectedSeason || !selectedYear) {
+        alert("Please select both a semester and a year to remove.");
         return;
       }
-
-      const indexToRemove = v.addedSemesters.length - 1;
-      const col = document.querySelector(`.semester-column[data-semester="${indexToRemove + 1}"]`);
+    
+      const fullSemester = `${selectedSeason} ${selectedYear}`;
+      const index = v.addedSemesters.indexOf(fullSemester);
+      if (index === -1) {
+        alert(`${fullSemester} is not currently added.`);
+        return;
+      }
+    
+      // Remove the column
+      const col = document.querySelector(`.semester-column[data-semester="${index + 1}"]`);
       if (col) col.remove();
-
+    
+      // Remove associated courses
       for (let i = placed.length - 1; i >= 0; i--) {
-        if (placed[i].semester === indexToRemove + 1) {
+        if (placed[i].semester === index + 1) {
           const course = placed[i];
-
-          // Move back to source column
           const sourceCol = v.sourceContainer.querySelector(`.source-column[data-type="${course.type}"]`);
           if (sourceCol) {
             const existing = sourceCol.querySelector(`[data-course-id='${course.id}']`);
@@ -106,42 +156,29 @@ fetch('/courses.json')
               div.textContent = course.id;
               div.dataset.courseId = course.id;
               div.setAttribute("draggable", true);
-
-              div.addEventListener("dragstart", e => {
-                e.dataTransfer.setData("text/plain", course.id);
-              });
-
-              div.addEventListener("click", () => {
-                v.highlightPrereqs(course.id, placed);
-              });
-
+              div.addEventListener("dragstart", e => e.dataTransfer.setData("text/plain", course.id));
+              div.addEventListener("click", () => v.highlightPrereqs(course.id, placed));
               sourceCol.appendChild(div);
             } else {
               existing.classList.remove("grayed-out");
             }
           }
-
           placed.splice(i, 1);
         }
       }
+    
+      // Update state and reindex
+      v.addedSemesters.splice(index, 1);
+      v.reindexSemesters();
 
-      v.addedSemesters.pop();
+      // 🔁 Update all placed course semester numbers after the removed semester
+for (let i = 0; i < placed.length; i++) {
+  if (placed[i].semester > index + 1) {
+    placed[i].semester -= 1;
+  }
+}
 
-      const lastAdded = v.addedSemesters[v.addedSemesters.length - 1];
-      if (lastAdded) {
-        v.currentIndex = v.semesterOptions.indexOf(lastAdded);
-      } else {
-        v.currentIndex = v.semesterOptions.indexOf(v.yearStarted); // Reset if none left
-      }
-
-      const columns = v.semestersContainer.querySelectorAll(".semester-column");
-      columns.forEach((col, idx) => {
-        col.id = `semester-${idx + 1}`;
-        col.dataset.semester = idx + 1;
-        const header = col.querySelector("h3");
-        if (header) header.textContent = v.addedSemesters[idx];
-      });
-
+    
       reEnableDropZones();
     });
 
