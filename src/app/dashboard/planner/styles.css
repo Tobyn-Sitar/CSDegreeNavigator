@@ -280,3 +280,41 @@ body {
   z-index: 9999;
 }
 
+
+.semester-options-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* vertical centering */
+  gap: 16px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.save-load-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #f0f0f0;
+  padding: 12px;
+  border: 2px solid #0074D9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  align-self: center;
+}
+
+.save-load-box .save-btn,
+.save-load-box .load-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.save-load-box .save-btn:hover,
+.save-load-box .load-btn:hover {
+  background-color: #0056b3;
+}
