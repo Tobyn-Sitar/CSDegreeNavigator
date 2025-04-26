@@ -21,6 +21,32 @@ export default class View {
     this.currentlyHighlightedCourseId = null;
   }
 
+  renderCourseBox(course) {
+    const div = document.createElement("div");
+    div.className = "course-box";
+    div.textContent = course.id;
+    div.dataset.courseId = course.id;
+    div.setAttribute("draggable", true);
+
+    div.title = course.tooltipInfo
+      ? (course.tooltipInfo.offerings.length > 0
+          ? course.tooltipInfo.offerings.map(offering => `
+${offering.term}
+Campus: ${offering.campus}
+Instructor(s): ${offering.instructors}
+Days: ${offering.meetingDays}
+Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
+`).join("\n")
+          : "No offerings available")
+      : "";
+
+    div.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", course.id);
+    });
+
+    return div;
+  }
+
   addSemesterBySeason(season, placedCourses = []) {
     for (let i = this.currentIndex + 1; i < this.semesterOptions.length; i++) {
       if (this.semesterOptions[i].startsWith(season)) {
@@ -104,36 +130,8 @@ export default class View {
       });
 
       list.forEach(course => {
-        const div = document.createElement("div");
-        div.className = "course-box";
-        div.textContent = course.tooltipInfo ? `${course.id} ✳️` : course.id;
-        div.title = course.tooltipInfo
-  ? (course.tooltipInfo.offerings.length > 0
-      ? course.tooltipInfo.offerings.map(offering => `
-${offering.term}
-Instructor(s): ${offering.instructors}
-Start: ${offering.startOn}
-End: ${offering.endOn}
-Days: ${offering.meetingDays}
-Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
-`).join("\n")
-      : "No offerings available")
-  : "";
-
-
-        div.setAttribute("draggable", true);
-        div.dataset.courseId = course.id;
-
-        div.addEventListener("dragstart", e => {
-          e.dataTransfer.setData("text/plain", course.id);
-        });
-
-        div.addEventListener("click", () => {
-          const allCourses = Object.values(groupedCourses).flat();
-          this.highlightPrereqs(course.id, allCourses);
-        });
-
-        column.appendChild(div);
+        const courseBox = this.renderCourseBox(course);
+        column.appendChild(courseBox);
       });
 
       wrapper.appendChild(header);
@@ -146,9 +144,13 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
     const col = document.getElementById(`semester-${semesterNum}`);
     if (!col) return;
   
-    const existing = col.querySelector(`[data-course-id='${course.id}']`);
-    if (existing) return;
+    // Remove the course from anywhere it exists
+    const existingCourseBox = document.querySelector(`[data-course-id='${course.id}']`);
+    if (existingCourseBox) {
+      existingCourseBox.remove();
+    }
   
+    // Check if semester has space
     const courseCount = col.querySelectorAll(".course-box").length;
     if (courseCount >= 6) {
       const msg = document.createElement("div");
@@ -159,32 +161,9 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
       return;
     }
   
-    const div = document.createElement("div");
-    div.className = "course-box";
-    div.textContent = course.tooltipInfo ? `${course.id} ✳️` : course.id;
-  
-    div.title = course.tooltipInfo
-  ? (course.tooltipInfo.offerings.length > 0
-      ? course.tooltipInfo.offerings.map(offering => `
-${offering.term}
-Instructor(s): ${offering.instructors}
-Start: ${offering.startOn}
-End: ${offering.endOn}
-Days: ${offering.meetingDays}
-Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
-`).join("\n")
-      : "No offerings available")
-  : "";
-
-  
-    div.setAttribute("draggable", true);
-    div.dataset.courseId = course.id;
-  
-    div.addEventListener("dragstart", e => {
-      e.dataTransfer.setData("text/plain", course.id);
-    });
-  
-    col.appendChild(div);
+    // Now add course to the new semester
+    const courseBox = this.renderCourseBox(course);
+    col.appendChild(courseBox);
   }
   
 

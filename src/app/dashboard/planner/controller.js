@@ -60,16 +60,16 @@ async function fetchCourses() {
       }
     
       return {
-        term: match.termCode === "202530" ? "Spring 2025" : "Fall 2025",
+        term: match.termCode === "202510" ? "Spring 2025" :
+              match.termCode === "202530" ? "Fall 2025" :
+              "Unknown",
         instructors: instructorNames,
-        startOn: match.startOn ?? "TBD",
-        endOn: match.endOn ?? "TBD",
+        campus: match.campus ?? "TBD",
         meetingDays: days || "TBD",
         meetingStartTime: formatTime(firstMeeting.meetingBeginTime),
         meetingEndTime: formatTime(firstMeeting.meetingEndTime)
       };
-    });
-    
+    });  
     
 
     // Remove duplicate offerings (optional improvement)
