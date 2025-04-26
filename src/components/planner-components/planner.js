@@ -45,7 +45,7 @@ checkboxes.forEach((checkbox) => {
 
     <div className="semester-buttons">
       <button id="add-semester-btn">Add Semester</button>
-      <button id="remove-semester-btn" className="remove-semester-btn">Remove Last Semester</button>
+      <button id="remove-semester-btn" className="remove-semester-btn">Remove Semester</button>
     </div>
 
     {/* Year Started Dropdown */}

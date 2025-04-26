@@ -6,6 +6,7 @@ export default class View {
     this.sourceContainer = document.getElementById("source-container");
     
     this.semesterOptions = [
+      'Fall 2018', 'Winter 2018', 'Spring 2019', 'Summer 2019',
       'Fall 2019', 'Winter 2019', 'Spring 2020', 'Summer 2020',
       'Fall 2020', 'Winter 2020', 'Spring 2021', 'Summer 2021',
       'Fall 2021', 'Winter 2021', 'Spring 2022', 'Summer 2022',
