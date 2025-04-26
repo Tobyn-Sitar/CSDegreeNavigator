@@ -12,6 +12,30 @@
     "defaultSemester": 2
   },
   {
+    "id": "CSC110",
+    "name": "CSC110 - Fundamentals in Computer Science",
+    "prerequisites": [],
+    "defaultSemester": 1
+  },
+  {
+    "id": "CSC112",
+    "name": "CSC112 - Programming & Data Science",
+    "prerequisites": [],
+    "defaultSemester": 1
+  },
+  {
+    "id": "CSC115",
+    "name": "CSC115 - Introduction to Computer Programming",
+    "prerequisites": [],
+    "defaultSemester": 1
+  },
+  {
+    "id": "CSC116",
+    "name": "CSC116 - Computational Thinking for Problem Solving",
+    "prerequisites": [],
+    "defaultSemester": 1
+  },
+  {
     "id": "CSC141",
     "name": "CSC141 - Computer Science I (Python)",
     "prerequisites": [],
@@ -26,7 +50,7 @@
   {
     "id": "CSC220",
     "name": "CSC220 - Foundations of Computer Science",
-    "prerequisites": ["CSC240", "MAT151", "MAT161"],
+    "prerequisites": ["MAT151", "MAT161"],
     "defaultSemester": 4
   },
   {
@@ -43,9 +67,21 @@
   },
   {
     "id": "CSC241",
-    "name": "CSC241 - Data Structures and Algorithms",
+    "name": "CSC241 - Data Structures & Algorithms",
     "prerequisites": ["CSC240", "MAT151", "MAT161"],
     "defaultSemester": 4
+  },
+  {
+    "id": "CSC242",
+    "name": "CSC242 - Computer Organization",
+    "prerequisites": ["CSC142", "MAT151"],
+    "defaultSemester": 4
+  },
+  {
+    "id": "CSC300",
+    "name": "CSC300 - Cooperative Programming",
+    "prerequisites": ["CSC141","CSC142","CSC240","CSC241", "MAT151", "MAT161"],
+    "defaultSemester": 6
   },
   {
     "id": "CSC301",
@@ -68,38 +104,38 @@
   {
     "id": "CSC321",
     "name": "CSC321 - Database Management Systems",
-    "prerequisites": ["CSC241"],
+    "prerequisites": ["CSC142","CSC241"],
     "defaultSemester": 5
   },
   {
     "id": "CSC331",
     "name": "CSC331 - Operating Systems",
-    "prerequisites": ["CSC231", "CSC241", "CSC220"],
+    "prerequisites": ["CSC231", "CSC241", "CSC220","CSC240"],
     "defaultSemester": 6
   },
   {
     "id": "CSC335",
     "name": "CSC335 - Data Communications and Networking I",
-    "prerequisites": ["CSC241"],
+    "prerequisites": ["CSC240"],
     "defaultSemester": 5
   },
   {
     "id": "CSC345",
     "name": "CSC345 - Programming Language Concepts and Paradigms",
     "prerequisites": ["CSC220", "CSC241"],
-    "defaultSemester": 5
+    "defaultSemester": 6
   },
   {
     "id": "CSC381",
     "name": "CSC381 - Data Science",
-    "prerequisites": ["CSC240", "CSC241"],
+    "prerequisites": ["CSC231","CSC240", "CSC241"],
     "defaultSemester": 7
   },
   {
     "id": "CSC400",
     "name": "CSC400 - Internship",
-    "prerequisites": ["CSC241"],
-    "defaultSemester": 8
+    "prerequisites": ["CSC241","MAT151","MAT161"],
+    "defaultSemester": 7
   },
   {
     "id": "CSC402",
@@ -110,13 +146,13 @@
   {
     "id": "CSC404",
     "name": "CSC404 - Software Testing",
-    "prerequisites": ["CSC402"],
+    "prerequisites": ["CSC240","CSC241"],
     "defaultSemester": 8
   },
   {
     "id": "CSC416",
     "name": "CSC416 - Design and Construction of Compilers",
-    "prerequisites": ["CSC220", "CSC231"],
+    "prerequisites": ["CSC220", "CSC240","CSC241","CSC231"],
     "defaultSemester": 7
   },
   {
@@ -146,7 +182,7 @@
   {
     "id": "CSC468",
     "name": "CSC468 - Introduction to Cloud Computing",
-    "prerequisites": ["CSC331"],
+    "prerequisites": ["CSC231"],
     "defaultSemester": 7
   },
   {
@@ -174,6 +210,12 @@
     "defaultSemester": 8
   },
   {
+    "id": "CSC481",
+    "name": "CSC481 - Artifical Intelligence",
+    "prerequisites": ["CSC220","CSC241"],
+    "defaultSemester": 8
+  },
+  {
     "id": "CSC490",
     "name": "CSC490 - Independent Project in Computer Science",
     "prerequisites": [],
@@ -189,6 +231,12 @@
     "id": "CSC496",
     "name": "CSC496 - Topics in Complex Large-Scale Systems",
     "prerequisites": ["CSC231", "CSC241", "CSC240", "CSC220"],
+    "defaultSemester": 8
+  },
+  {
+    "id": "CSC497",
+    "name": "CSC497 - Topics in Computer Security",
+    "prerequisites": ["CSC231"],
     "defaultSemester": 8
   },
   {
