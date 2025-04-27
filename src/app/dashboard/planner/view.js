@@ -7,6 +7,7 @@ export default class View {
 
     this.addedSemesters = []; 
     this.currentlyHighlightedCourseId = null;
+    this.allCourses = []; // to be set in renderCourseSources
   }
 
   renderCourseBox(course) {
@@ -30,6 +31,11 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
 
     div.addEventListener("dragstart", e => {
       e.dataTransfer.setData("text/plain", course.id);
+    });
+
+    // 🔥 Highlight on click
+    div.addEventListener("click", () => {
+      this.highlightPrereqs(course.id, this.allCourses);
     });
 
     return div;
@@ -57,6 +63,9 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
 
   renderCourseSources(groupedCourses) {
     this.sourceContainer.innerHTML = "";
+
+    // ✅ Save all courses
+    this.allCourses = Object.values(groupedCourses).flat();
 
     for (const [group, list] of Object.entries(groupedCourses)) {
       const wrapper = document.createElement("div");
@@ -121,37 +130,37 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
     });
   }
 
-  highlightPrereqs(courseId, placedCourses, depth = 0, visited = new Set()) {
-    if (depth === 0) {
-      if (this.currentlyHighlightedCourseId === courseId) {
-        this.currentlyHighlightedCourseId = null;
-        document.querySelectorAll(".course-box").forEach(el => {
-          el.style.backgroundColor = "";
-        });
-        return;
-      } else {
-        this.currentlyHighlightedCourseId = courseId;
-        document.querySelectorAll(".course-box").forEach(el => {
-          el.style.backgroundColor = "";
-        });
-      }
-    }
-
-    if (visited.has(courseId)) return;
-    visited.add(courseId);
-
-    const course = placedCourses.find(c => c.id === courseId);
-    if (!course) return;
-
-    const courseEl = document.querySelector(`[data-course-id='${course.id}']`);
-    if (courseEl) {
-      let opacity = 1 - depth * 0.3;
-      courseEl.style.backgroundColor = `rgba(128, 0, 128, ${opacity})`;
-    }
-
-    course.prerequisites.forEach(prereqId => {
-      this.highlightPrereqs(prereqId, placedCourses, depth + 1, visited);
+  highlightPrereqs(courseId, placedCourses) {
+    document.querySelectorAll(".course-box").forEach(el => {
+      el.style.backgroundColor = "";
     });
+
+    if (this.currentlyHighlightedCourseId === courseId) {
+      this.currentlyHighlightedCourseId = null;
+      return;
+    }
+
+    this.currentlyHighlightedCourseId = courseId;
+
+    const highlightRecursive = (id, depth = 0) => {
+      const course = placedCourses.find(c => c.id === id);
+      if (!course) return;
+
+      const courseEl = document.querySelector(`[data-course-id='${course.id}']`);
+      if (!courseEl) return;
+
+      if (depth === 0) {
+        courseEl.style.backgroundColor = "rgba(75, 0, 130, 0.8)";
+      } else {
+        courseEl.style.backgroundColor = `rgba(128, 0, 128, ${0.4 / depth})`;
+      }
+
+      course.prerequisites.forEach(prereqId => {
+        highlightRecursive(prereqId, depth + 1);
+      });
+    };
+
+    highlightRecursive(courseId);
   }
 
   drawD3Lines(placedCourses) {
