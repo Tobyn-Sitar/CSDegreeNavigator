@@ -35,9 +35,6 @@ export default function HomeForm({ children }) {
             <Link href="/" className="hover:text-secondary transition">
               Home
             </Link>
-            <Link href="/coursesTree" className="hover:text-secondary transition">
-              Courses
-            </Link>
             <Link href="/contact" className="hover:text-secondary transition">
               Contact
             </Link>
