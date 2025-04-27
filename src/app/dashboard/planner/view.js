@@ -4,10 +4,8 @@ export default class View {
   constructor() {
     this.semestersContainer = document.getElementById("semester-container");
     this.sourceContainer = document.getElementById("source-container");
-
     this.addedSemesters = []; 
     this.currentlyHighlightedCourseId = null;
-    this.allCourses = []; // to be set in renderCourseSources
   }
 
   renderCourseBox(course) {
@@ -17,25 +15,27 @@ export default class View {
     div.dataset.courseId = course.id;
     div.setAttribute("draggable", true);
 
-    div.title = course.tooltipInfo
-      ? (course.tooltipInfo.offerings.length > 0
+    if (course.tooltipInfo) {
+      div.title = `${course.tooltipInfo.title}\n` +
+        (course.tooltipInfo.offerings.length > 0
           ? course.tooltipInfo.offerings.map(offering => `
 ${offering.term}
 Campus: ${offering.campus}
 Instructor(s): ${offering.instructors}
 Days: ${offering.meetingDays}
-Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
-`).join("\n")
-          : "No offerings available")
-      : "";
+Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}`).join("\n")
+          : "No offerings available");
+    }
 
     div.addEventListener("dragstart", e => {
       e.dataTransfer.setData("text/plain", course.id);
     });
 
-    // 🔥 Highlight on click
     div.addEventListener("click", () => {
-      this.highlightPrereqs(course.id, this.allCourses);
+      const allCourses = Object.values(window.allCourses || []);
+      if (this.highlightPrereqs && allCourses.length > 0) {
+        this.highlightPrereqs(course.id, allCourses);
+      }
     });
 
     return div;
@@ -64,8 +64,7 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}
   renderCourseSources(groupedCourses) {
     this.sourceContainer.innerHTML = "";
 
-    // ✅ Save all courses
-    this.allCourses = Object.values(groupedCourses).flat();
+    window.allCourses = Object.values(groupedCourses).flat();
 
     for (const [group, list] of Object.entries(groupedCourses)) {
       const wrapper = document.createElement("div");

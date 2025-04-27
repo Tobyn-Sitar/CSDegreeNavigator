@@ -50,21 +50,6 @@ const data = {
       url: "/dashboard/planner",
       icon: IconListDetails,
     },
-    {
-      title: "Progress",
-      url: "/dashboard/progress",
-      icon: IconChartBar,
-    },
-    {
-      title: "Updates",
-      url: "#",
-      icon: IconFolder,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
-    },
   ],
   navClouds: [
     {
