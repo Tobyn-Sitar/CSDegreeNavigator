@@ -116,11 +116,8 @@ fetchCourses()
       });
     }
 
-    const grouped = {
-      csc: data.filter(c => c.type === 'csc'),
-      mat: data.filter(c => c.type === 'mat'),
-      csc400: data.filter(c => c.type === 'csc400')
-    };
+    const grouped = m.getGroupedCourses();
+
 
     v.renderCourseSources(grouped);
     reEnableDropZones();

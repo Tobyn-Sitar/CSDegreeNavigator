@@ -3,13 +3,169 @@
     "id": "MAT151",
     "name": "MAT151 - Discrete Mathematics",
     "prerequisites": [],
+    "requirement": "math",
     "defaultSemester": 1
   },
   {
     "id": "MAT161",
     "name": "MAT161 - Calculus I",
     "prerequisites": [],
+    "requirement": "math",
     "defaultSemester": 2
+  },
+  {
+    "id": "MAT162",
+    "name": "MAT162 - Calculus II",
+    "prerequisites": [],
+    "requirement": "math",
+    "defaultSemester": 3
+  },
+  {
+    "id": "MAT121",
+    "name": "MAT121 - Statistics I",
+    "prerequisites": [],
+    "requirement": "math",
+    "defaultSemester": 2
+  },
+  {
+    "id": "STA200",
+    "name": "STA200 - Statistics II",
+    "prerequisites": [],
+    "requirement": "math",
+    "defaultSemester": 3
+  },
+  {
+    "id": "FYE100",
+    "name": "FYE100 - First Year Experience",
+    "prerequisites": [],
+    "requirement": "FYE",
+    "defaultSemester": 1
+  },
+  {
+    "id": "Art",
+    "name": "Art",
+    "prerequisites": [],
+    "requirement": "art",
+    "defaultSemester": 1
+  },
+  {
+    "id": "Interdisciplinary",
+    "name": "Interdisciplinary",
+    "prerequisites": [],
+    "requirement": "interdisciplinary",
+    "defaultSemester": 2
+  },
+  {
+    "id": "WRT100",
+    "name": "WRT100 - Writing I",
+    "prerequisites": [],
+    "requirement": "writing",
+    "defaultSemester": 2
+  },
+  {
+    "id": "WRT200",
+    "name": "WRT200 - Writing II",
+    "prerequisites": [],
+    "requirement": "writing",
+    "defaultSemester": 2
+  },
+  {
+    "id": "HUM 1",
+    "name": "HUM 1 - Humanities I",
+    "prerequisites": [],
+    "requirement": "humanities",
+    "defaultSemester": 2
+  },
+  {
+    "id": "HUM 2",
+    "name": "HUM 2 - humanities II",
+    "prerequisites": [],
+    "requirement": "humanities",
+    "defaultSemester": 4
+  },
+  {
+    "id": "ENG368",
+    "name": "ENG368 - Advanced Writing and Communication",
+    "prerequisites": [],
+    "requirement": "communication",
+    "defaultSemester": 1
+  },
+  {
+    "id": "ENG371",
+    "name": "ENG371 - Technical Writing",
+    "prerequisites": [],
+    "requirement": "communication",
+    "defaultSemester": 1
+  },
+  {
+    "id": "SPK208",
+    "name": "SPK208 - Public Speaking",
+    "prerequisites": [],
+    "requirement": "communication",
+    "defaultSemester": 1
+  },
+  {
+    "id": "SPK230",
+    "name": "SPK230 - Interpersonal Communication",
+    "prerequisites": [],
+    "requirement": "communication",
+    "defaultSemester": 1
+  },
+  {
+    "id": "SPK199",
+    "name": "SPK199 - Communication in the Digital Age",
+    "prerequisites": [],
+    "requirement": "communication",
+    "defaultSemester": 1
+  },
+  {
+    "id": "SPK300",
+    "name": "SPK300 - Speaking Emphasis 300/400 level",
+    "prerequisites": [],
+    "requirement": "communication",
+    "defaultSemester": 2
+  },
+  {
+    "id": "BIO110",
+    "name": "BIO110 - Introduction to Biology",
+    "prerequisites": [],
+    "requirement": "science",
+    "defaultSemester": 1
+  },
+  {
+    "id": "CHE103",
+    "name": "CHE103 - General Chemistry I",
+    "prerequisites": [],
+    "requirement": "science",
+    "defaultSemester": 1
+  },
+  {
+    "id": "CRL103",
+    "name": "CRL103 - Chemistry Lab",
+    "prerequisites": [],
+    "requirement": "science",
+    "defaultSemester": 1
+  },
+  {
+    "id": "ESS101",
+    "name": "ESS101 - Environmental Science",
+    "prerequisites": [],
+    "requirement": "science",
+    "defaultSemester": 1
+  },
+  {
+    "id": "PHY130",
+    "name": "PHY130 - General Physics I",
+    "prerequisites": [],
+    "requirement": "science",
+    "defaultSemester": 1
+  },
+  {
+    "id": "PHY170",
+    "name": "PHY170 - General Physics II",
+    "prerequisites": [],
+    "requirement": "science",
+    "defaultSemester": 1
   },
   {
     "id": "CSC110",

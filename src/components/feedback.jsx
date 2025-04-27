@@ -1,30 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
-export default function FeedbackForm({ children }) {
+export default function FeedbackForm() {
   const router = useRouter();
   const { setTheme, theme } = useTheme();
 
-  const [messages, setMessages] = useState([
-    { name: "John", message: "This website is amazing!" },
-    { name: "Jane", message: "I found the courses really helpful!" },
-    { name: "Alice", message: "I love the layout of the site!" },
-  ]);
-
+  const [messages, setMessages] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newMessage, setNewMessage] = useState("");
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    fetch("/api/feedback")
+      .then(res => res.json())
+      .then(data => setMessages(data))
+      .catch(err => console.error("Failed to load feedback", err));
+  }, []);
+
+  const handleSubmit = async () => {
     if (newMessage.trim()) {
-      setMessages([{ name: "Anonymous", message: newMessage }, ...messages]);
-      setNewMessage("");
-      setShowModal(false);
+      const res = await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: newMessage }),
+      });
+
+      if (res.ok) {
+        const saved = await res.json();
+        setMessages([saved, ...messages]);
+        setNewMessage("");
+        setShowModal(false);
+      } else {
+        console.error("Failed to submit feedback");
+      }
     }
   };
 
@@ -39,7 +52,6 @@ export default function FeedbackForm({ children }) {
           </div>
           <nav className="navbar hidden md:flex space-x-6 text-lg">
             <Link href="/">Home</Link>
-            <Link href="/coursesTree">Courses</Link>
             <Link href="/contact">Contact</Link>
             <Link href="/feedback">Feedback</Link>
           </nav>
@@ -65,7 +77,7 @@ export default function FeedbackForm({ children }) {
           <div className="mt-8 space-y-6">
             {messages.map((msg, index) => (
               <div key={index} className="bg-[#f3f3f3] dark:bg-[#444444] text-black dark:text-white p-6 rounded-xl w-full shadow-md">
-                <p className="font-semibold">{msg.name}:</p>
+                <p className="font-semibold">Anonymous:</p>
                 <p>{msg.message}</p>
               </div>
             ))}

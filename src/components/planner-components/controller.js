@@ -73,7 +73,7 @@ fetchCourses()
 
     document.getElementById("add-semester-btn").addEventListener("click", () => {
       const selectedSeason = document.querySelector('#semester-options input[name="semester"]:checked')?.value;
-      const selectedYear = document.getElementById("select-year")?.value;  // ← fixed ID
+      const selectedYear = document.getElementById("year-started")?.value;
       if (!selectedSeason || !selectedYear) {
         alert("Please select both a semester and a year.");
         return;
@@ -91,7 +91,7 @@ fetchCourses()
     
     document.getElementById("remove-semester-btn").addEventListener("click", () => {
       const selectedSeason = document.querySelector('#semester-options input[name="semester"]:checked')?.value;
-      const selectedYear = document.getElementById("select-year")?.value;  // ← fixed ID
+      const selectedYear = document.getElementById("year-started")?.value;
       if (!selectedSeason || !selectedYear) {
         alert("Please select both a semester and a year to remove.");
         return;
@@ -116,11 +116,8 @@ fetchCourses()
       });
     }
 
-    const grouped = {
-      csc: data.filter(c => c.type === 'csc'),
-      mat: data.filter(c => c.type === 'mat'),
-      csc400: data.filter(c => c.type === 'csc400')
-    };
+    const grouped = m.getGroupedCourses();
+
 
     v.renderCourseSources(grouped);
     reEnableDropZones();
