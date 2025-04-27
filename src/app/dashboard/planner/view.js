@@ -4,67 +4,125 @@ export default class View {
   constructor() {
     this.semestersContainer = document.getElementById("semester-container");
     this.sourceContainer = document.getElementById("source-container");
-    this.addedSemesters = []; 
+
+    this.semesterOptions = [
+      'Fall 2018', 'Winter 2018', 'Spring 2019', 'Summer 2019',
+      'Fall 2019', 'Winter 2019', 'Spring 2020', 'Summer 2020',
+      'Fall 2020', 'Winter 2020', 'Spring 2021', 'Summer 2021',
+      'Fall 2021', 'Winter 2021', 'Spring 2022', 'Summer 2022',
+      'Fall 2022', 'Winter 2022', 'Spring 2023', 'Summer 2023',
+      'Fall 2023', 'Winter 2023', 'Spring 2024', 'Summer 2024',
+      'Fall 2024', 'Winter 2024', 'Spring 2025', 'Summer 2025',
+      'Fall 2025', 'Winter 2025', 'Spring 2026', 'Summer 2026'
+    ];
+
+    this.addedSemesters = [];
     this.currentlyHighlightedCourseId = null;
   }
 
-  renderCourseBox(course) {
-    const div = document.createElement("div");
-    div.className = "course-box";
-    div.textContent = course.id;
-    div.dataset.courseId = course.id;
-    div.setAttribute("draggable", true);
+  addSemesterAtEnd(label) {
+    const col = document.createElement("div");
+    col.className = "semester-column";
+    col.id = `semester-${this.addedSemesters.length + 1}`;
+    col.dataset.semester = this.addedSemesters.length + 1;
+    col.innerHTML = `<h3>${label}</h3>`;
 
-    if (course.tooltipInfo) {
-      div.title = `${course.tooltipInfo.title}\n` +
-        (course.tooltipInfo.offerings.length > 0
-          ? course.tooltipInfo.offerings.map(offering => `
-${offering.term}
-Campus: ${offering.campus}
-Instructor(s): ${offering.instructors}
-Days: ${offering.meetingDays}
-Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}`).join("\n")
-          : "No offerings available");
-    }
+    this.semestersContainer.appendChild(col);
+    this.addedSemesters.push(label);
 
-    div.addEventListener("dragstart", e => {
-      e.dataTransfer.setData("text/plain", course.id);
-    });
-
-    div.addEventListener("click", () => {
-      const allCourses = Object.values(window.allCourses || []);
-      if (this.highlightPrereqs && allCourses.length > 0) {
-        this.highlightPrereqs(course.id, allCourses);
-      }
-    });
-
-    return div;
+    this.reindexSemesters();
   }
 
-  renderSemesters(semesterLabels = [], placedCourses = []) {
+  removeLastSemester() {
+    if (this.addedSemesters.length === 0) return;
+
+    this.addedSemesters.pop();
+    const lastCol = this.semestersContainer.lastElementChild;
+    if (lastCol) lastCol.remove();
+
+    this.reindexSemesters();
+  }
+
+  removeSemesterByName(label) {
+    const index = this.addedSemesters.indexOf(label);
+    if (index === -1) return;
+
+    const col = document.getElementById(`semester-${index + 1}`);
+    if (col) col.remove();
+
+    this.addedSemesters.splice(index, 1);
+    this.reindexSemesters();
+  }
+
+  reindexSemesters() {
+    const columns = this.semestersContainer.querySelectorAll(".semester-column");
+    columns.forEach((col, idx) => {
+      col.id = `semester-${idx + 1}`;
+      col.dataset.semester = idx + 1;
+      const header = col.querySelector("h3");
+      if (header) header.textContent = this.addedSemesters[idx] || `Semester ${idx + 1}`;
+    });
+  }
+
+  renderSemesters(num, placedCourses = []) {
     this.semestersContainer.innerHTML = "";
 
-    semesterLabels.forEach((semesterLabel) => {
+    for (let i = 1; i <= num; i++) {
       const col = document.createElement("div");
       col.className = "semester-column";
-      col.dataset.label = semesterLabel;
-      col.innerHTML = `<h3>${semesterLabel}</h3>`;
+      col.id = `semester-${i}`;
+      col.dataset.semester = i;
+      col.innerHTML = `<h3>Semester ${i}</h3>`;
       this.semestersContainer.appendChild(col);
-    });
+    }
 
     placedCourses.forEach(course => {
-      const semesterCol = [...this.semestersContainer.querySelectorAll('.semester-column')]
-        .find(col => col.querySelector("h3")?.textContent === course.semesterLabel);
-      if (semesterCol) {
-        this.addCourseToSemester(course, semesterCol);
+      if (course.semester <= num) {
+        this.addCourseToSemester(course, course.semester);
       }
+    });
+  }
+
+  highlightPrereqs(courseId, placedCourses, depth = 0, visited = new Set()) {
+    if (depth === 0) {
+      if (this.currentlyHighlightedCourseId === courseId) {
+        this.currentlyHighlightedCourseId = null;
+        document.querySelectorAll(".course-box").forEach(el => {
+          el.style.backgroundColor = "";
+        });
+        return;
+      } else {
+        this.currentlyHighlightedCourseId = courseId;
+        document.querySelectorAll(".course-box").forEach(el => {
+          el.style.backgroundColor = "";
+        });
+      }
+    }
+
+    if (visited.has(courseId)) return;
+    visited.add(courseId);
+
+    const course = placedCourses.find(c => c.id === courseId);
+    if (!course) return;
+
+    const courseEl = document.querySelector(`[data-course-id='${course.id}']`);
+    if (courseEl) {
+      let opacity;
+      if (depth === 0) opacity = 1;
+      else if (depth === 1) opacity = 0.6;
+      else if (depth === 2) opacity = 0.3;
+      else opacity = 0.15;
+
+      courseEl.style.backgroundColor = `rgba(128, 0, 128, ${opacity})`;
+    }
+
+    course.prerequisites.forEach(prereqId => {
+      this.highlightPrereqs(prereqId, placedCourses, depth + 1, visited);
     });
   }
 
   renderCourseSources(groupedCourses) {
     this.sourceContainer.innerHTML = "";
-
-    window.allCourses = Object.values(groupedCourses).flat();
 
     for (const [group, list] of Object.entries(groupedCourses)) {
       const wrapper = document.createElement("div");
@@ -84,18 +142,34 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}`).join("\n")
         const courseId = e.dataTransfer.getData("text/plain");
         const droppedEl = document.querySelector(`[data-course-id="${courseId}"]`);
         if (droppedEl) {
-          const alreadyThere = column.querySelector(`[data-course-id="${courseId}"]`);
-          if (!alreadyThere) {
-            column.appendChild(droppedEl);
-          } else {
-            droppedEl.remove();
-          }
+          column.appendChild(droppedEl);
         }
       });
 
       list.forEach(course => {
-        const courseBox = this.renderCourseBox(course);
-        column.appendChild(courseBox);
+        const div = document.createElement("div");
+        div.className = "course-box";
+        div.textContent = course.id;
+        div.setAttribute("draggable", true);
+        div.dataset.courseId = course.id;
+
+        if (course.tooltipInfo) {
+          div.title = `${course.tooltipInfo.title}\n` +
+            (course.tooltipInfo.offerings.length > 0
+              ? course.tooltipInfo.offerings.map(offering => `\n${offering.term}\nCampus: ${offering.campus}\nInstructor(s): ${offering.instructors}\nDays: ${offering.meetingDays}\nTime: ${offering.meetingStartTime} - ${offering.meetingEndTime}`).join("\n")
+              : "No offerings available");
+        }
+
+        div.addEventListener("dragstart", e => {
+          e.dataTransfer.setData("text/plain", course.id);
+        });
+
+        div.addEventListener("click", () => {
+          const allCourses = Object.values(groupedCourses).flat();
+          this.highlightPrereqs(course.id, allCourses);
+        });
+
+        column.appendChild(div);
       });
 
       wrapper.appendChild(header);
@@ -104,62 +178,41 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}`).join("\n")
     }
   }
 
-  addCourseToSemester(course, semesterCol) {
-    if (!semesterCol) return;
-
-    const existing = semesterCol.querySelector(`[data-course-id='${course.id}']`);
-    if (existing) return;
-
-    const courseBox = this.renderCourseBox(course);
-    semesterCol.appendChild(courseBox);
-  }
-
   enableDropZones(onDrop) {
     const cols = document.querySelectorAll(".semester-column");
     cols.forEach(col => {
       col.addEventListener("dragover", e => e.preventDefault());
       col.addEventListener("drop", e => {
         e.preventDefault();
-        const semesterLabel = col.querySelector("h3")?.textContent;
         const courseId = e.dataTransfer.getData("text/plain");
-        if (semesterLabel) {
-          onDrop(courseId, semesterLabel);
-        }
+        onDrop(courseId, parseInt(col.dataset.semester));
       });
     });
   }
 
-  highlightPrereqs(courseId, placedCourses) {
-    document.querySelectorAll(".course-box").forEach(el => {
-      el.style.backgroundColor = "";
+  addCourseToSemester(course, semesterNum) {
+    const col = document.getElementById(`semester-${semesterNum}`);
+
+    const existing = col.querySelector(`[data-course-id='${course.id}']`);
+    if (existing) return;
+
+    const div = document.createElement("div");
+    div.className = "course-box";
+    div.textContent = course.id;
+    div.dataset.courseId = course.id;
+    div.setAttribute("draggable", true);
+
+    div.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", course.id);
     });
 
-    if (this.currentlyHighlightedCourseId === courseId) {
-      this.currentlyHighlightedCourseId = null;
-      return;
-    }
-
-    this.currentlyHighlightedCourseId = courseId;
-
-    const highlightRecursive = (id, depth = 0) => {
-      const course = placedCourses.find(c => c.id === id);
-      if (!course) return;
-
-      const courseEl = document.querySelector(`[data-course-id='${course.id}']`);
-      if (!courseEl) return;
-
-      if (depth === 0) {
-        courseEl.style.backgroundColor = "rgba(75, 0, 130, 0.8)";
-      } else {
-        courseEl.style.backgroundColor = `rgba(128, 0, 128, ${0.4 / depth})`;
+    div.addEventListener("click", () => {
+      if (this.placedCourses) {
+        this.highlightPrereqs(course.id, this.placedCourses);
       }
+    });
 
-      course.prerequisites.forEach(prereqId => {
-        highlightRecursive(prereqId, depth + 1);
-      });
-    };
-
-    highlightRecursive(courseId);
+    col.appendChild(div);
   }
 
   drawD3Lines(placedCourses) {
@@ -192,7 +245,7 @@ Time: ${offering.meetingStartTime} - ${offering.meetingEndTime}`).join("\n")
           .attr("y1", source.y)
           .attr("x2", target.x)
           .attr("y2", target.y)
-          .attr("stroke", "#d00")
+          .attr("stroke", "#888")
           .attr("stroke-width", 2);
       });
     });

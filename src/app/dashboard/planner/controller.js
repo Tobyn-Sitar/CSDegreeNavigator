@@ -17,13 +17,8 @@ async function fetchCourses() {
     else if (course.id.startsWith('MAT')) type = 'mat';
 
     const matches = courseData.filter(cd => cd.courseNumber === course.id.slice(3));
-    if (!matches.length) {
-      return { ...course, type, defaultSemester: 1 };
-    }
-
     const offerings = matches.map(match => {
       const firstMeeting = match.meetingTimes?.[0] ?? {};
-
       const days = [
         firstMeeting.meetingMondayIndicator ? "M" : "",
         firstMeeting.meetingTuesdayIndicator ? "T" : "",
@@ -61,10 +56,10 @@ async function fetchCourses() {
       ...course,
       type,
       defaultSemester: 1,
-      tooltipInfo: {
+      tooltipInfo: matches.length > 0 ? {
         title: matches[0].courseTitle,
         offerings
-      }
+      } : undefined
     };
   });
 }
@@ -74,100 +69,57 @@ fetchCourses()
     const m = new model(data);
     const v = new view('semester-container', 'checkbox-area');
     const placed = [];
-
-    function semesterSortKey(label) {
-      const [term, yearString] = label.trim().split(' ');
-      let year = parseInt(yearString);
-
-      const termOffsets = {
-        'Fall': 0.0,
-        'Winter': 0.3,
-        'Spring': 0.4,
-        'Summer': 0.5,
-      };
-
-      if (term === 'Winter') {
-        year += 1; // Winter is early next year
-      }
-
-      if (term === 'Fall') {
-        year += 1; // Fall shifts year ahead
-      }
-
-      return year + (termOffsets[term] || 0);
-    }
+    v.placedCourses = placed;
 
     document.getElementById("add-semester-btn").addEventListener("click", () => {
-      const year = document.getElementById("select-year").value;
-      const checked = document.querySelector('#semester-options input[name="semester"]:checked');
-
-      if (!checked) {
-        alert("Please select a semester (Fall, Winter, Spring, Summer).");
+      const selectedSeason = document.querySelector('#semester-options input[name="semester"]:checked')?.value;
+      const selectedYear = document.getElementById("select-year")?.value;  // ← fixed ID
+      if (!selectedSeason || !selectedYear) {
+        alert("Please select both a semester and a year.");
         return;
       }
-
-      const season = checked.value;
-      const semesterLabel = `${season} ${year}`;
-
-      if (v.addedSemesters.includes(semesterLabel)) {
-        alert("Semester already exists.");
+    
+      const fullSemester = `${selectedSeason} ${selectedYear}`;
+      if (v.addedSemesters.includes(fullSemester)) {
+        alert("Semester already added.");
         return;
       }
-
-      v.addedSemesters.push(semesterLabel);
-      v.addedSemesters.sort((a, b) => semesterSortKey(a) - semesterSortKey(b));
-
-      v.renderSemesters(v.addedSemesters, placed);
+    
+      v.addSemesterAtEnd(fullSemester);
       reEnableDropZones();
     });
-
+    
     document.getElementById("remove-semester-btn").addEventListener("click", () => {
-      const year = document.getElementById("select-year").value;
-      const checked = document.querySelector('#semester-options input[name="semester"]:checked');
-      if (!checked) {
-        alert("Please select a semester to remove.");
+      const selectedSeason = document.querySelector('#semester-options input[name="semester"]:checked')?.value;
+      const selectedYear = document.getElementById("select-year")?.value;  // ← fixed ID
+      if (!selectedSeason || !selectedYear) {
+        alert("Please select both a semester and a year to remove.");
         return;
       }
-
-      const season = checked.value;
-      const semesterLabel = `${season} ${year}`;
-
-      const index = v.addedSemesters.indexOf(semesterLabel);
-      if (index === -1) {
-        alert("Semester not found.");
-        return;
-      }
-
-      v.addedSemesters.splice(index, 1);
-      v.renderSemesters(v.addedSemesters, placed);
-      reEnableDropZones();
-    });
-
-    document.getElementById("remove-last-semester-btn").addEventListener("click", () => {
-      v.addedSemesters.pop();
-      v.renderSemesters(v.addedSemesters, placed);
+    
+      const fullSemester = `${selectedSeason} ${selectedYear}`;
+      v.removeSemesterByName(fullSemester);
       reEnableDropZones();
     });
 
     function reEnableDropZones() {
-      v.enableDropZones((courseId, semesterLabel) => {
+      v.enableDropZones((courseId, semesterNum) => {
         const course = m.getCourseById(courseId);
         if (!course) return;
-
         const current = placed.find(c => c.id === courseId);
         if (current) {
-          current.semesterLabel = semesterLabel;
+          current.semester = semesterNum;
         } else {
-          placed.push({ ...course, semesterLabel });
+          placed.push({ ...course, semester: semesterNum });
         }
-        v.renderSemesters(v.addedSemesters, placed);
+        v.renderSemesters(v.addedSemesters.length, placed);
       });
     }
 
     const grouped = {
       csc: data.filter(c => c.type === 'csc'),
       mat: data.filter(c => c.type === 'mat'),
-      csc400: data.filter(c => c.type === 'csc400'),
+      csc400: data.filter(c => c.type === 'csc400')
     };
 
     v.renderCourseSources(grouped);
@@ -176,19 +128,16 @@ fetchCourses()
     document.getElementById("save-btn").addEventListener("click", async () => {
       const semesters = [];
 
-      v.addedSemesters.forEach((semesterLabel) => {
-        const col = [...v.semestersContainer.querySelectorAll(".semester-column")]
-          .find(col => col.querySelector('h3')?.textContent === semesterLabel);
-
+      v.addedSemesters.forEach((semesterLabel, index) => {
+        const col = document.getElementById(`semester-${index + 1}`);
         if (!col) return;
-
         const selected = Array.from(col.querySelectorAll(".course-box")).map(box =>
           box.textContent.trim()
         );
-
         if (selected.length > 0) {
           semesters.push({
             term: semesterLabel,
+            id: (index + 1).toString(),
             selected
           });
         }
@@ -203,7 +152,7 @@ fetchCourses()
         const res = await fetch("/api/saveCourses", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ semesters }),
+          body: JSON.stringify({ semesters })
         });
 
         const result = await res.json();
@@ -222,23 +171,24 @@ fetchCourses()
       try {
         const res = await fetch("/api/getCourses");
         const semesters = await res.json();
-
         if (!Array.isArray(semesters)) throw new Error("Invalid data format");
 
         placed.length = 0;
-        v.addedSemesters = semesters.map(s => s.term);
-        v.renderSemesters(v.addedSemesters);
+        v.addedSemesters = [];
+        v.semestersContainer.innerHTML = "";
 
-        semesters.forEach((sem) => {
+        semesters.forEach(sem => {
+          const semesterLabel = sem.term;
+          v.addSemesterAtEnd(semesterLabel);
           sem.selected.forEach(courseId => {
             const course = m.getCourseById(courseId);
             if (course) {
-              placed.push({ ...course, semesterLabel: sem.term });
+              placed.push({ ...course, semester: v.addedSemesters.length });
+              v.addCourseToSemester(course, v.addedSemesters.length);
             }
           });
         });
 
-        v.renderSemesters(v.addedSemesters, placed);
         reEnableDropZones();
       } catch (err) {
         console.error("❌ Load failed:", err);

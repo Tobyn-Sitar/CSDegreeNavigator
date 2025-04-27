@@ -63,9 +63,6 @@ export default function Page() {
         </div>
 
         <div className="semester-buttons">
-          <button id="remove-last-semester-btn" className="remove-last-semester-btn">
-            Remove Last Added Semester
-          </button>
         </div>
       </div>
 
