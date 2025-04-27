@@ -20,6 +20,34 @@ export default class View {
     this.currentlyHighlightedCourseId = null;
   }
 
+  renderCourseBox(course) {
+    const div = document.createElement("div");
+    div.className = "course-box";
+    div.textContent = course.id;
+    div.dataset.courseId = course.id;
+    div.setAttribute("draggable", true);
+
+    if (course.tooltipInfo) {
+      div.title = `${course.tooltipInfo.title}\n` +
+        (course.tooltipInfo.offerings.length > 0
+          ? course.tooltipInfo.offerings.map(offering => `\n${offering.term}\nCampus: ${offering.campus}\nInstructor(s): ${offering.instructors}\nDays: ${offering.meetingDays}\nTime: ${offering.meetingStartTime} - ${offering.meetingEndTime}`).join("\n")
+          : "No offerings available");
+    }
+
+    div.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", course.id);
+    });
+
+    div.addEventListener("click", () => {
+      const allCourses = Object.values(window.allCourses || []);
+      if (this.highlightPrereqs && allCourses.length > 0) {
+        this.highlightPrereqs(course.id, allCourses);
+      }
+    });
+
+    return div;
+  }
+
   addSemesterAtEnd(label) {
     const col = document.createElement("div");
     col.className = "semester-column";
@@ -83,46 +111,10 @@ export default class View {
     });
   }
 
-  highlightPrereqs(courseId, placedCourses, depth = 0, visited = new Set()) {
-    if (depth === 0) {
-      if (this.currentlyHighlightedCourseId === courseId) {
-        this.currentlyHighlightedCourseId = null;
-        document.querySelectorAll(".course-box").forEach(el => {
-          el.style.backgroundColor = "";
-        });
-        return;
-      } else {
-        this.currentlyHighlightedCourseId = courseId;
-        document.querySelectorAll(".course-box").forEach(el => {
-          el.style.backgroundColor = "";
-        });
-      }
-    }
-
-    if (visited.has(courseId)) return;
-    visited.add(courseId);
-
-    const course = placedCourses.find(c => c.id === courseId);
-    if (!course) return;
-
-    const courseEl = document.querySelector(`[data-course-id='${course.id}']`);
-    if (courseEl) {
-      let opacity;
-      if (depth === 0) opacity = 1;
-      else if (depth === 1) opacity = 0.6;
-      else if (depth === 2) opacity = 0.3;
-      else opacity = 0.15;
-
-      courseEl.style.backgroundColor = `rgba(128, 0, 128, ${opacity})`;
-    }
-
-    course.prerequisites.forEach(prereqId => {
-      this.highlightPrereqs(prereqId, placedCourses, depth + 1, visited);
-    });
-  }
-
   renderCourseSources(groupedCourses) {
     this.sourceContainer.innerHTML = "";
+
+    window.allCourses = Object.values(groupedCourses).flat();
 
     for (const [group, list] of Object.entries(groupedCourses)) {
       const wrapper = document.createElement("div");
@@ -147,29 +139,8 @@ export default class View {
       });
 
       list.forEach(course => {
-        const div = document.createElement("div");
-        div.className = "course-box";
-        div.textContent = course.id;
-        div.setAttribute("draggable", true);
-        div.dataset.courseId = course.id;
-
-        if (course.tooltipInfo) {
-          div.title = `${course.tooltipInfo.title}\n` +
-            (course.tooltipInfo.offerings.length > 0
-              ? course.tooltipInfo.offerings.map(offering => `\n${offering.term}\nCampus: ${offering.campus}\nInstructor(s): ${offering.instructors}\nDays: ${offering.meetingDays}\nTime: ${offering.meetingStartTime} - ${offering.meetingEndTime}`).join("\n")
-              : "No offerings available");
-        }
-
-        div.addEventListener("dragstart", e => {
-          e.dataTransfer.setData("text/plain", course.id);
-        });
-
-        div.addEventListener("click", () => {
-          const allCourses = Object.values(groupedCourses).flat();
-          this.highlightPrereqs(course.id, allCourses);
-        });
-
-        column.appendChild(div);
+        const courseBox = this.renderCourseBox(course);
+        column.appendChild(courseBox);
       });
 
       wrapper.appendChild(header);
@@ -192,29 +163,41 @@ export default class View {
 
   addCourseToSemester(course, semesterNum) {
     const col = document.getElementById(`semester-${semesterNum}`);
-
+    if (!col) return;
+  
     const existing = col.querySelector(`[data-course-id='${course.id}']`);
     if (existing) return;
-
+  
     const div = document.createElement("div");
     div.className = "course-box";
     div.textContent = course.id;
     div.dataset.courseId = course.id;
     div.setAttribute("draggable", true);
-
-    div.addEventListener("dragstart", e => {
+  
+    if (course.tooltipInfo) {
+      div.title = `${course.tooltipInfo.title}\n` +
+        (course.tooltipInfo.offerings.length > 0
+          ? course.tooltipInfo.offerings.map(offering => 
+            `\n${offering.term}\nCampus: ${offering.campus}\nInstructor(s): ${offering.instructors}\nDays: ${offering.meetingDays}\nTime: ${offering.meetingStartTime} - ${offering.meetingEndTime}`
+          ).join("\n")
+          : "No offerings available");
+    }
+  
+    div.addEventListener("dragstart", (e) => {
       e.dataTransfer.setData("text/plain", course.id);
     });
-
-    div.addEventListener("click", () => {
-      if (this.placedCourses) {
+  
+    // ❗ use arrow function to keep correct `this`
+    div.addEventListener("click", (e) => {
+      if (this.placedCourses && this.placedCourses.length > 0) {
         this.highlightPrereqs(course.id, this.placedCourses);
       }
     });
-
+  
     col.appendChild(div);
   }
-
+  
+  
   drawD3Lines(placedCourses) {
     const svg = d3.select("#line-layer");
     svg.selectAll("*").remove();
