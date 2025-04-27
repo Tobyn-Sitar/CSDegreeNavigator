@@ -168,11 +168,20 @@ export default class View {
     div.setAttribute("draggable", true);
 
     if (course.tooltipInfo) {
-      div.title = `${course.tooltipInfo.title}\n` +
-        (course.tooltipInfo.offerings.length > 0
-          ? course.tooltipInfo.offerings.map(offering => `\n${offering.term}\nCampus: ${offering.campus}\nInstructor(s): ${offering.instructors}\nDays: ${offering.meetingDays}\nTime: ${offering.meetingStartTime} - ${offering.meetingEndTime}`).join("\n")
-          : "No offerings available");
+      const springFallOfferings = course.tooltipInfo.offerings.filter(offering =>
+        offering.term === "Spring 2025" || offering.term === "Fall 2025"
+      );
+    
+      if (springFallOfferings.length > 0) {
+        div.title = `${course.tooltipInfo.title}\n` +
+          springFallOfferings.map(offering => 
+            `\n${offering.term}\nCampus: ${offering.campus}\nInstructor(s): ${offering.instructors}\nDays: ${offering.meetingDays}\nTime: ${offering.meetingStartTime} - ${offering.meetingEndTime}`
+          ).join("\n");
+      } else {
+        div.title = `${course.tooltipInfo.title}\nNo Spring 2025 or Fall 2025 offering available.`;
+      }
     }
+    
 
     div.addEventListener("dragstart", e => {
       e.dataTransfer.setData("text/plain", course.id);

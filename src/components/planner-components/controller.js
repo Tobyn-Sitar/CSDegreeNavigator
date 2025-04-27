@@ -56,11 +56,11 @@ async function fetchCourses() {
       ...course,
       type,
       defaultSemester: 1,
-      tooltipInfo: matches.length > 0 ? {
-        title: matches[0].courseTitle,
-        offerings
-      } : undefined
-    };
+      tooltipInfo: {
+        title: matches[0]?.courseTitle || course.title || course.id,
+        offerings: offerings.length > 0 ? offerings : []
+      }
+    };    
   });
 }
 
