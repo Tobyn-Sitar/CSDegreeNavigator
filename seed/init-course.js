@@ -3,9 +3,7 @@ db.course_data.drop();
 db.course_data.insertMany(
 [
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c450c"
-    },
+    "_id": "67eefbf72f6f5c73e85c450c",
     "actualEnrollment": 27,
     "campus": "ONL",
     "courseNumber": "335",
@@ -66,9 +64,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c450d"
-    },
+    "_id": "67eefbf72f6f5c73e85c450d",
     "actualEnrollment": 28,
     "campus": "ONL",
     "courseNumber": "317",
@@ -129,9 +125,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c450e"
-    },
+    "_id": "67eefbf72f6f5c73e85c450e",
     "actualEnrollment": 10,
     "campus": "WCM",
     "courseNumber": "240",
@@ -194,9 +188,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c450f"
-    },
+    "_id": "67eefbf72f6f5c73e85c450f",
     "actualEnrollment": 9,
     "campus": "WCM",
     "courseNumber": "240",
@@ -258,9 +250,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4510"
-    },
+    "_id": "67eefbf72f6f5c73e85c4510",
     "actualEnrollment": 11,
     "campus": "WCM",
     "courseNumber": "240",
@@ -322,9 +312,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4511"
-    },
+    "_id": "67eefbf72f6f5c73e85c4511",
     "actualEnrollment": 20,
     "campus": "WCM",
     "courseNumber": "301",
@@ -392,9 +380,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4512"
-    },
+    "_id": "67eefbf72f6f5c73e85c4512",
     "actualEnrollment": 24,
     "campus": "WCM",
     "courseNumber": "302",
@@ -456,9 +442,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4516"
-    },
+    "_id": "67eefbf72f6f5c73e85c4516",
     "actualEnrollment": 35,
     "campus": "WCM",
     "courseNumber": "402",
@@ -521,9 +505,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4517"
-    },
+    "_id": "67eefbf72f6f5c73e85c4517",
     "actualEnrollment": 4,
     "campus": "WCM",
     "courseNumber": "110",
@@ -584,9 +566,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4518"
-    },
+    "_id": "67eefbf72f6f5c73e85c4518",
     "actualEnrollment": 4,
     "campus": "WCM",
     "courseNumber": "115",
@@ -649,9 +629,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4519"
-    },
+    "_id": "67eefbf72f6f5c73e85c4519",
     "actualEnrollment": 2,
     "campus": "WCM",
     "courseNumber": "141",
@@ -713,9 +691,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c451a"
-    },
+    "_id": "67eefbf72f6f5c73e85c451a",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "141",
@@ -777,9 +753,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c451b"
-    },
+    "_id": "67eefbf72f6f5c73e85c451b",
     "actualEnrollment": 3,
     "campus": "WCM",
     "courseNumber": "141",
@@ -846,9 +820,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c451c"
-    },
+    "_id": "67eefbf72f6f5c73e85c451c",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "141",
@@ -879,9 +851,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c451d"
-    },
+    "_id": "67eefbf72f6f5c73e85c451d",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "141",
@@ -912,9 +882,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c451e"
-    },
+    "_id": "67eefbf72f6f5c73e85c451e",
     "actualEnrollment": 8,
     "campus": "WCM",
     "courseNumber": "220",
@@ -976,9 +944,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c451f"
-    },
+    "_id": "67eefbf72f6f5c73e85c451f",
     "actualEnrollment": 30,
     "campus": "WCM",
     "courseNumber": "220",
@@ -1041,9 +1007,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4520"
-    },
+    "_id": "67eefbf72f6f5c73e85c4520",
     "actualEnrollment": 24,
     "campus": "WCM",
     "courseNumber": "241",
@@ -1106,9 +1070,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4521"
-    },
+    "_id": "67eefbf72f6f5c73e85c4521",
     "actualEnrollment": 3,
     "campus": "WCM",
     "courseNumber": "241",
@@ -1171,9 +1133,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4522"
-    },
+    "_id": "67eefbf72f6f5c73e85c4522",
     "actualEnrollment": 16,
     "campus": "WCM",
     "courseNumber": "301",
@@ -1234,9 +1194,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4523"
-    },
+    "_id": "67eefbf72f6f5c73e85c4523",
     "actualEnrollment": 26,
     "campus": "WCM",
     "courseNumber": "321",
@@ -1298,9 +1256,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4524"
-    },
+    "_id": "67eefbf72f6f5c73e85c4524",
     "actualEnrollment": 20,
     "campus": "WCM",
     "courseNumber": "331",
@@ -1363,9 +1319,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4525"
-    },
+    "_id": "67eefbf72f6f5c73e85c4525",
     "actualEnrollment": 35,
     "campus": "WCM",
     "courseNumber": "345",
@@ -1428,9 +1382,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4526"
-    },
+    "_id": "67eefbf72f6f5c73e85c4526",
     "actualEnrollment": 22,
     "campus": "WCM",
     "courseNumber": "472",
@@ -1461,9 +1413,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4527"
-    },
+    "_id": "67eefbf72f6f5c73e85c4527",
     "actualEnrollment": 22,
     "campus": "WCM",
     "courseNumber": "496",
@@ -1525,9 +1475,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c452c"
-    },
+    "_id": "67eefbf72f6f5c73e85c452c",
     "actualEnrollment": 15,
     "campus": "WCM",
     "courseNumber": "112",
@@ -1589,9 +1537,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c452d"
-    },
+    "_id": "67eefbf72f6f5c73e85c452d",
     "actualEnrollment": 6,
     "campus": "WCM",
     "courseNumber": "112",
@@ -1653,9 +1599,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c452e"
-    },
+    "_id": "67eefbf72f6f5c73e85c452e",
     "actualEnrollment": 4,
     "campus": "WCM",
     "courseNumber": "112",
@@ -1723,9 +1667,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c452f"
-    },
+    "_id": "67eefbf72f6f5c73e85c452f",
     "actualEnrollment": 7,
     "campus": "WCM",
     "courseNumber": "112",
@@ -1788,9 +1730,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4530"
-    },
+    "_id": "67eefbf72f6f5c73e85c4530",
     "actualEnrollment": 3,
     "campus": "WCM",
     "courseNumber": "112",
@@ -1852,9 +1792,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4531"
-    },
+    "_id": "67eefbf72f6f5c73e85c4531",
     "actualEnrollment": 6,
     "campus": "WCM",
     "courseNumber": "112",
@@ -1916,9 +1854,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4532"
-    },
+    "_id": "67eefbf72f6f5c73e85c4532",
     "actualEnrollment": 15,
     "campus": "WCM",
     "courseNumber": "112",
@@ -1980,9 +1916,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4533"
-    },
+    "_id": "67eefbf72f6f5c73e85c4533",
     "actualEnrollment": 5,
     "campus": "WCM",
     "courseNumber": "112",
@@ -2044,9 +1978,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4534"
-    },
+    "_id": "67eefbf72f6f5c73e85c4534",
     "actualEnrollment": 1,
     "campus": "WCM",
     "courseNumber": "112",
@@ -2113,9 +2045,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4535"
-    },
+    "_id": "67eefbf72f6f5c73e85c4535",
     "actualEnrollment": 2,
     "campus": "WCM",
     "courseNumber": "112",
@@ -2182,9 +2112,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4536"
-    },
+    "_id": "67eefbf72f6f5c73e85c4536",
     "actualEnrollment": 8,
     "campus": "ONL",
     "courseNumber": "141",
@@ -2244,9 +2172,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4537"
-    },
+    "_id": "67eefbf72f6f5c73e85c4537",
     "actualEnrollment": 1,
     "campus": "ONL",
     "courseNumber": "141",
@@ -2307,9 +2233,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4538"
-    },
+    "_id": "67eefbf72f6f5c73e85c4538",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "142",
@@ -2340,9 +2264,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4539"
-    },
+    "_id": "67eefbf72f6f5c73e85c4539",
     "actualEnrollment": 7,
     "campus": "WCM",
     "courseNumber": "142",
@@ -2405,9 +2327,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c453a"
-    },
+    "_id": "67eefbf72f6f5c73e85c453a",
     "actualEnrollment": 23,
     "campus": "ONL",
     "courseNumber": "231",
@@ -2473,9 +2393,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c453b"
-    },
+    "_id": "67eefbf72f6f5c73e85c453b",
     "actualEnrollment": 9,
     "campus": "WCM",
     "courseNumber": "231",
@@ -2543,9 +2461,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c453c"
-    },
+    "_id": "67eefbf72f6f5c73e85c453c",
     "actualEnrollment": 5,
     "campus": "WCM",
     "courseNumber": "400",
@@ -2606,9 +2522,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c453d"
-    },
+    "_id": "67eefbf72f6f5c73e85c453d",
     "actualEnrollment": 15,
     "campus": "ONL",
     "courseNumber": "402",
@@ -2669,9 +2583,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c453e"
-    },
+    "_id": "67eefbf72f6f5c73e85c453e",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "490",
@@ -2700,9 +2612,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c453f"
-    },
+    "_id": "67eefbf72f6f5c73e85c453f",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "499",
@@ -2731,9 +2641,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eefbf72f6f5c73e85c4540"
-    },
+    "_id": "67eefbf72f6f5c73e85c4540",
     "actualEnrollment": 14,
     "campus": "WCM",
     "courseNumber": "495",
@@ -2796,9 +2704,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef563af6d5996230c8fbb"
-    },
+    "_id": "67eef563af6d5996230c8fbb",
     "actualEnrollment": 12,
     "campus": "WCM",
     "courseNumber": "161",
@@ -2876,9 +2782,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef563af6d5996230c8fbc"
-    },
+    "_id": "67eef563af6d5996230c8fbc",
     "actualEnrollment": 12,
     "campus": "WCM",
     "courseNumber": "161",
@@ -2956,9 +2860,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef563af6d5996230c8fbd"
-    },
+    "_id": "67eef563af6d5996230c8fbd",
     "actualEnrollment": 2,
     "campus": "WCM",
     "courseNumber": "161",
@@ -3035,9 +2937,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef563af6d5996230c8fbe"
-    },
+    "_id": "67eef563af6d5996230c8fbe",
     "actualEnrollment": 2,
     "campus": "WCM",
     "courseNumber": "161",
@@ -3100,9 +3000,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef563af6d5996230c8fbf"
-    },
+    "_id": "67eef563af6d5996230c8fbf",
     "actualEnrollment": 0,
     "campus": "PHL",
     "courseNumber": "161",
@@ -3133,9 +3031,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef570af6d5996230c8fc0"
-    },
+    "_id": "67eef570af6d5996230c8fc0",
     "actualEnrollment": 2,
     "campus": "WCM",
     "courseNumber": "151",
@@ -3198,9 +3094,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef570af6d5996230c8fc1"
-    },
+    "_id": "67eef570af6d5996230c8fc1",
     "actualEnrollment": 3,
     "campus": "WCM",
     "courseNumber": "151",
@@ -3263,9 +3157,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef570af6d5996230c8fc2"
-    },
+    "_id": "67eef570af6d5996230c8fc2",
     "actualEnrollment": 3,
     "campus": "WCM",
     "courseNumber": "151",
@@ -3328,9 +3220,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fc3"
-    },
+    "_id": "67eef57daf6d5996230c8fc3",
     "actualEnrollment": 34,
     "campus": "ONL",
     "courseNumber": "121",
@@ -3390,9 +3280,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fc4"
-    },
+    "_id": "67eef57daf6d5996230c8fc4",
     "actualEnrollment": 4,
     "campus": "ONL",
     "courseNumber": "121",
@@ -3452,9 +3340,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fc5"
-    },
+    "_id": "67eef57daf6d5996230c8fc5",
     "actualEnrollment": 5,
     "campus": "ONL",
     "courseNumber": "121",
@@ -3513,9 +3399,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fc6"
-    },
+    "_id": "67eef57daf6d5996230c8fc6",
     "actualEnrollment": 17,
     "campus": "WCM",
     "courseNumber": "121",
@@ -3583,9 +3467,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fc7"
-    },
+    "_id": "67eef57daf6d5996230c8fc7",
     "actualEnrollment": 16,
     "campus": "WCM",
     "courseNumber": "121",
@@ -3648,9 +3530,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fc8"
-    },
+    "_id": "67eef57daf6d5996230c8fc8",
     "actualEnrollment": 12,
     "campus": "WCM",
     "courseNumber": "121",
@@ -3712,9 +3592,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fc9"
-    },
+    "_id": "67eef57daf6d5996230c8fc9",
     "actualEnrollment": 1,
     "campus": "WCM",
     "courseNumber": "121",
@@ -3777,9 +3655,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fca"
-    },
+    "_id": "67eef57daf6d5996230c8fca",
     "actualEnrollment": 6,
     "campus": "WCM",
     "courseNumber": "121",
@@ -3810,9 +3686,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fcb"
-    },
+    "_id": "67eef57daf6d5996230c8fcb",
     "actualEnrollment": 9,
     "campus": "WCM",
     "courseNumber": "121",
@@ -3880,9 +3754,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fcc"
-    },
+    "_id": "67eef57daf6d5996230c8fcc",
     "actualEnrollment": 5,
     "campus": "WCM",
     "courseNumber": "121",
@@ -3950,9 +3822,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fcd"
-    },
+    "_id": "67eef57daf6d5996230c8fcd",
     "actualEnrollment": 20,
     "campus": "WCM",
     "courseNumber": "121",
@@ -4014,9 +3884,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fce"
-    },
+    "_id": "67eef57daf6d5996230c8fce",
     "actualEnrollment": 2,
     "campus": "WCM",
     "courseNumber": "121",
@@ -4084,9 +3952,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fcf"
-    },
+    "_id": "67eef57daf6d5996230c8fcf",
     "actualEnrollment": 8,
     "campus": "WCM",
     "courseNumber": "121",
@@ -4149,9 +4015,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fd0"
-    },
+    "_id": "67eef57daf6d5996230c8fd0",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "121",
@@ -4219,9 +4083,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef57daf6d5996230c8fd1"
-    },
+    "_id": "67eef57daf6d5996230c8fd1",
     "actualEnrollment": 0,
     "campus": "ONL",
     "courseNumber": "121",
@@ -4282,9 +4144,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef58eaf6d5996230c8fd2"
-    },
+    "_id": "67eef58eaf6d5996230c8fd2",
     "actualEnrollment": 8,
     "campus": "WCM",
     "courseNumber": "200",
@@ -4352,9 +4212,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef58eaf6d5996230c8fd3"
-    },
+    "_id": "67eef58eaf6d5996230c8fd3",
     "actualEnrollment": 16,
     "campus": "WCM",
     "courseNumber": "200",
@@ -4422,9 +4280,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef9deaf6d5996230c8fd4"
-    },
+    "_id": "67eef9deaf6d5996230c8fd4",
     "actualEnrollment": 8,
     "campus": "WCM",
     "courseNumber": "200",
@@ -4492,9 +4348,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67eef9deaf6d5996230c8fd5"
-    },
+    "_id": "67eef9deaf6d5996230c8fd5",
     "actualEnrollment": 16,
     "campus": "WCM",
     "courseNumber": "200",
@@ -4562,9 +4416,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67ef17742f6f5c73e85c4554"
-    },
+    "_id": "67ef17742f6f5c73e85c4554",
     "actualEnrollment": 6,
     "campus": "WCM",
     "courseNumber": "162",
@@ -4641,9 +4493,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "67ef17742f6f5c73e85c4555"
-    },
+    "_id": "67ef17742f6f5c73e85c4555",
     "actualEnrollment": 22,
     "campus": "WCM",
     "courseNumber": "162",
@@ -4720,9 +4570,7 @@ db.course_data.insertMany(
     "termCode": "202530"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25ab"
-    },
+    "_id": "680d012467be9cc977ed25ab",
     "actualEnrollment": 13,
     "campus": "WCM",
     "courseNumber": "115",
@@ -4784,9 +4632,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25ac"
-    },
+    "_id": "680d012467be9cc977ed25ac",
     "actualEnrollment": 16,
     "campus": "WCM",
     "courseNumber": "141",
@@ -4848,9 +4694,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25ad"
-    },
+    "_id": "680d012467be9cc977ed25ad",
     "actualEnrollment": 25,
     "campus": "WCM",
     "courseNumber": "141",
@@ -4912,9 +4756,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25ae"
-    },
+    "_id": "680d012467be9cc977ed25ae",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "141",
@@ -4976,9 +4818,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25af"
-    },
+    "_id": "680d012467be9cc977ed25af",
     "actualEnrollment": 24,
     "campus": "WCM",
     "courseNumber": "142",
@@ -5040,9 +4880,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25b0"
-    },
+    "_id": "680d012467be9cc977ed25b0",
     "actualEnrollment": 30,
     "campus": "WCM",
     "courseNumber": "142",
@@ -5110,9 +4948,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25b1"
-    },
+    "_id": "680d012467be9cc977ed25b1",
     "actualEnrollment": 25,
     "campus": "WCM",
     "courseNumber": "142",
@@ -5173,9 +5009,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25b2"
-    },
+    "_id": "680d012467be9cc977ed25b2",
     "actualEnrollment": 31,
     "campus": "WCM",
     "courseNumber": "220",
@@ -5237,9 +5071,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25b3"
-    },
+    "_id": "680d012467be9cc977ed25b3",
     "actualEnrollment": 16,
     "campus": "WCM",
     "courseNumber": "220",
@@ -5301,9 +5133,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25b4"
-    },
+    "_id": "680d012467be9cc977ed25b4",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "231",
@@ -5371,9 +5201,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25b5"
-    },
+    "_id": "680d012467be9cc977ed25b5",
     "actualEnrollment": 29,
     "campus": "WCM",
     "courseNumber": "240",
@@ -5435,9 +5263,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25b6"
-    },
+    "_id": "680d012467be9cc977ed25b6",
     "actualEnrollment": 30,
     "campus": "WCM",
     "courseNumber": "240",
@@ -5499,9 +5325,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25b7"
-    },
+    "_id": "680d012467be9cc977ed25b7",
     "actualEnrollment": 22,
     "campus": "WCM",
     "courseNumber": "241",
@@ -5564,9 +5388,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25b8"
-    },
+    "_id": "680d012467be9cc977ed25b8",
     "actualEnrollment": 25,
     "campus": "WCM",
     "courseNumber": "241",
@@ -5629,9 +5451,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25b9"
-    },
+    "_id": "680d012467be9cc977ed25b9",
     "actualEnrollment": 30,
     "campus": "WCM",
     "courseNumber": "301",
@@ -5699,9 +5519,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25ba"
-    },
+    "_id": "680d012467be9cc977ed25ba",
     "actualEnrollment": 30,
     "campus": "WCM",
     "courseNumber": "301",
@@ -5762,9 +5580,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25bb"
-    },
+    "_id": "680d012467be9cc977ed25bb",
     "actualEnrollment": 33,
     "campus": "WCM",
     "courseNumber": "302",
@@ -5826,9 +5642,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25bc"
-    },
+    "_id": "680d012467be9cc977ed25bc",
     "actualEnrollment": 24,
     "campus": "WCM",
     "courseNumber": "321",
@@ -5890,9 +5704,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25bd"
-    },
+    "_id": "680d012467be9cc977ed25bd",
     "actualEnrollment": 30,
     "campus": "WCM",
     "courseNumber": "335",
@@ -5954,9 +5766,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25be"
-    },
+    "_id": "680d012467be9cc977ed25be",
     "actualEnrollment": 25,
     "campus": "WCM",
     "courseNumber": "345",
@@ -6019,9 +5829,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25bf"
-    },
+    "_id": "680d012467be9cc977ed25bf",
     "actualEnrollment": 24,
     "campus": "WCM",
     "courseNumber": "345",
@@ -6084,9 +5892,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25c0"
-    },
+    "_id": "680d012467be9cc977ed25c0",
     "actualEnrollment": 39,
     "campus": "WCM",
     "courseNumber": "402",
@@ -6149,9 +5955,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25c1"
-    },
+    "_id": "680d012467be9cc977ed25c1",
     "actualEnrollment": 25,
     "campus": "WCM",
     "courseNumber": "466",
@@ -6214,9 +6018,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25c2"
-    },
+    "_id": "680d012467be9cc977ed25c2",
     "actualEnrollment": 38,
     "campus": "WCM",
     "courseNumber": "468",
@@ -6279,9 +6081,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25c3"
-    },
+    "_id": "680d012467be9cc977ed25c3",
     "actualEnrollment": 21,
     "campus": "WCM",
     "courseNumber": "471",
@@ -6343,9 +6143,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25c4"
-    },
+    "_id": "680d012467be9cc977ed25c4",
     "actualEnrollment": 50,
     "campus": "WCM",
     "courseNumber": "481",
@@ -6408,9 +6206,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25c5"
-    },
+    "_id": "680d012467be9cc977ed25c5",
     "actualEnrollment": 22,
     "campus": "WCM",
     "courseNumber": "496",
@@ -6473,9 +6269,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25c6"
-    },
+    "_id": "680d012467be9cc977ed25c6",
     "actualEnrollment": 17,
     "campus": "WCM",
     "courseNumber": "496",
@@ -6538,9 +6332,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25c7"
-    },
+    "_id": "680d012467be9cc977ed25c7",
     "actualEnrollment": 24,
     "campus": "WCM",
     "courseNumber": "540",
@@ -6608,9 +6400,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25c8"
-    },
+    "_id": "680d012467be9cc977ed25c8",
     "actualEnrollment": 16,
     "campus": "WCM",
     "courseNumber": "560",
@@ -6673,9 +6463,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25c9"
-    },
+    "_id": "680d012467be9cc977ed25c9",
     "actualEnrollment": 24,
     "campus": "WCM",
     "courseNumber": "575",
@@ -6738,9 +6526,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25ca"
-    },
+    "_id": "680d012467be9cc977ed25ca",
     "actualEnrollment": 11,
     "campus": "WCM",
     "courseNumber": "581",
@@ -6803,9 +6589,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25cb"
-    },
+    "_id": "680d012467be9cc977ed25cb",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "583",
@@ -6836,9 +6620,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25cc"
-    },
+    "_id": "680d012467be9cc977ed25cc",
     "actualEnrollment": 10,
     "campus": "WCM",
     "courseNumber": "600",
@@ -6900,9 +6682,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25cd"
-    },
+    "_id": "680d012467be9cc977ed25cd",
     "actualEnrollment": 39,
     "campus": "WCM",
     "courseNumber": "110",
@@ -6964,9 +6744,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25ce"
-    },
+    "_id": "680d012467be9cc977ed25ce",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "110",
@@ -6997,9 +6775,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25cf"
-    },
+    "_id": "680d012467be9cc977ed25cf",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "112",
@@ -7066,9 +6842,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25d0"
-    },
+    "_id": "680d012467be9cc977ed25d0",
     "actualEnrollment": 44,
     "campus": "WCM",
     "courseNumber": "112",
@@ -7135,9 +6909,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25d1"
-    },
+    "_id": "680d012467be9cc977ed25d1",
     "actualEnrollment": 43,
     "campus": "WCM",
     "courseNumber": "112",
@@ -7199,9 +6971,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25d2"
-    },
+    "_id": "680d012467be9cc977ed25d2",
     "actualEnrollment": 41,
     "campus": "WCM",
     "courseNumber": "112",
@@ -7264,9 +7034,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25d3"
-    },
+    "_id": "680d012467be9cc977ed25d3",
     "actualEnrollment": 43,
     "campus": "WCM",
     "courseNumber": "112",
@@ -7328,9 +7096,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25d4"
-    },
+    "_id": "680d012467be9cc977ed25d4",
     "actualEnrollment": 43,
     "campus": "WCM",
     "courseNumber": "112",
@@ -7392,9 +7158,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25d5"
-    },
+    "_id": "680d012467be9cc977ed25d5",
     "actualEnrollment": 43,
     "campus": "WCM",
     "courseNumber": "112",
@@ -7456,9 +7220,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25d6"
-    },
+    "_id": "680d012467be9cc977ed25d6",
     "actualEnrollment": 44,
     "campus": "WCM",
     "courseNumber": "112",
@@ -7520,9 +7282,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25d7"
-    },
+    "_id": "680d012467be9cc977ed25d7",
     "actualEnrollment": 29,
     "campus": "ONL",
     "courseNumber": "141",
@@ -7583,9 +7343,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25d8"
-    },
+    "_id": "680d012467be9cc977ed25d8",
     "actualEnrollment": 8,
     "campus": "ONL",
     "courseNumber": "142",
@@ -7646,9 +7404,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25d9"
-    },
+    "_id": "680d012467be9cc977ed25d9",
     "actualEnrollment": 43,
     "campus": "ONL",
     "courseNumber": "231",
@@ -7714,9 +7470,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25da"
-    },
+    "_id": "680d012467be9cc977ed25da",
     "actualEnrollment": 40,
     "campus": "ONL",
     "courseNumber": "317",
@@ -7777,9 +7531,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25db"
-    },
+    "_id": "680d012467be9cc977ed25db",
     "actualEnrollment": 8,
     "campus": "WCM",
     "courseNumber": "400",
@@ -7840,9 +7592,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25dc"
-    },
+    "_id": "680d012467be9cc977ed25dc",
     "actualEnrollment": 15,
     "campus": "ONL",
     "courseNumber": "402",
@@ -7903,9 +7653,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25dd"
-    },
+    "_id": "680d012467be9cc977ed25dd",
     "actualEnrollment": 40,
     "campus": "ONL",
     "courseNumber": "417",
@@ -7966,9 +7714,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25de"
-    },
+    "_id": "680d012467be9cc977ed25de",
     "actualEnrollment": 1,
     "campus": "WCM",
     "courseNumber": "490",
@@ -8028,9 +7774,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25df"
-    },
+    "_id": "680d012467be9cc977ed25df",
     "actualEnrollment": 2,
     "campus": "WCM",
     "courseNumber": "499",
@@ -8096,9 +7840,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25e0"
-    },
+    "_id": "680d012467be9cc977ed25e0",
     "actualEnrollment": 2,
     "campus": "WCM",
     "courseNumber": "605",
@@ -8159,9 +7901,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25e1"
-    },
+    "_id": "680d012467be9cc977ed25e1",
     "actualEnrollment": 1,
     "campus": "WCM",
     "courseNumber": "610",
@@ -8227,9 +7967,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25e2"
-    },
+    "_id": "680d012467be9cc977ed25e2",
     "actualEnrollment": 2,
     "campus": "WCM",
     "courseNumber": "620",
@@ -8290,9 +8028,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25e3"
-    },
+    "_id": "680d012467be9cc977ed25e3",
     "actualEnrollment": 2,
     "campus": "WCM",
     "courseNumber": "512",
@@ -8352,9 +8088,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25e4"
-    },
+    "_id": "680d012467be9cc977ed25e4",
     "actualEnrollment": 2,
     "campus": "WCM",
     "courseNumber": "516",
@@ -8414,9 +8148,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25e5"
-    },
+    "_id": "680d012467be9cc977ed25e5",
     "actualEnrollment": 1,
     "campus": "WCM",
     "courseNumber": "490",
@@ -8477,9 +8209,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25e6"
-    },
+    "_id": "680d012467be9cc977ed25e6",
     "actualEnrollment": 1,
     "campus": "WCM",
     "courseNumber": "490",
@@ -8539,9 +8269,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25e7"
-    },
+    "_id": "680d012467be9cc977ed25e7",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "112",
@@ -8603,9 +8331,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25e8"
-    },
+    "_id": "680d012467be9cc977ed25e8",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "112",
@@ -8667,9 +8393,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25e9"
-    },
+    "_id": "680d012467be9cc977ed25e9",
     "actualEnrollment": 1,
     "campus": "WCM",
     "courseNumber": "499",
@@ -8730,9 +8454,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25ea"
-    },
+    "_id": "680d012467be9cc977ed25ea",
     "actualEnrollment": 1,
     "campus": "WCM",
     "courseNumber": "471",
@@ -8792,9 +8514,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25eb"
-    },
+    "_id": "680d012467be9cc977ed25eb",
     "actualEnrollment": 1,
     "campus": "WCM",
     "courseNumber": "610",
@@ -8855,9 +8575,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25ec"
-    },
+    "_id": "680d012467be9cc977ed25ec",
     "actualEnrollment": 0,
     "campus": "WCM",
     "courseNumber": "600",
@@ -8918,9 +8636,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25ed"
-    },
+    "_id": "680d012467be9cc977ed25ed",
     "actualEnrollment": 1,
     "campus": "WCM",
     "courseNumber": "490",
@@ -8980,9 +8696,7 @@ db.course_data.insertMany(
     "termCode": "202510"
   },
   {
-    "_id": {
-      "$oid": "680d012467be9cc977ed25ee"
-    },
+    "_id": "680d012467be9cc977ed25ee",
     "actualEnrollment": 1,
     "campus": "WCM",
     "courseNumber": "490",
