@@ -36,6 +36,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
     ```bash
     git clone https://github.com/Tobyn-Sitar/CSDegreeNavigator.git
     ```
+    ```bash
+    git clone --branch DashboardWithPlannerPlusTooltips https://github.com/Tobyn-Sitar/CSDegreeNavigator.git
+    ```
     
 2.  **Add .env file to root directory**
     
