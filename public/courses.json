@@ -254,7 +254,7 @@
   {
     "id": "CSC468",
     "name": "CSC468 - Introduction to Cloud Computing",
-    "prerequisites": ["CSC331"],
+    "prerequisites": ["CSC231"],
     "requirement": "elective",
     "defaultSemester": 7
   },
