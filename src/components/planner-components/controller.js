@@ -3,21 +3,82 @@ import view from './view.js';
 
 fetch('/courses.json')
   .then(res => res.json())
-  .then(data => {
-    const enriched = data.map(c => {
-      let type = 'other'; // Default type is 'other'
-      
+ // fetch the extra data before enriching
+ .then(courses =>
+  fetch('/api/getCourseData')
+    .then(res2 => res2.json())
+    .then(courseData => ({ courses, courseData }))
+  )
+  .then(({ courses, courseData }) => {
+    const enriched = courses.map(course => {
+      // 1) determine type
+      let type = 'other';
       // Set type based on the course requirement
-      if (c.requirement === 'core') type = 'csc'; // Core courses
-      else if (c.requirement === 'math') type = 'mat'; // Math courses
-      else if (c.requirement === 'elective') type = 'csc400'; // Elective courses
-      else if (c.requirement === 'science') type = 'science'; // Science courses
-      else if (c.requirement === 'communication') type = 'communication'; // Communication courses
-      else if (c.requirement === 'FYE') type = 'fye'; // FYE (First Year Experience) courses
+      if (course.requirement === 'core') type = 'csc'; // Core courses
+      else if (course.requirement === 'math') type = 'mat'; // Math courses
+      else if (course.requirement === 'elective') type = 'csc400'; // Elective courses
+      else if (course.requirement === 'science') type = 'science'; // Science courses
+      else if (course.requirement === 'communication') type = 'communication'; // Communication courses
+      else if (course.requirement === 'FYE') type = 'fye'; // FYE (First Year Experience) courses
       
-      // Return the enriched course object with updated type and defaultSemester
-      return { ...c, type, defaultSemester: c.defaultSemester ?? 1 };
+      // 2) find matching rows
+      const matches = courseData.filter(cd =>
+        cd.courseNumber === course.id.slice(3)
+      );
+
+      // 3) map to offerings just like before
+      const offerings = matches.map(match => {
+        const fm = match.meetingTimes?.[0] ?? {};
+        const days = [
+          fm.meetingMondayIndicator   ? 'M' : '',
+          fm.meetingTuesdayIndicator  ? 'T' : '',
+          fm.meetingWednesdayIndicator? 'W' : '',
+          fm.meetingThursdayIndicator ? 'R' : '',
+          fm.meetingFridayIndicator   ? 'F' : '',
+          fm.meetingSaturdayIndicator ? 'S' : '',
+          fm.meetingSundayIndicator   ? 'U' : ''
+        ].join('');
+        const formatTime = mil => {
+          if (!mil) return 'TBD';
+          const h = Math.floor(+mil/100),
+                m = (+mil % 100).toString().padStart(2,'0'),
+                ampm = h >= 12 ? 'PM' : 'AM',
+                dh = (h % 12) || 12;
+          return `${dh}:${m} ${ampm}`;
+        };
+
+        let term;
+        switch (match.termCode) {
+          case '202510': term = 'Spring 2025'; break;
+          case '202520': term = 'Summer 2025'; break;
+          case '202530': term = 'Fall 2025';   break;
+          case '202540': term = 'Winter 2025'; break;
+          default:        term = 'Unknown';
+        }
+
+        return {
+          term,
+          instructors: match.instructors?.map(i =>
+            `${i.instructorFirstName} ${i.instructorLastName}`
+          ).join(', ') || 'TBD',
+          campus:           match.campus || 'TBD',
+          meetingDays:      days || 'TBD',
+          meetingStartTime: formatTime(fm.meetingBeginTime),
+          meetingEndTime:   formatTime(fm.meetingEndTime)
+        };
+      });
+
+      return {
+        ...course,
+        type,
+        defaultSemester: course.defaultSemester ?? 1,
+        tooltipInfo: {
+          title:     matches[0]?.courseTitle || course.title || course.id,
+          offerings: offerings
+        }
+      };
     });
+
     
 
     const m = new model(enriched);

@@ -170,6 +170,21 @@ export default class View {
         div.setAttribute("draggable", true);
         div.dataset.courseId = course.id;
 
+        if (course.tooltipInfo) {
+          const springFallOfferings = course.tooltipInfo.offerings.filter(offering =>
+            offering.term === "Spring 2025" || offering.term === "Fall 2025"
+          );
+        
+          if (springFallOfferings.length > 0) {
+            div.title = `${course.tooltipInfo.title}\n` +
+              springFallOfferings.map(offering => 
+                `\n${offering.term}\nCampus: ${offering.campus}\nInstructor(s): ${offering.instructors}\nDays: ${offering.meetingDays}\nTime: ${offering.meetingStartTime} - ${offering.meetingEndTime}`
+              ).join("\n");
+          } else {
+            div.title = `${course.tooltipInfo.title}\nNo Spring 2025 or Fall 2025 offering available.`;
+          }
+        }
+
         div.addEventListener("dragstart", e => {
           e.dataTransfer.setData("text/plain", course.id);
         });
@@ -205,15 +220,14 @@ export default class View {
 
   addCourseToSemester(course, semesterNum) {
     const col = document.getElementById(`semester-${semesterNum}`);
+    if (!col) return;
     
-   
-    const existing = col.querySelector(`[data-course-id='${course.id}']`);
-    if (existing) return;
-  
-    
-    const courseCount = col.querySelectorAll(".course-box").length;
-  
-   
+    // prevent duplicates
+    if (col.querySelector(`[data-course-id='${course.id}']`)) return;
+
+     // prevent duplicates
+    if (col.querySelector(`[data-course-id='${course.id}']`)) return;
+    const courseCount = col.querySelectorAll(".course-box").length;  
     if (courseCount >= 6) {
       const msg = document.createElement("div");
       msg.className = "prereq-popup";
@@ -222,25 +236,39 @@ export default class View {
       setTimeout(() => msg.remove(), 2500);
       return; 
     }
-  
-
-    const currentEl = document.querySelector(`[data-course-id='${course.id}']`);
-    if (currentEl) {
-      const isInSource = currentEl.parentElement?.classList.contains("source-column");
-      if (isInSource) {
-        currentEl.classList.add("grayed-out");
+    
+    // remove from source or previous column
+    const existing = document.querySelector(`[data-course-id='${course.id}']`);
+    if (existing) {
+      const inSource = existing.parentElement.classList.contains("source-column");
+      if (inSource) {
+        existing.classList.add("grayed-out");
       } else {
-        currentEl.remove();
+        existing.remove();
       }
-    }
-  
+    }   
    
     const div = document.createElement("div");
     div.className = "course-box";
     div.textContent = course.id;
     div.dataset.courseId = course.id;
     div.setAttribute("draggable", true);
+    
+    if (course.tooltipInfo) {
+      const springFallOfferings = course.tooltipInfo.offerings.filter(offering =>
+        offering.term === "Spring 2025" || offering.term === "Fall 2025"
+      );
   
+      if (springFallOfferings.length > 0) {
+        div.title = `${course.tooltipInfo.title}\n` +
+          springFallOfferings.map(of =>
+            `${of.term} — ${of.campus} — ${of.instructors}\n` +
+            `${of.meetingDays} ${of.meetingStartTime}-${of.meetingEndTime}`
+          ).join("\n\n");
+      } else {
+        div.title = `${course.tooltipInfo.title}\nNo Spring/Fall 2025 offering available.`;
+      }
+    }
     
     div.addEventListener("dragstart", e => {
       e.dataTransfer.setData("text/plain", course.id);
