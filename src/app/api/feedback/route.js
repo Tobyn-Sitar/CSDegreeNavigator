@@ -8,12 +8,20 @@ export async function GET() {
 
   try {
     const db = mongoose.connection.db;
-    const feedback = await db.collection("feedback").find().sort({ createdAt: -1 }).toArray();
+    const feedbacks = await db
+      .collection("feedback")
+      .find()
+      .sort({ createdAt: -1 })
+      .toArray();
 
-    return NextResponse.json(feedback);
+    // wrap in an object with a known key
+    return NextResponse.json({ feedbacks });
   } catch (err) {
     console.error("Load Feedback Error:", err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json(
+      { error: err.message },
+      { status: 500 }
+    );
   }
 }
 
@@ -25,7 +33,10 @@ export async function POST(request) {
     const { message } = await request.json();
 
     if (!message || message.trim() === "") {
-      return NextResponse.json({ error: "Message is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Message is required" },
+        { status: 400 }
+      );
     }
 
     const db = mongoose.connection.db;
@@ -35,14 +46,20 @@ export async function POST(request) {
       createdAt: new Date(),
     });
 
-    return NextResponse.json({
+    // return the new document under a known key
+    const feedback = {
       _id: result.insertedId,
       user: "Anonymous",
       message,
       createdAt: new Date(),
-    });
+    };
+
+    return NextResponse.json({ feedback });
   } catch (err) {
     console.error("Submit Feedback Error:", err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json(
+      { error: err.message },
+      { status: 500 }
+    );
   }
 }
