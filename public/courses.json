@@ -177,7 +177,7 @@
   {
     "id": "CSC335",
     "name": "CSC335 - Data Communications and Networking I",
-    "prerequisites": ["CSC241"],
+    "prerequisites": ["CSC240"],
     "requirement": "core",
     "defaultSemester": 5
   },
