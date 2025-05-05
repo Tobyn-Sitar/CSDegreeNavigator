@@ -1,3 +1,4 @@
+// controller.js
 import model from './model.js';
 import view from './view.js';
 
@@ -31,8 +32,8 @@ async function fetchCourses() {
 
       function formatTime(military) {
         if (!military) return "TBD";
-        const hours = Math.floor(parseInt(military) / 100);
-        const minutes = parseInt(military) % 100;
+        const hours = Math.floor(parseInt(military, 10) / 100);
+        const minutes = parseInt(military, 10) % 100;
         const ampm = hours >= 12 ? 'PM' : 'AM';
         const displayHours = hours % 12 === 0 ? 12 : hours % 12;
         return `${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
@@ -60,7 +61,7 @@ async function fetchCourses() {
         title: matches[0]?.courseTitle || course.title || course.id,
         offerings: offerings.length > 0 ? offerings : []
       }
-    };    
+    };
   });
 }
 
@@ -73,7 +74,7 @@ fetchCourses()
 
     document.getElementById("add-semester-btn").addEventListener("click", () => {
       const selectedSeason = document.querySelector('#semester-options input[name="semester"]:checked')?.value;
-      const selectedYear = document.getElementById("year-started")?.value;
+      const selectedYear   = document.getElementById("year-started")?.value;
       if (!selectedSeason || !selectedYear) {
         alert("Please select both a semester and a year.");
         return;
@@ -85,10 +86,52 @@ fetchCourses()
         return;
       }
     
+      // new ordering: Spring → Summer → Fall → Winter
+      const seasonOrder = {
+      "Spring": 0,
+      "Summer": 1,
+      "Fall":   2,
+      "Winter": 3
+      };
+;
+      function parseTerm(label) {
+        const [season, year] = label.split(" ");
+        return { year: parseInt(year, 10), season: seasonOrder[season] };
+      }
+    
+      // find insertion point
+      const newTerm = parseTerm(fullSemester);
+      const existing = v.addedSemesters;
+      const insertIdx = existing.findIndex(lbl => {
+        const ex = parseTerm(lbl);
+        return newTerm.year < ex.year ||
+               (newTerm.year === ex.year && newTerm.season < ex.season);
+      });
+    
+      // append then, if needed, move into correct spot
       v.addSemesterAtEnd(fullSemester);
+    
+      if (insertIdx !== -1) {
+        existing.pop();
+        existing.splice(insertIdx, 0, fullSemester);
+    
+        const container = v.semestersContainer;
+        const lastEl    = container.children[container.children.length - 1];
+        container.removeChild(lastEl);
+        const beforeEl  = container.children[insertIdx];
+        container.insertBefore(lastEl, beforeEl);
+    
+        // renumber
+        Array.from(container.children).forEach((col, i) => {
+          col.id = `semester-${i+1}`;
+        });
+      }
+    
       reEnableDropZones();
     });
     
+
+
     document.getElementById("remove-semester-btn").addEventListener("click", () => {
       const selectedSeason = document.querySelector('#semester-options input[name="semester"]:checked')?.value;
       const selectedYear = document.getElementById("year-started")?.value;
@@ -96,7 +139,7 @@ fetchCourses()
         alert("Please select both a semester and a year to remove.");
         return;
       }
-    
+
       const fullSemester = `${selectedSeason} ${selectedYear}`;
       v.removeSemesterByName(fullSemester);
       reEnableDropZones();
@@ -117,20 +160,16 @@ fetchCourses()
     }
 
     const grouped = m.getGroupedCourses();
-
-
     v.renderCourseSources(grouped);
     reEnableDropZones();
 
     document.getElementById("save-btn").addEventListener("click", async () => {
       const semesters = [];
-
       v.addedSemesters.forEach((semesterLabel, index) => {
         const col = document.getElementById(`semester-${index + 1}`);
         if (!col) return;
-        const selected = Array.from(col.querySelectorAll(".course-box")).map(box =>
-          box.textContent.trim()
-        );
+        const selected = Array.from(col.querySelectorAll(".course-box"))
+                              .map(box => box.textContent.trim());
         if (selected.length > 0) {
           semesters.push({
             term: semesterLabel,
@@ -151,7 +190,6 @@ fetchCourses()
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ semesters })
         });
-
         const result = await res.json();
         if (result.success) {
           alert("✅ Courses saved successfully!");
