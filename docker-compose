@@ -1,0 +1,29 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: csdegreenavigator-mongo
+    ports:
+      - "27018:27017"  # Expose container's 27017 to your host's 27018
+    volumes:
+      - mongo_data:/data/db
+      - ./seed:/docker-entrypoint-initdb.d
+    restart: always
+
+  web:
+    build: .
+    container_name: csdegreenavigator-web
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://csdegreenavigator-mongo:27017/CSDegreeNavigator
+      - NODE_ENV=development
+      - TAILWINDCSS_OXIDE=wasm
+    depends_on:
+      - mongo
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev
+
+volumes:
+  mongo_data:
